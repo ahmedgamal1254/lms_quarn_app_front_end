@@ -1,0 +1,261 @@
+'use client';
+
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  UserCog,
+  BookOpen,
+  Video,
+  FileQuestion,
+  ClipboardList,
+  CreditCard,
+  Settings,
+  ChevronDown,
+  Banknote,
+  Coins,
+  ArrowRightLeft,
+  Wallet,
+  LogOut,
+  User,
+  File
+} from 'lucide-react';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { getUser, logout } from '@/lib/auth';
+
+/* ---------------- MENUS ---------------- */
+
+const adminMenuGroups = [
+  { title: 'الرئيسية', icon: LayoutDashboard, href: '/dashboard' },
+
+  {
+    title: 'إدارة المستخدمين',
+    icon: Users,
+    items: [
+      { title: 'المستخدمين', href: '/users', icon: Users },
+      { title: 'الطلاب', href: '/students', icon: GraduationCap },
+      { title: 'المعلمين', href: '/teachers', icon: UserCog }
+    ]
+  },
+
+  {
+    title: 'المحتوى الأكاديمي',
+    icon: BookOpen,
+    items: [
+      { title: 'الحصص', href: '/sessions', icon: Video },
+      { title:"الاجندة",href:"/sessions/callender",icon:File},
+      { title: 'الامتحانات', href: '/exams', icon: FileQuestion },
+      { title: 'الواجبات', href: '/homework', icon: ClipboardList }
+    ]
+  },
+
+  {
+    title: 'الماليات',
+    icon: Banknote,
+    items: [
+      { title: 'العملات', href: '/finances/currencies', icon: Coins },
+      { title: 'المعاملات', href: '/finances/transactions', icon: ArrowRightLeft },
+      { title: 'المصاريف', href: '/finances/expenses', icon: Wallet }
+    ]
+  },
+
+  {
+    "title":"الاشتراكات",
+    "icon":CreditCard,
+    "items":[
+      { title: 'الاشتراكات', href: '/subscriptions', icon: CreditCard },
+      {title:"الخطط",href:"/plans",icon:CreditCard},
+      {title:"طلبات الاشتراك",href:"/subscription-requests",icon:CreditCard}
+    ]
+  }
+
+  ,{
+    title: 'الإعدادات',
+    icon: Settings,
+    items: [
+      { title: 'المواد', href: '/subjects', icon: BookOpen }
+    ]
+  }
+];
+
+const studentMenuGroups = [
+  { title: 'الرئيسية', icon: LayoutDashboard, href: '/student/dashboard' },
+  { title: 'الحصص', icon: Video, href: '/student/sessions' },
+  { title: 'الواجبات', icon: ClipboardList, href: '/student/homework' },
+  { title: 'الامتحانات', icon: FileQuestion, href: '/student/exams' }
+];
+
+const teacherMenuGroups = [
+  { title: 'الرئيسية', icon: LayoutDashboard, href: '/teacher/dashboard' },
+  { title: 'الحصص', icon: Video, href: '/teacher/sessions' },
+  { title: 'الواجبات', icon: ClipboardList, href: '/teacher/homework' },
+  { title: 'الامتحانات', icon: FileQuestion, href: '/teacher/exams' },
+  { title: 'الطلاب', icon: Users, href: '/teacher/students' }
+]
+
+/* ---------------- COMPONENT ---------------- */
+
+export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const [expanded, setExpanded] = useState<string[]>([]);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
+  const menu =
+  user?.role === 'student'
+    ? studentMenuGroups
+    : user?.role === 'teacher'
+    ? teacherMenuGroups
+    : adminMenuGroups;
+
+
+  const isActive = (href?: string) => href && pathname.startsWith(href);
+
+  const toggle = (title: string) => {
+    setExpanded(prev =>
+      prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title]
+    );
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
+  return (
+    <>
+      {/* Overlay */}
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 bg-black/20 z-40 lg:hidden transition
+        ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      />
+
+      {/* Sidebar */}
+      <aside
+        className={`
+        fixed inset-y-0 right-0 z-50 w-72 bg-white border-l
+        transform transition-transform duration-300
+        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        lg:translate-x-0
+      `}
+      >
+        {/* Logo */}
+        <div className="flex items-center gap-3 p-6 border-b">
+          <BookOpen className="text-emerald-600" />
+          <div>
+            <p className="font-semibold text-gray-900">أكاديمية</p>
+            <p className="text-xs text-gray-500">التميز</p>
+          </div>
+        </div>
+
+        {/* Menu */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+          {menu.map((group: any) => {
+            const Icon = group.icon;
+
+            if (group.items) {
+              const open = expanded.includes(group.title);
+
+              return (
+                <div key={group.title}>
+                  <button
+                    onClick={() => toggle(group.title)}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg
+                    hover:bg-gray-100 text-gray-700"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon size={18} />
+                      {group.title}
+                    </div>
+                    <ChevronDown
+                      size={16}
+                      className={`transition ${open ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+
+                  {open && (
+                    <div className="mt-1 mr-6 space-y-1">
+                      {group.items.map((item: any) => {
+                        const ItemIcon = item.icon;
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className={`
+                              flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                              hover:bg-emerald-50
+                              ${
+                                isActive(item.href)
+                                  ? 'bg-emerald-100 text-emerald-700 font-medium'
+                                  : 'text-gray-600'
+                              }
+                            `}
+                          >
+                            <ItemIcon size={16} />
+                            {item.title}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={group.title}
+                href={group.href}
+                className={`
+                  flex items-center gap-3 px-3 py-2 rounded-lg
+                  hover:bg-emerald-50
+                  ${
+                    isActive(group.href)
+                      ? 'bg-emerald-100 text-emerald-700 font-medium'
+                      : 'text-gray-700'
+                  }
+                `}
+              >
+                <Icon size={18} />
+                {group.title}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* User */}
+        <div className="p-4 border-t">
+          {user && (
+            <div className="flex items-center gap-3 p-3 mb-3 bg-gray-50 rounded-lg">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-500 text-white">
+                <User size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                <p className="text-xs text-gray-500">{user.role}</p>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2
+            bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
+          >
+            <LogOut size={18} />
+            تسجيل الخروج
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
