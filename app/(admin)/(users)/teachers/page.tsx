@@ -66,12 +66,14 @@ interface TeachersResponse {
     total: number;
 }
 
-interface SubjectsResponse{
+interface Subject {
+    id: number;
+    name: string;
+}
+
+interface SubjectsResponse {
     data: {
-        subjects: {
-            id: number;
-            name: string;
-        }
+        subjects: Subject[];
     }
 }
 

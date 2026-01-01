@@ -71,13 +71,13 @@ interface TransactionsResponse {
     }
 }
 
-interface FormDataResponse{
-    data:{
-        students:{
-            id: number;
-            name: string;
-        }
-    }
+interface Student {
+    id: number;
+    name: string;
+}
+
+interface FormDataResponse {
+    students: Student[];
 }
 
 export default function page() {

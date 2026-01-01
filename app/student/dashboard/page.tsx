@@ -17,6 +17,14 @@ import {
 import axios from 'axios';
 import axiosInstance from '@/lib/axios';
 
+interface DashboardData {
+  totalStudents: number;
+  totalTeachers: number;
+  totalSessions: number;
+  totalExams: number;
+  totalHomeworks: number;
+}
+
 export default function StudentDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,9 +38,13 @@ export default function StudentDashboard() {
     try {
       const res = await axiosInstance.get('/student/dashboard');
       setData(res.data.data);
-    } catch (err) {
-      console.error('Error loading dashboard:', err);
-      setError(err.response?.data?.message || 'حدث خطأ في تحميل البيانات');
+    } catch (err ) {
+        if (axios.isAxiosError(err)) {
+            // TypeScript عارف دلوقتي إن err من نوع AxiosError
+            setError(err.response?.data?.message || 'حدث خطأ في تحميل البيانات');
+        } else {
+            setError('حدث خطأ في تحميل البيانات');
+        }
     } finally {
       setLoading(false);
     }
