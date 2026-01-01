@@ -4,6 +4,8 @@ import './globals.css'
 import AuthGuard from '@/components/AuthGuard'
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
+import Head from 'next/head';
+import RegisterSW from '@/components/worker';
 
 const cairo = Cairo({ subsets: ['arabic'] })
 
@@ -19,6 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
+      <RegisterSW />
+       <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
+      </Head>
       <body className={cairo.className}>
         <Providers>
           <Toaster position="top-center" />
