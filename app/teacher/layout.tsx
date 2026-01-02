@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         margin: '1rem',
                         background: '#ffffff',
                         borderRadius: '8px',
-                        minHeight: 'calc(100vh - 160px)'
+                        minHeight: 'calc(100vh - 180px)'
                     }}
                 >
                     {children}
