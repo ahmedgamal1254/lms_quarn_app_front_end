@@ -50,12 +50,18 @@ interface Statistics {
 }
 
 interface Salary {
-    total_hours: number;
-    hourly_rate: string;
-    currency: string;
-    total_earned: number;
-    remaining: number;
+  total_hours: number;
+  hourly_rate: number;          // رقم مش string
+  currency: string;
+
+  total_earned: number;         // إجمالي الأرباح
+  paid_amount: number;          // أرباح تم صرفها
+  pending_amount: number;       // أرباح معلّقة
+
+  available_balance: number;    // رصيد متاح للسحب
+  pending_withdraw: number;     // طلبات سحب معلّقة
 }
+
 
 interface Session {
     id: number;
@@ -186,98 +192,159 @@ export default function TeacherPage() {
 
                 {/* ================= Profile Card ================= */}
                 <div className="bg-white rounded-xl shadow border border-gray-200 mb-6">
-                <div className="p-4 sm:p-6">
+                    <div className="p-4 sm:p-6">
 
-                    {/* Header */}
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-6">
+                        {/* Header */}
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-6">
 
-                    {/* Avatar & Info */}
-                    <div className="flex items-center gap-4 sm:gap-6 flex-1">
-                        <div className="hidden sm:block w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow">
-                            <GraduationCap size={40} className="text-white" />
-                        </div>
-
-                        <div className="flex-1">
-                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-                            {teacher.name}
-                        </h1>
-
-                        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 text-sm mb-2">
-                            <div className="flex items-center gap-2">
-                            <Mail size={14} />
-                            <span>{teacher.email}</span>
+                        {/* Avatar & Info */}
+                        <div className="flex items-center gap-4 sm:gap-6 flex-1">
+                            <div className="hidden sm:block w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow">
+                                <GraduationCap size={40} className="text-white" />
                             </div>
-                            <div className="flex items-center gap-2">
-                            <Phone size={14} />
-                            <span>{teacher.phone}</span>
+
+                            <div className="flex-1">
+                            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                                {teacher.name}
+                            </h1>
+
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 text-sm mb-2">
+                                <div className="flex items-center gap-2">
+                                <Mail size={14} />
+                                <span>{teacher.email}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                <Phone size={14} />
+                                <span>{teacher.phone}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 text-purple-600 font-semibold text-sm">
+                                <Award size={14} />
+                                <span>{teacher.subjects}</span>
+                            </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2 text-purple-600 font-semibold text-sm">
-                            <Award size={14} />
-                            <span>{teacher.subjects}</span>
+                        {/* Actions */}
+                        <div className="flex gap-2 w-full lg:w-auto">
+                            <button className="flex-1 lg:flex-none p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">
+                            <MessageCircle size={20} />
+                            </button>
+                            <button className="flex-1 lg:flex-none p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
+                            <Mail size={20} />
+                            </button>
+                            <button className="flex-1 lg:flex-none p-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg shadow">
+                            <Phone size={20} />
+                            </button>
                         </div>
                         </div>
-                    </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-2 w-full lg:w-auto">
-                        <button className="flex-1 lg:flex-none p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">
-                        <MessageCircle size={20} />
-                        </button>
-                        <button className="flex-1 lg:flex-none p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
-                        <Mail size={20} />
-                        </button>
-                        <button className="flex-1 lg:flex-none p-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg shadow">
-                        <Phone size={20} />
-                        </button>
-                    </div>
-                    </div>
+                        {/* Rate & Status */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <p className="text-xs text-gray-600">السعر بالساعة</p>
+                            <p className="font-bold text-xl">
+                            {teacher.hourly_rate} {getCurrencySymbol(teacher.currency)}
+                            </p>
+                        </div>
 
-                    {/* Rate & Status */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <p className="text-xs text-gray-600">السعر بالساعة</p>
-                        <p className="font-bold text-xl">
-                        {teacher.hourly_rate} {getCurrencySymbol(teacher.currency)}
-                        </p>
-                    </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p className="text-xs text-gray-600">الحالة</p>
+                            <p className="font-bold text-xl">
+                            {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
+                            </p>
+                        </div>
+                        </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p className="text-xs text-gray-600">الحالة</p>
-                        <p className="font-bold text-xl">
-                        {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
-                        </p>
-                    </div>
-                    </div>
+                        {/* Statistics */}
+                        <h3 className="text-lg sm:text-xl font-bold mb-4">الإحصائيات</h3>
 
-                    {/* Statistics */}
-                    <h3 className="text-lg sm:text-xl font-bold mb-4">الإحصائيات</h3>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard icon={Users} label="عدد الطلاب" value={statistics.students_count} />
-                    <StatCard icon={Calendar} label="حصص اليوم" value={statistics.sessions_today} />
-                    <StatCard icon={CheckCircle} label="حصص مكتملة" value={statistics.sessions_completed} />
-                    <StatCard icon={Clock} label="حصص قادمة" value={statistics.sessions_upcoming} />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <StatCard icon={Users} label="عدد الطلاب" value={statistics.students_count} />
+                        <StatCard icon={Calendar} label="حصص اليوم" value={statistics.sessions_today} />
+                        <StatCard icon={CheckCircle} label="حصص مكتملة" value={statistics.sessions_completed} />
+                        <StatCard icon={Clock} label="حصص قادمة" value={statistics.sessions_upcoming} />
+                        </div>
                     </div>
-                </div>
                 </div>
 
                 {/* Salary */}
-                <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow p-5 sm:p-6 text-white">
-                <h3 className="text-xl sm:text-2xl font-bold mb-4">الراتب والأرباح</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <SalaryItem label="إجمالي الساعات" value={salary.total_hours} />
-                    <SalaryItem
-                    label="إجمالي الأرباح"
-                    value={`${salary.total_earned} ${getCurrencySymbol(salary.currency)}`}
-                    />
-                    <SalaryItem
-                    label="المتبقي"
-                    value={`${salary.remaining} ${getCurrencySymbol(salary.currency)}`}
-                    />
+                {/* Salary Section */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
+                        <DollarSign className="w-6 h-6" />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-800">النظام المحاسبي</h2>
+                    </div>
+                </div>
+
+                {/* Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                    {/* Total Hours */}
+                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
+                    <p className="text-sm text-gray-500 mb-1">إجمالي الساعات</p>
+                    <p className="text-2xl font-semibold text-gray-800">
+                        {salary.total_hours || 0}
+                    </p>
+                    </div>
+
+                    {/* Hourly Rate */}
+                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
+                    <p className="text-sm text-gray-500 mb-1">السعر / ساعة</p>
+                    <p className="text-2xl font-semibold text-gray-800">
+                        {salary.hourly_rate || 0} {salary.currency || ''}
+                    </p>
+                    </div>
+
+                    {/* Total Earned */}
+                    <div className="p-4 rounded-lg border border-emerald-100 bg-emerald-50">
+                    <p className="text-sm text-emerald-700 mb-1">إجمالي الأرباح</p>
+                    <p className="text-2xl font-bold text-emerald-800">
+                        {(salary.total_earned || 0).toFixed(2)}
+                    </p>
+                    </div>
+
+                    {/* Paid Earnings */}
+                    <div className="p-4 rounded-lg border border-blue-100 bg-blue-50">
+                    <p className="text-sm text-blue-700 mb-1">أرباح تم صرفها</p>
+                    <p className="text-2xl font-bold text-blue-800">
+                        {(salary.paid_amount || 0).toFixed(2)}
+                    </p>
+                    </div>
+
+                    {/* Pending Earnings */}
+                    <div className="p-4 rounded-lg border border-yellow-100 bg-yellow-50">
+                    <p className="text-sm text-yellow-700 mb-1">أرباح معلّقة</p>
+                    <p className="text-2xl font-bold text-yellow-800">
+                        {(salary.pending_amount || 0).toFixed(2)}
+                    </p>
+                    </div>
+
+                    {/* Available Balance */}
+                    <div className="p-4 rounded-lg border border-emerald-200 bg-emerald-100">
+                    <p className="text-sm text-emerald-700 mb-1">رصيد متاح للسحب</p>
+                    <p className="text-3xl font-extrabold text-emerald-900">
+                        {(salary.available_balance || 0).toFixed(2)}
+                    </p>
+                    </div>
+
+                    {/* Pending Withdraw */}
+                    <div className="p-4 rounded-lg border border-red-100 bg-red-50">
+                    <p className="text-sm text-red-700 mb-1">طلبات سحب معلّقة</p>
+                    <p className="text-2xl font-bold text-red-800">
+                        {(salary.pending_withdraw || 0).toFixed(2)}
+                    </p>
+                    </div>
+
                 </div>
                 </div>
+
             </div>
         </div>
     );

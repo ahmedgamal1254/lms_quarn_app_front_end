@@ -182,31 +182,79 @@ export default function TeacherDashboard() {
         </div>
       </div>
 
-      {/* Salary Card */}
-      <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md p-6 mb-8 text-white">
-        <div className="flex items-center mb-6">
-          <DollarSign className="w-6 h-6 mr-2" />
-          <h2 className="text-2xl font-bold">النظام المحاسبي</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <p className="text-blue-100 text-sm mb-1">إجمالي الساعات</p>
-            <p className="text-2xl font-bold">{salary.total_hours || 0}</p>
-          </div>
-          <div>
-            <p className="text-blue-100 text-sm mb-1">السعر/ساعة</p>
-            <p className="text-2xl font-bold">{salary.hourly_rate || 0} {salary.currency || ''}</p>
-          </div>
-          <div>
-            <p className="text-blue-100 text-sm mb-1">المستحق الكلي</p>
-            <p className="text-2xl font-bold">{(salary.total_earned || 0).toFixed(2)}</p>
-          </div>
-          <div>
-            <p className="text-blue-100 text-sm mb-1">المتبقي</p>
-            <p className="text-2xl font-bold">{(salary.remaining || 0).toFixed(2)}</p>
+      {/* Salary Section */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
+              <DollarSign className="w-6 h-6" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">النظام المحاسبي</h2>
           </div>
         </div>
-        
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          {/* Total Hours */}
+          <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
+            <p className="text-sm text-gray-500 mb-1">إجمالي الساعات</p>
+            <p className="text-2xl font-semibold text-gray-800">
+              {salary.total_hours || 0}
+            </p>
+          </div>
+
+          {/* Hourly Rate */}
+          <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
+            <p className="text-sm text-gray-500 mb-1">السعر / ساعة</p>
+            <p className="text-2xl font-semibold text-gray-800">
+              {salary.hourly_rate || 0} {salary.currency || ''}
+            </p>
+          </div>
+
+          {/* Total Earned */}
+          <div className="p-4 rounded-lg border border-emerald-100 bg-emerald-50">
+            <p className="text-sm text-emerald-700 mb-1">إجمالي الأرباح</p>
+            <p className="text-2xl font-bold text-emerald-800">
+              {(salary.total_earned || 0).toFixed(2)}
+            </p>
+          </div>
+
+          {/* Paid Earnings */}
+          <div className="p-4 rounded-lg border border-blue-100 bg-blue-50">
+            <p className="text-sm text-blue-700 mb-1">أرباح تم صرفها</p>
+            <p className="text-2xl font-bold text-blue-800">
+              {(salary.paid_amount || 0).toFixed(2)}
+            </p>
+          </div>
+
+          {/* Pending Earnings */}
+          <div className="p-4 rounded-lg border border-yellow-100 bg-yellow-50">
+            <p className="text-sm text-yellow-700 mb-1">أرباح معلّقة</p>
+            <p className="text-2xl font-bold text-yellow-800">
+              {(salary.pending_amount || 0).toFixed(2)}
+            </p>
+          </div>
+
+          {/* Available Balance */}
+          <div className="p-4 rounded-lg border border-emerald-200 bg-emerald-100">
+            <p className="text-sm text-emerald-700 mb-1">رصيد متاح للسحب</p>
+            <p className="text-3xl font-extrabold text-emerald-900">
+              {(salary.available_balance || 0).toFixed(2)}
+            </p>
+          </div>
+
+          {/* Pending Withdraw */}
+          <div className="p-4 rounded-lg border border-red-100 bg-red-50">
+            <p className="text-sm text-red-700 mb-1">طلبات سحب معلّقة</p>
+            <p className="text-2xl font-bold text-red-800">
+              {(salary.pending_withdraw || 0).toFixed(2)}
+            </p>
+          </div>
+
+        </div>
       </div>
 
       {/* Main Content Grid */}
