@@ -141,20 +141,22 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 
       {/* Sidebar */}
       <aside
-        className={`
-          fixed top-0 right-0 h-full
-          z-50
-          w-64 sm:w-72
-          bg-white border-l
-          transition-transform duration-300 ease-in-out
+  className={`
+    fixed top-0 right-0 h-screen
+    z-50
+    w-64 sm:w-72
+    bg-white border-l
+    transition-transform duration-300 ease-in-out
 
-          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+    ${isOpen ? 'translate-x-0' : 'translate-x-full'}
 
-          lg:translate-x-0
-          lg:static
-          lg:h-auto
-        `}
-      >
+    lg:translate-x-0
+    lg:sticky
+    lg:top-0
+    lg:h-screen
+  `}
+>
+
         {/* Logo */}
         <div className="flex items-center gap-3 p-6 border-b">
           <BookOpen className="text-emerald-600" />

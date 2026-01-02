@@ -25,6 +25,17 @@
   overflow-y: auto;
 }
 
+/* ===== Mobile (Overlay) ===== */
+@media (max-width: 992px) {
+  .responsive-sider {
+    position: fixed !important;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+  }
+}
+
 .logo {
   display: flex;
   align-items: center;
