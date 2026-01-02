@@ -142,11 +142,18 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
       {/* Sidebar */}
       <aside
         className={`
-        fixed inset-y-0 right-0 z-50 w-72 bg-white border-l
-        transform transition-transform duration-300
-        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-        lg:translate-x-0
-      `}
+          fixed top-0 right-0 h-full
+          z-50
+          w-64 sm:w-72
+          bg-white border-l
+          transition-transform duration-300 ease-in-out
+
+          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+
+          lg:translate-x-0
+          lg:static
+          lg:h-auto
+        `}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 p-6 border-b">

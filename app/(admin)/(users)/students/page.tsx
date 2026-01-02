@@ -190,9 +190,9 @@ export default function StudentsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen bg-gray-50 p-2 md:p-8">
             {/* Header */}
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-start flex-col gap-2 md:flex-row mb-8">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">إدارة الطلاب</h1>
                     <p className="text-gray-600 text-sm mt-1">إدارة بيانات جميع الطلاب والخطط الدراسية</p>

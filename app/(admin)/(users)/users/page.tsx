@@ -160,9 +160,9 @@ export default function UsersPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen bg-gray-50 p-2 md:p-8">
             {/* Header */}
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between flex-col md:flex-row gap-4 items-start mb-8">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">المستخدمين</h1>
                     <div className="flex items-center gap-2 mt-2 text-gray-600">

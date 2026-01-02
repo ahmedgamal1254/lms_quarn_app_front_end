@@ -201,12 +201,7 @@ export default function SessionsPage() {
         {/* Header */}
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
           <div className="px-6 py-4 flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
-            >
-              <Menu size={24} />
-            </button>
+            
             <h1 className="text-2xl font-bold text-gray-900">الحصص</h1>
             <div></div>
           </div>
@@ -233,7 +228,7 @@ export default function SessionsPage() {
 
             {/* Toolbar */}
             <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-col md:flex-row">
                 <button 
                   onClick={() => openCreateModal('single')}
                   className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"

@@ -148,11 +148,11 @@ export default function StudentPage() {
 
                 {/* Profile Card */}
                 <div className="bg-white rounded-xl shadow-lg border border-gray-200 mb-6">
-                    <div className="p-6">
+                    <div className="p-2 md:p-6">
                         {/* Header Section */}
                         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
                             {/* Avatar & Info */}
-                            <div className="flex items-center gap-6 flex-1">
+                            <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
                                 <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
                                     <GraduationCap size={48} className="text-white" />
                                 </div>
@@ -198,9 +198,11 @@ export default function StudentPage() {
                         {/* Plan & Teacher Info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             {/* Plan Card */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between">
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4
+                            flex flex-col md:flex-row items-start md:items-start gap-4
+                            items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-start justify-center">
                                         <CreditCard size={24} className="text-blue-600" />
                                     </div>
                                     <div>
@@ -208,7 +210,7 @@ export default function StudentPage() {
                                         <p className="text-gray-900 font-bold text-lg">{studentData.plan_name || 'بدون باقة'}</p>
                                     </div>
                                 </div>
-                                <div className="text-left">
+                                <div className="text-right md:text-left">
                                     <p className="text-gray-600 text-sm">السعر</p>
                                     <p className="text-blue-600 font-bold text-xl">
                                         {studentData.plan_price} {getCurrencySymbol(studentData.plan_currency)}
