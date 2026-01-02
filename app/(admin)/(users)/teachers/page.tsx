@@ -16,12 +16,14 @@ import {
     AlertCircle,
     Loader,
     X,
-    MessageCircle
+    MessageCircle,
+    Eye
 } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
+import Link from 'next/link';
 
 interface Teacher {
     id: number;
@@ -443,6 +445,13 @@ export default function TeachersPage() {
                                                 </td>
                                                 <td className="px-6 py-3">
                                                     <div className="flex justify-center gap-2">
+                                                        <Link
+                                                            href={`/teachers/${teacher.id}`}
+                                                            className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+                                                            title="عرض"
+                                                        >
+                                                            <Eye size={16} className="text-blue-600" />
+                                                        </Link>
                                                         <button
                                                             onClick={() => openModal('edit', teacher)}
                                                             className="p-2 hover:bg-blue-100 rounded-lg transition-colors"

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
+import Link from 'next/link';
 
 interface Student {
     id: number;
@@ -61,6 +62,8 @@ export default function StudentsPage() {
         status: 'active',
         password: ''
     });
+
+    console.log(selectedStudent);
 
     // Fetch Students and Plans
     const { data: studentsData, isLoading } = useQuery({
@@ -308,13 +311,13 @@ export default function StudentsPage() {
                                         </td>
                                         <td className="py-3 px-4">
                                             <div className="flex justify-center gap-2">
-                                                <button
-                                                    onClick={() => openModal('view', student)}
+                                                <Link
+                                                    href={`/students/${student.id}`}
                                                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                                                     title="عرض"
                                                 >
                                                     <Eye size={16} className="text-gray-600" />
-                                                </button>
+                                                </Link>
                                                 <button
                                                     onClick={() => openModal('edit', student)}
                                                     className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
