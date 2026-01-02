@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { X, Calendar, Clock, User, BookOpen, AlertCircle, Loader, Info } from 'lucide-react';
 import toast from 'react-hot-toast';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ar';
 
 interface Student {
   id: number;
@@ -99,6 +101,8 @@ export default function SessionModal({
   isSubmitting,
   axiosInstance
 }: SessionModalProps) {
+  dayjs.locale('ar');
+
   const [singleForm, setSingleForm] = useState<SingleSessionForm>({
     student_id: '',
     teacher_id: '',
@@ -390,7 +394,7 @@ export default function SessionModal({
                     <Info className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div className="flex-1 space-y-2">
                       <h3 className="font-semibold text-gray-900">معلومات الطالب</h3>
-                      <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                         <div>
                           <span className="text-gray-600">الباقة: </span>
                           <span className="font-medium text-gray-900">{studentData.plan_name || 'غير متوفر'}</span>
@@ -403,16 +407,20 @@ export default function SessionModal({
                           <span className="text-gray-500"> / {studentData.active_subscription?.total_sessions || 0}</span>
                         </div>
                         {studentData.active_subscription && (
-                          <>
+                          <div className='grid grid-cols-1 md:grid-cols-2'>
                             <div>
-                              <span className="text-gray-600">تاريخ البداية: </span>
-                              <span className="font-medium text-gray-900">{studentData.active_subscription.start_date}</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-600">تاريخ النهاية: </span>
-                              <span className="font-medium text-gray-900">{studentData.active_subscription.end_date}</span>
-                            </div>
-                          </>
+  <span className="text-gray-600">تاريخ البداية: </span>
+  <span className="font-medium text-gray-900">
+    {dayjs(studentData.active_subscription.start_date).format('DD MMMM YYYY')}
+  </span>
+</div>
+<div>
+  <span className="text-gray-600">تاريخ النهاية: </span>
+  <span className="font-medium text-gray-900">
+    {dayjs(studentData.active_subscription.end_date).format('DD MMMM YYYY')}
+  </span>
+</div>
+                          </div>
                         )}
                       </div>
                       {(!studentData.active_subscription || studentData.remaining_sessions <= 0) && (
@@ -668,7 +676,7 @@ export default function SessionModal({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">أيام الأسبوع والأوقات *</label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {bulkForm.weekDays.map((day, index) => (
                         <div key={index} className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:border-indigo-400 transition-colors">
                           <input
