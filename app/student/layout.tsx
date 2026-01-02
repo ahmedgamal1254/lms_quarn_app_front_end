@@ -14,27 +14,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Layout style={{ minHeight: '100vh' }}>
             {/* Sidebar */}
             <Sider
-  collapsible
-  collapsed={collapsed}
-  onCollapse={setCollapsed}
-  width={260}
-  breakpoint="lg"
-  collapsedWidth={0}
-  trigger={null}
-  style={{
-    position: 'fixed',
-    right: 0,
-    top: 0,
-    height: '100vh',
-    zIndex: 1000
-  }}
-  className="mobile-sider"
->
-  <Sidebar
-    isOpen={!collapsed}
-    onClose={() => setCollapsed(true)}
-  />
-</Sider>
+            collapsible
+            collapsed={collapsed}
+            onCollapse={setCollapsed}
+            width={260}
+            breakpoint="lg"
+            collapsedWidth={0}
+            trigger={null}
+            className="responsive-sider"
+            >
+            <Sidebar
+                isOpen={!collapsed}
+                onClose={() => setCollapsed(true)}
+            />
+            </Sider>
 
             {/* Main Area */}
             <Layout>
@@ -45,7 +38,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <Content
                     style={{
                         margin: '1rem',
-                        padding: '1.5rem',
                         background: '#ffffff',
                         borderRadius: '8px',
                         minHeight: 'calc(100vh - 160px)'

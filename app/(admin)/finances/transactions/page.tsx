@@ -332,11 +332,11 @@ export default function TransactionsPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
+        <div className="min-h-screen bg-gray-50 p-2 md:p-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200">
-                    <div className="flex justify-between items-start mb-4">
+                <div className="bg-white rounded-lg shadow-sm p-2 md:p-6 mb-6 border border-gray-200">
+                    <div className="flex flex-col md:flex-row gap-4 justify-between items-start mb-4">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900">المعاملات المالية</h1>
                             <div className="flex items-center gap-2 mt-2 text-gray-600">
@@ -347,7 +347,7 @@ export default function TransactionsPage() {
                                 <span className="text-sm">المعاملات</span>
                             </div>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col md:flex-row gap-3">
                             <CurrencySwitcher
                                 selectedCurrency={currentCurrency}
                                 onCurrencyChange={handleCurrencyChange}

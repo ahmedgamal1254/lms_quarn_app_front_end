@@ -168,7 +168,7 @@ export default function StudentDashboard() {
 
           {/* Stats Grid */}
           {data.statistics && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <StatCard
               title="الحصص المكتملة"
               value={data.statistics?.sessions_completed}
@@ -307,7 +307,7 @@ function Section({ title, children }) {
   );
 }
 
-function Empty({ text }) {
+function Empty({ text }: any) {
   return (
     <div className="bg-white rounded-xl shadow-md p-8 text-center border border-gray-100">
       <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />

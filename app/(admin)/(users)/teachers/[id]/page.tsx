@@ -164,350 +164,143 @@ export default function TeacherPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
+         <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6">
             <div className="max-w-7xl mx-auto">
-                
+
                 {/* Back Button */}
-                <div className="mb-6">
-                    <button 
-                        onClick={() => window.history.back()}
-                        className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg border border-gray-300 transition-colors shadow-sm"
-                    >
-                        <ArrowRight size={20} className="text-green-600" />
-                        <span>العودة لقائمة المعلمين</span>
-                    </button>
+                <div className="mb-4 sm:mb-6">
+                <button
+                    onClick={() => window.history.back()}
+                    className="
+                    w-full sm:w-auto
+                    flex items-center justify-center sm:justify-start gap-2
+                    bg-white hover:bg-gray-50 text-gray-700
+                    px-4 py-2 rounded-lg border border-gray-300
+                    transition-colors shadow-sm text-sm
+                    "
+                >
+                    <ArrowRight size={18} className="text-green-600" />
+                    <span>العودة لقائمة المعلمين</span>
+                </button>
                 </div>
 
-                {/* Profile Card */}
-                <div className="bg-white rounded-xl shadow-lg border border-gray-200 mb-6">
-                    <div className="p-6">
-                        {/* Header Section */}
-                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-                            {/* Avatar & Info */}
-                            <div className="flex items-center gap-6 flex-1">
-                                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                                    <GraduationCap size={48} className="text-white" />
-                                </div>
-                                <div className="flex-1">
-                                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{teacher.name}</h1>
-                                    <div className="flex flex-wrap items-center gap-4 text-gray-600 text-sm mb-2">
-                                        <div className="flex items-center gap-2">
-                                            <Mail size={16} />
-                                            <span>{teacher.email}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2" dir="ltr">
-                                            <Phone size={16} />
-                                            <span>{teacher.phone}</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-purple-600 font-semibold">
-                                        <Award size={16} />
-                                        <span>{teacher.subjects}</span>
-                                    </div>
-                                </div>
-                            </div>
+                {/* ================= Profile Card ================= */}
+                <div className="bg-white rounded-xl shadow border border-gray-200 mb-6">
+                <div className="p-4 sm:p-6">
 
-                            {/* Action Buttons */}
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => {
-                                        window.open(`https://wa.me/${teacher.phone}`, '_blank');
-                                    }}
-                                    className="p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors shadow-md"
-                                >
-                                    <MessageCircle size={20} />
-                                </button>
-                                <button className="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md">
-                                    <Mail size={20} />
-                                </button>
-                                <button className="p-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors shadow-md">
-                                    <Phone size={20} />
-                                </button>
+                    {/* Header */}
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-6">
+
+                    {/* Avatar & Info */}
+                    <div className="flex items-center gap-4 sm:gap-6 flex-1">
+                        <div className="hidden sm:block w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow">
+                            <GraduationCap size={40} className="text-white" />
+                        </div>
+
+                        <div className="flex-1">
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                            {teacher.name}
+                        </h1>
+
+                        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 text-sm mb-2">
+                            <div className="flex items-center gap-2">
+                            <Mail size={14} />
+                            <span>{teacher.email}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                            <Phone size={14} />
+                            <span>{teacher.phone}</span>
                             </div>
                         </div>
 
-                        {/* Rate & Status */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            {/* Hourly Rate */}
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                        <DollarSign size={24} className="text-green-600" />
-                                    </div>
-                                    <div>
-                                        <p className="text-gray-600 text-sm">السعر بالساعة</p>
-                                        <p className="text-gray-900 font-bold text-lg">
-                                            {teacher.hourly_rate} {getCurrencySymbol(teacher.currency)}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Status */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <CheckCircle size={24} className="text-blue-600" />
-                                    </div>
-                                    <div>
-                                        <p className="text-gray-600 text-sm">الحالة</p>
-                                        <p className="text-gray-900 font-bold text-lg">
-                                            {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-gray-600 text-sm">تاريخ الانضمام</p>
-                                    <p className="text-blue-600 font-bold">
-                                        {new Date(teacher.created_at).toLocaleDateString('ar-EG')}
-                                    </p>
-                                </div>
-                            </div>
+                        <div className="flex items-center gap-2 text-purple-600 font-semibold text-sm">
+                            <Award size={14} />
+                            <span>{teacher.subjects}</span>
                         </div>
-
-                        {/* Statistics */}
-                        <div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">الإحصائيات</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {/* Students Count */}
-                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                                            <Users size={20} className="text-purple-600" />
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-600 text-sm">عدد الطلاب</p>
-                                            <p className="text-gray-900 font-bold text-2xl">{statistics.students_count}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Sessions Today */}
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <Calendar size={20} className="text-blue-600" />
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-600 text-sm">حصص اليوم</p>
-                                            <p className="text-blue-600 font-bold text-2xl">{statistics.sessions_today}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Completed Sessions */}
-                                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                            <CheckCircle size={20} className="text-green-600" />
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-600 text-sm">حصص مكتملة</p>
-                                            <p className="text-green-600 font-bold text-2xl">{statistics.sessions_completed}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Upcoming Sessions */}
-                                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                                            <Clock size={20} className="text-orange-600" />
-                                        </div>
-                                        <div>
-                                            <p className="text-gray-600 text-sm">حصص قادمة</p>
-                                            <p className="text-orange-600 font-bold text-2xl">{statistics.sessions_upcoming}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-2 w-full lg:w-auto">
+                        <button className="flex-1 lg:flex-none p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">
+                        <MessageCircle size={20} />
+                        </button>
+                        <button className="flex-1 lg:flex-none p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
+                        <Mail size={20} />
+                        </button>
+                        <button className="flex-1 lg:flex-none p-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg shadow">
+                        <Phone size={20} />
+                        </button>
+                    </div>
+                    </div>
+
+                    {/* Rate & Status */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <p className="text-xs text-gray-600">السعر بالساعة</p>
+                        <p className="font-bold text-xl">
+                        {teacher.hourly_rate} {getCurrencySymbol(teacher.currency)}
+                        </p>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p className="text-xs text-gray-600">الحالة</p>
+                        <p className="font-bold text-xl">
+                        {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
+                        </p>
+                    </div>
+                    </div>
+
+                    {/* Statistics */}
+                    <h3 className="text-lg sm:text-xl font-bold mb-4">الإحصائيات</h3>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <StatCard icon={Users} label="عدد الطلاب" value={statistics.students_count} />
+                    <StatCard icon={Calendar} label="حصص اليوم" value={statistics.sessions_today} />
+                    <StatCard icon={CheckCircle} label="حصص مكتملة" value={statistics.sessions_completed} />
+                    <StatCard icon={Clock} label="حصص قادمة" value={statistics.sessions_upcoming} />
                     </div>
                 </div>
-
-                {/* Salary Card */}
-                <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg p-6 mb-6 text-white">
-                    <h3 className="text-2xl font-bold mb-4">الراتب والأرباح</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <p className="text-green-100 text-sm mb-1">إجمالي الساعات</p>
-                            <p className="text-3xl font-bold">{salary.total_hours}</p>
-                        </div>
-                        <div>
-                            <p className="text-green-100 text-sm mb-1">إجمالي الأرباح</p>
-                            <p className="text-3xl font-bold">
-                                {salary.total_earned} {getCurrencySymbol(salary.currency)}
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-green-100 text-sm mb-1">المتبقي</p>
-                            <p className="text-3xl font-bold">
-                                {salary.remaining} {getCurrencySymbol(salary.currency)}
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    
-                    {/* Students List */}
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <Users size={24} className="text-purple-600" />
-                            الطلاب ({uniqueStudents.length})
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {uniqueStudents.map(student => (
-                                <div 
-                                    key={student.id} 
-                                    className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all"
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                                                <User size={20} className="text-white" />
-                                            </div>
-                                            <div>
-                                                <h4 className="text-gray-900 font-bold">{student.name}</h4>
-                                                <p className="text-gray-600 text-sm">{student.email}</p>
-                                            </div>
-                                        </div>
-                                        <div className="text-left">
-                                            <p className="text-gray-600 text-xs">{student.plan?.name}</p>
-                                            <p className="text-purple-600 font-bold text-sm">
-                                                {student.plan?.sessions_remaining}/{student.plan?.total_sessions}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Upcoming Sessions */}
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <Calendar size={24} className="text-blue-600" />
-                            الحصص القادمة ({upcoming_sessions.length})
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {upcoming_sessions.slice(0, 5).map(session => (
-                                <div 
-                                    key={session.id} 
-                                    className="bg-blue-50 border border-blue-200 rounded-lg p-4"
-                                >
-                                    <div className="flex items-start justify-between mb-2">
-                                        <h4 className="text-gray-900 font-bold">{session.title}</h4>
-                                        <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                                            {session.status}
-                                        </span>
-                                    </div>
-                                    <div className="space-y-1 text-sm text-gray-600">
-                                        <p className="flex items-center gap-2">
-                                            <User size={14} />
-                                            {session.student_name}
-                                        </p>
-                                        <p className="flex items-center gap-2">
-                                            <BookOpen size={14} />
-                                            {session.subject_name}
-                                        </p>
-                                        <p className="flex items-center gap-2">
-                                            <Calendar size={14} />
-                                            {new Date(session.session_date).toLocaleDateString('ar-EG')}
-                                        </p>
-                                        <p className="flex items-center gap-2">
-                                            <Clock size={14} />
-                                            {session.start_time} - {session.end_time}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Recent Homework */}
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <ClipboardList size={24} className="text-orange-600" />
-                            الواجبات الحديثة ({recent_homework.length})
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {recent_homework.slice(0, 5).map(homework => (
-                                <div 
-                                    key={homework.id} 
-                                    className="bg-orange-50 border border-orange-200 rounded-lg p-4"
-                                >
-                                    <div className="flex items-start justify-between mb-2">
-                                        <h4 className="text-gray-900 font-bold">{homework.title}</h4>
-                                        <span className={`text-xs px-2 py-1 rounded-full ${
-                                            homework.status === 'pending' 
-                                                ? 'bg-yellow-100 text-yellow-700' 
-                                                : 'bg-green-100 text-green-700'
-                                        }`}>
-                                            {homework.status === 'pending' ? 'معلق' : 'مكتمل'}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 text-sm mb-2">{homework.description}</p>
-                                    <div className="flex items-center justify-between text-sm text-gray-600">
-                                        <span className="flex items-center gap-1">
-                                            <User size={14} />
-                                            {homework.student_name}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Calendar size={14} />
-                                            {new Date(homework.due_date).toLocaleDateString('ar-EG')}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Upcoming Exams */}
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <FileText size={24} className="text-red-600" />
-                            الامتحانات القادمة ({upcoming_exams.length})
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {upcoming_exams.map(exam => (
-                                <div 
-                                    key={exam.id} 
-                                    className="bg-red-50 border border-red-200 rounded-lg p-4"
-                                >
-                                    <div className="flex items-start justify-between mb-2">
-                                        <h4 className="text-gray-900 font-bold">{exam.title}</h4>
-                                        <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full">
-                                            {exam.status}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 text-sm mb-2">{exam.description}</p>
-                                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                                        <span className="flex items-center gap-1">
-                                            <BookOpen size={14} />
-                                            {exam.subject_name}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Award size={14} />
-                                            {exam.total_marks} درجة
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Calendar size={14} />
-                                            {new Date(exam.exam_date).toLocaleDateString('ar-EG')}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Clock size={14} />
-                                            {exam.start_time}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
+                {/* Salary */}
+                <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow p-5 sm:p-6 text-white">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4">الراتب والأرباح</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <SalaryItem label="إجمالي الساعات" value={salary.total_hours} />
+                    <SalaryItem
+                    label="إجمالي الأرباح"
+                    value={`${salary.total_earned} ${getCurrencySymbol(salary.currency)}`}
+                    />
+                    <SalaryItem
+                    label="المتبقي"
+                    value={`${salary.remaining} ${getCurrencySymbol(salary.currency)}`}
+                    />
                 </div>
-
+                </div>
             </div>
         </div>
     );
+}
+
+
+function StatCard({ icon: Icon, label, value }: any) {
+  return (
+    <div className="bg-gray-50 border rounded-lg p-4">
+      <div className="flex items-center gap-2 text-gray-600 text-sm">
+        <Icon size={16} />
+        <span>{label}</span>
+      </div>
+      <p className="text-2xl font-bold mt-1">{value}</p>
+    </div>
+  );
+}
+
+function SalaryItem({ label, value }: any) {
+  return (
+    <div>
+      <p className="text-green-100 text-sm">{label}</p>
+      <p className="text-2xl font-bold">{value}</p>
+    </div>
+  );
 }

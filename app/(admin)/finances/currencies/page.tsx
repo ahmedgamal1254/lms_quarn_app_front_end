@@ -160,7 +160,7 @@ export default function CurrenciesPage() {
             {/* Header */}
             <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-6">
-                    <div className="flex justify-between items-start">
+                    <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900">العملات</h1>
                             <div className="flex items-center gap-2 mt-2 text-gray-600">
@@ -183,7 +183,7 @@ export default function CurrenciesPage() {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="max-w-7xl mx-auto px-2 py-4 md:px-6 md:py-8">
                 {/* Search */}
                 <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-8">
                     <div className="relative">

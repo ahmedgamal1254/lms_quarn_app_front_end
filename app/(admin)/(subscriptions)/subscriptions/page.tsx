@@ -273,12 +273,7 @@ export default function SubscriptionsPage() {
         {/* Header */}
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
           <div className="px-6 py-4 flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
-            >
-              <Menu size={24} />
-            </button>
+            
             <div>
               <h1 className="text-2xl font-bold text-gray-900">الاشتراكات</h1>
               <p className="text-sm text-gray-500 mt-0.5">إدارة اشتراكات الطلاب والخطط</p>

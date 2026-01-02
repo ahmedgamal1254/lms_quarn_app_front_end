@@ -113,29 +113,24 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col md:flex-row bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
-          <div className="px-6 py-4 flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
-            >
-              <Menu size={24} />
-            </button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">تقويم الحصص</h1>
+          <div className="px-4 md:px-6 py-4 flex items-center justify-between">
+
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">تقويم الحصص</h1>
               <p className="text-sm text-gray-500 mt-1">إدارة وتتبع جميع الحصص الدراسية</p>
             </div>
-            <div></div>
+            <div className="hidden md:flex items-center space-x-4"></div>
           </div>
         </header>
 
         {/* Content */}
-        <div className="flex-1">
-          <div className="p-6 max-w-7xl mx-auto space-y-6">
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
             {isLoading ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin">
@@ -146,7 +141,8 @@ export default function CalendarPage() {
             ) : (
               <>
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {/** Card Template **/}
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
@@ -202,15 +198,15 @@ export default function CalendarPage() {
                   <div className="lg:col-span-2">
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                       {/* Calendar Header */}
-                      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-6">
-                        <div className="flex items-center justify-between mb-6">
+                      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 md:px-6 py-4 md:py-6">
+                        <div className="flex items-center justify-between mb-4 md:mb-6">
                           <button
                             onClick={() => setCurrentMonth(currentMonth.subtract(1, 'month'))}
                             className="p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
                           >
                             <ChevronLeft size={24} />
                           </button>
-                          <h2 className="text-2xl font-bold text-white">
+                          <h2 className="text-xl md:text-2xl font-bold text-white">
                             {arabicMonthNames[currentMonth.month()]} {currentMonth.year()}
                           </h2>
                           <button
@@ -222,9 +218,9 @@ export default function CalendarPage() {
                         </div>
 
                         {/* Day Names */}
-                        <div className="grid grid-cols-7 gap-2 text-center">
+                        <div className="grid grid-cols-7 gap-1 text-center">
                           {arabicDayNames.map((day, idx) => (
-                            <div key={day} className="text-sm font-semibold text-white/80 py-2">
+                            <div key={day} className="text-xs md:text-sm font-semibold text-white/80 py-1 md:py-2">
                               {day}
                             </div>
                           ))}
@@ -232,16 +228,11 @@ export default function CalendarPage() {
                       </div>
 
                       {/* Calendar Grid */}
-                      <div className="p-4 bg-gray-50">
-                        <div className="grid grid-cols-7 gap-3">
+                      <div className="p-2 md:p-4 bg-gray-50">
+                        <div className="grid grid-cols-7 gap-2">
                           {calendarDays.map((day, idx) => {
                             if (!day) {
-                              return (
-                                <div
-                                  key={`empty-${idx}`}
-                                  className="aspect-square rounded-lg"
-                                />
-                              );
+                              return <div key={`empty-${idx}`} className="aspect-square rounded-lg" />;
                             }
 
                             const dateStr = day.format('YYYY-MM-DD');
@@ -253,7 +244,7 @@ export default function CalendarPage() {
                               <button
                                 key={dateStr}
                                 onClick={() => setSelectedDate(day)}
-                                className={`aspect-square rounded-lg border-2 p-2 transition-all flex flex-col items-center justify-center text-center hover:shadow-lg active:scale-95 ${
+                                className={`aspect-square rounded-lg border-2 p-1 md:p-2 transition-all flex flex-col items-center justify-center text-center hover:shadow-lg active:scale-95 ${
                                   isSelected
                                     ? 'bg-blue-600 border-blue-700 text-white shadow-lg'
                                     : isToday
@@ -263,11 +254,11 @@ export default function CalendarPage() {
                                     : 'bg-white border-gray-200 text-gray-900 hover:border-gray-300'
                                 }`}
                               >
-                                <div className={`text-sm font-bold ${isToday && !isSelected ? 'text-blue-600' : ''}`}>
+                                <div className={`text-xs md:text-sm font-bold ${isToday && !isSelected ? 'text-blue-600' : ''}`}>
                                   {day.date()}
                                 </div>
                                 {daySessionCount > 0 && (
-                                  <div className={`text-xs font-bold mt-1 px-2 py-0.5 rounded-full ${
+                                  <div className={`text-[10px] md:text-xs font-bold mt-1 px-2 py-0.5 rounded-full ${
                                     isSelected 
                                       ? 'bg-blue-500 text-white' 
                                       : 'bg-blue-600/20 text-blue-700'
@@ -275,9 +266,7 @@ export default function CalendarPage() {
                                     {daySessionCount}
                                   </div>
                                 )}
-                                {isToday && !isSelected && (
-                                  <div className="w-1 h-1 rounded-full bg-blue-600 mt-1"></div>
-                                )}
+                                {isToday && !isSelected && <div className="w-1 h-1 rounded-full bg-blue-600 mt-1"></div>}
                               </button>
                             );
                           })}
@@ -290,67 +279,53 @@ export default function CalendarPage() {
                   <div className="lg:col-span-1 space-y-6">
                     {/* Selected Date Sessions */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                      <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4">
-                        <h3 className="text-lg font-bold text-white">
-                          {selectedDate.format('dddd')}
-                        </h3>
-                        <p className="text-indigo-100 text-sm mt-1">
-                          {selectedDate.format('DD MMMM YYYY')}
-                        </p>
+                      <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-4 md:px-6 py-3 md:py-4">
+                        <h3 className="text-sm md:text-lg font-bold text-white">{selectedDate.format('dddd')}</h3>
+                        <p className="text-indigo-100 text-xs md:text-sm mt-1">{selectedDate.format('DD MMMM YYYY')}</p>
                       </div>
 
-                      <div className="px-6 py-4">
-                        <p className="text-sm text-gray-600 font-medium mb-4">
-                          {sessionsForSelectedDate.length} حصة
-                        </p>
-
-                        <div className="max-h-96 overflow-y-auto space-y-3">
+                      <div className="px-4 md:px-6 py-4">
+                        <p className="text-sm text-gray-600 font-medium mb-4">{sessionsForSelectedDate.length} حصة</p>
+                        <div className="max-h-72 md:max-h-96 overflow-y-auto space-y-3">
                           {sessionsForSelectedDate.length > 0 ? (
                             sessionsForSelectedDate.map((session) => {
                               const statusStyle = getStatusColor(session.status);
                               return (
-                                <div
-                                  key={session.id}
-                                  className={`p-4 rounded-lg border-2 ${statusStyle.bg} ${statusStyle.border} hover:shadow-md transition-shadow`}
-                                >
-                                  <div className="flex items-start justify-between mb-3">
-                                    <h4 className={`font-bold text-sm leading-tight flex-1 ${statusStyle.text}`}>
+                                <div key={session.id} className={`p-3 md:p-4 rounded-lg border-2 ${statusStyle.bg} ${statusStyle.border} hover:shadow-md transition-shadow`}>
+                                  <div className="flex items-start justify-between mb-2 md:mb-3">
+                                    <h4 className={`font-bold text-xs md:text-sm leading-tight flex-1 ${statusStyle.text}`}>
                                       {session.title}
                                     </h4>
-                                    <span className={`text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap ml-2 ${statusStyle.light} ${statusStyle.text}`}>
+                                    <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap ml-2 ${statusStyle.light} ${statusStyle.text}`}>
                                       {getStatusText(session.status)}
                                     </span>
                                   </div>
 
-                                  <div className={`space-y-2 text-xs ${statusStyle.text}`}>
-                                    <div className="flex items-center gap-2">
-                                      <Clock size={14} className="flex-shrink-0" />
-                                      <span className="font-medium">{session.start_time} - {session.end_time}</span>
+                                  <div className={`space-y-1 md:space-y-2 text-[10px] md:text-xs ${statusStyle.text}`}>
+                                    <div className="flex items-center gap-1 md:gap-2">
+                                      <Clock size={12} className="flex-shrink-0" />
+                                      <span className="font-medium text-[10px] md:text-xs">{session.start_time} - {session.end_time}</span>
                                     </div>
-
-                                    <div className="flex items-center gap-2">
-                                      <User size={14} className="flex-shrink-0" />
-                                      <span>{session.student_name}</span>
+                                    <div className="flex items-center gap-1 md:gap-2">
+                                      <User size={12} className="flex-shrink-0" />
+                                      <span className="text-[10px] md:text-xs">{session.student_name}</span>
                                     </div>
-
-                                    <div className="flex items-center gap-2">
-                                      <User size={14} className="flex-shrink-0" />
-                                      <span>{session.teacher_name}</span>
+                                    <div className="flex items-center gap-1 md:gap-2">
+                                      <User size={12} className="flex-shrink-0" />
+                                      <span className="text-[10px] md:text-xs">{session.teacher_name}</span>
                                     </div>
-
-                                    <div className="flex items-center gap-2">
-                                      <BookOpen size={14} className="flex-shrink-0" />
-                                      <span>{session.subject_name}</span>
+                                    <div className="flex items-center gap-1 md:gap-2">
+                                      <BookOpen size={12} className="flex-shrink-0" />
+                                      <span className="text-[10px] md:text-xs">{session.subject_name}</span>
                                     </div>
-
                                     {session.meeting_link && (
-                                      <div className="flex items-center gap-2">
-                                        <MapPin size={14} className="flex-shrink-0" />
-                                        <a 
-                                          href={session.meeting_link} 
-                                          target="_blank" 
+                                      <div className="flex items-center gap-1 md:gap-2">
+                                        <MapPin size={12} className="flex-shrink-0" />
+                                        <a
+                                          href={session.meeting_link}
+                                          target="_blank"
                                           rel="noopener noreferrer"
-                                          className="underline hover:no-underline truncate"
+                                          className="underline hover:no-underline truncate text-[10px] md:text-xs"
                                         >
                                           رابط الاجتماع
                                         </a>
@@ -358,7 +333,7 @@ export default function CalendarPage() {
                                     )}
                                   </div>
 
-                                  <div className={`text-xs mt-3 pt-2 border-t border-current opacity-60 ${statusStyle.text}`}>
+                                  <div className={`text-[10px] md:text-xs mt-2 pt-2 border-t border-current opacity-60 ${statusStyle.text}`}>
                                     المدة: {session.duration_minutes} دقيقة
                                   </div>
                                 </div>
@@ -367,7 +342,7 @@ export default function CalendarPage() {
                           ) : (
                             <div className="text-center py-8 text-gray-400">
                               <Calendar size={32} className="mx-auto mb-3 opacity-30" />
-                              <p className="text-sm">لا توجد حصص في هذا اليوم</p>
+                              <p className="text-sm md:text-base">لا توجد حصص في هذا اليوم</p>
                             </div>
                           )}
                         </div>
@@ -377,22 +352,20 @@ export default function CalendarPage() {
                     {/* Today's Sessions */}
                     {todaySessions.length > 0 && !selectedDate.isSame(dayjs(), 'day') && (
                       <div className="bg-white rounded-xl border border-amber-200 bg-amber-50 shadow-sm overflow-hidden">
-                        <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4">
-                          <h3 className="text-base font-bold text-white">اليوم</h3>
-                          <p className="text-amber-100 text-xs mt-1">
-                            {dayjs().format('DD MMMM YYYY')}
-                          </p>
+                        <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-4 md:px-6 py-2 md:py-4">
+                          <h3 className="text-sm md:text-base font-bold text-white">اليوم</h3>
+                          <p className="text-amber-100 text-xs md:text-sm mt-1">{dayjs().format('DD MMMM YYYY')}</p>
                         </div>
 
-                        <div className="px-6 py-4 max-h-48 overflow-y-auto space-y-2">
+                        <div className="px-4 md:px-6 py-3 md:py-4 max-h-40 md:max-h-48 overflow-y-auto space-y-2">
                           {todaySessions.slice(0, 3).map((session) => (
-                            <div key={session.id} className="text-sm">
+                            <div key={session.id} className="text-xs md:text-sm">
                               <p className="font-semibold text-amber-900">{session.start_time}</p>
-                              <p className="text-amber-700 text-xs">{session.title}</p>
+                              <p className="text-amber-700 truncate">{session.title}</p>
                             </div>
                           ))}
                           {todaySessions.length > 3 && (
-                            <p className="text-xs text-amber-700 text-center pt-2">
+                            <p className="text-xs md:text-sm text-amber-700 text-center pt-2">
                               و {todaySessions.length - 3} حصص أخرى
                             </p>
                           )}
@@ -406,14 +379,7 @@ export default function CalendarPage() {
           </div>
         </div>
       </main>
-
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-30"
-          onClick={() => setSidebarOpen(false)}
-        ></div>
-      )}
     </div>
+
   );
 }

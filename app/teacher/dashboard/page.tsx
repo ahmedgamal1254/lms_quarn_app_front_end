@@ -188,7 +188,7 @@ export default function TeacherDashboard() {
           <DollarSign className="w-6 h-6 mr-2" />
           <h2 className="text-2xl font-bold">النظام المحاسبي</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-4">
           <div>
             <p className="text-blue-100 text-sm mb-1">إجمالي الساعات</p>
             <p className="text-2xl font-bold">{salary.total_hours || 0}</p>
