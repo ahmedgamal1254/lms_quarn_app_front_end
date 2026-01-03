@@ -279,7 +279,7 @@ export default function TeacherPage() {
                     <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
                         <DollarSign className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-bold text-gray-800">النظام المحاسبي</h2>
+                    <h2 className="text-xl font-bold text-gray-800">تفاصيل الأرباح</h2>
                     </div>
                 </div>
 

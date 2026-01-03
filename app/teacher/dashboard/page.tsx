@@ -19,10 +19,15 @@ interface TeacherData {
     };
     salary: {
       total_hours: number;
-      hourly_rate: string;
+      hourly_rate: number;          // رقم مش string
       currency: string;
-      total_earned: number;
-      remaining: number;
+
+      total_earned: number;         // إجمالي الأرباح
+      paid_amount: number;          // أرباح تم صرفها
+      pending_amount: number;       // أرباح معلّقة
+
+      available_balance: number;    // رصيد متاح للسحب
+      pending_withdraw: number;   
     };
     upcoming_sessions: Array<{
       id: number;
@@ -191,7 +196,7 @@ export default function TeacherDashboard() {
             <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
               <DollarSign className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800">النظام المحاسبي</h2>
+            <h2 className="text-xl font-bold text-gray-800">تفاصيل الأرباح</h2>
           </div>
         </div>
 

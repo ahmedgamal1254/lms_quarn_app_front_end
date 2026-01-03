@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 import { Calendar, Clock, User, BookOpen, Video, FileText, Save, X, Edit } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useParams } from 'next/navigation';
 
 type SessionStatus = 'scheduled' | 'completed' | 'cancelled' | 'missed';
 
@@ -68,7 +70,11 @@ interface SessionPageProps {
   sessionId?: string;
 }
 
-export default function SessionPage({ sessionId = '5' }: SessionPageProps) {
+export default function SessionPage() {
+
+  const param=useParams();
+  const sessionId = param.id;
+
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<UpdateSessionData>({
@@ -96,6 +102,9 @@ export default function SessionPage({ sessionId = '5' }: SessionPageProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['session', sessionId] });
+      queryClient.invalidateQueries({ queryKey: ['teacher-dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['teacher-sessions'] });
+      toast.success('تم التحديث بنجاح');
       setIsModalOpen(false);
     }
   });

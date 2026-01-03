@@ -18,7 +18,10 @@ import {
   Wallet,
   LogOut,
   User,
-  File
+  File,
+  WalletIcon,
+  WalletMinimalIcon,
+  WalletCardsIcon
 } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
@@ -70,8 +73,15 @@ const adminMenuGroups = [
       {title:"الخطط",href:"/plans",icon:CreditCard},
       {title:"طلبات الاشتراك",href:"/subscription-requests",icon:CreditCard}
     ]
+  },
+  {
+    title: 'الطلبات',
+    icon: WalletIcon,
+    items: [
+      { title: 'طلبات السحب', href: '/orders/withdraw', icon: CreditCard },
+      { title: 'طلبات الأيداع', href: '/orders/deposit', icon: WalletCardsIcon },
+    ]
   }
-
   ,{
     title: 'الإعدادات',
     icon: Settings,
