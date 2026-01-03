@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 import { CheckCircle, XCircle, Clock, User, Calendar, DollarSign, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Subject {
     id: number;
@@ -79,6 +80,7 @@ export default function DepositPage() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['deposit-requests'] });
+            toast.success('تم تصديق الطلب بنجاح');
             setShowApproveModal(false);
             setApproveReason('');
             setSelectedRequest(null);
@@ -94,6 +96,7 @@ export default function DepositPage() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['deposit-requests'] });
+            toast.error('تم رفض الطلب بنجاح');
             setShowRejectModal(false);
             setRejectReason('');
             setSelectedRequest(null);

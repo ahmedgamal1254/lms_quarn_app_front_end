@@ -199,7 +199,9 @@ export default function TeacherPage() {
 
                         {/* Avatar & Info */}
                         <div className="flex items-center gap-4 sm:gap-6 flex-1">
-                            <div className="hidden sm:block w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow">
+                            <div className="hidden sm:flex w-20 h-20 sm:w-24 sm:h-24 
+                            bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center
+                             justify-center shadow">
                                 <GraduationCap size={40} className="text-white" />
                             </div>
 
