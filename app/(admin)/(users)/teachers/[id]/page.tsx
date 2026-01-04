@@ -391,7 +391,7 @@ export default function TeacherPage() {
                                     {student.name}
                                     </h3>
                                     <div className="flex flex-col gap-1 text-sm text-gray-600 mt-2">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 break-all">
                                         <Mail className="w-4 h-4" />
                                         {student.email}
                                     </div>
