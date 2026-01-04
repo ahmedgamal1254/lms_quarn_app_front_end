@@ -89,10 +89,10 @@ export default function StudentExamsPage() {
     }
   };
 
-  const calculatePercentage = (studentMarks: number, totalMarks: number) => {
-    if (!studentMarks || !totalMarks) return null;
-    return Math.round((studentMarks / totalMarks) * 100);
-  };
+const calculatePercentage = (studentMarks: number, totalMarks: number): number => {
+  if (!totalMarks) return 0;
+  return Math.round((studentMarks / totalMarks) * 100);
+};
 
   const getGradeColor = (percentage: number | null) => {
     if (!percentage) return 'text-gray-600';
@@ -105,10 +105,12 @@ export default function StudentExamsPage() {
     const gradedExams = exams.filter((e: any) => e.student_marks !== null && e.student_marks !== undefined);
     if (gradedExams.length === 0) return 0;
 
-    const totalPercentage = gradedExams?.reduce(
-      (acc: number, e: any) => acc + calculatePercentage(e.student_marks, e.total_marks),
-    0
-    ) ?? 0;
+    const totalPercentage =
+      (gradedExams ?? []).reduce(
+        (acc: number, e: any) =>
+          acc + calculatePercentage(e.student_marks, e.total_marks),
+        0
+      );
 
     return Math.round(totalPercentage / gradedExams.length);
   };

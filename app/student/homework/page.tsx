@@ -55,28 +55,32 @@ export default function Page() {
     );
   });
 
-  const getStatusInfo = (status: string) => {
-    const statusConfigs = {
-      pending: {
-        color: 'bg-amber-100 text-amber-700',
-        bgColor: 'bg-amber-50',
-        borderColor: 'border-amber-200',
-        text: 'معلقة',
-      },
-      submitted: {
-        color: 'bg-blue-100 text-blue-700',
-        bgColor: 'bg-blue-50',
-        borderColor: 'border-blue-200',
-        text: 'مسلّمة',
-      },
-      graded: {
-        color: 'bg-green-100 text-green-700',
-        bgColor: 'bg-green-50',
-        borderColor: 'border-green-200',
-        text: 'مُقيّمة',
-      },
-    };
-    return statusConfigs[status] || statusConfigs.pending;
+  
+  type Status = keyof typeof statusConfigs;
+
+  const statusConfigs = {
+    pending: {
+      color: 'bg-amber-100 text-amber-700',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-200',
+      text: 'معلقة',
+    },
+    submitted: {
+      color: 'bg-blue-100 text-blue-700',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200',
+      text: 'مسلّمة',
+    },
+    graded: {
+      color: 'bg-green-100 text-green-700',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200',
+      text: 'مُقيّمة',
+    },
+  } as const;
+
+  const getStatusInfo = (status: Status) => {
+    return statusConfigs[status];
   };
 
   const isOverdue = (dueDate: string) => {

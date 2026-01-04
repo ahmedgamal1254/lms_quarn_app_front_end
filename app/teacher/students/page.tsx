@@ -14,6 +14,7 @@ interface Plan {
   sessions_used: number;
   start_date: string;
   end_date: string;
+  total_sessions: number;
 }
 
 interface Student {

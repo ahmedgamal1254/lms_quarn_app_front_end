@@ -5,66 +5,69 @@ import { Users, Calendar, CheckCircle, Clock, DollarSign, BookOpen, FileText } f
 import Link from 'next/link';
 import axiosInstance from '@/lib/axios';
 
+interface Session{
+  id: number;
+  title: string;
+  session_date: string;
+  start_time: string;
+  end_time: string;
+  duration_minutes: number;
+  status: string;
+  meeting_link: string;
+  student_name: string;
+  subject_name: string;
+}
+
+interface Homework{
+   id: number;
+    title: string;
+    description: string;
+    due_date: string;
+    status: string;
+    grade: string | null;
+    student_name: string;
+}
+
+interface Exam{
+      id: number;
+    title: string;
+    description: string;
+    exam_date: string;
+    start_time: string;
+    total_marks: string;
+    status: string;
+    subject_name: string;
+}
+
 interface TeacherData {
-  success: boolean;
-  data: {
-    teacher: {
-      name: string;
-    };
-    statistics: {
-      students_count: number;
-      sessions_today: number;
-      sessions_completed: number;
-      sessions_upcoming: number;
-    };
-    salary: {
-      total_hours: number;
-      hourly_rate: number;          // رقم مش string
-      currency: string;
-
-      total_earned: number;         // إجمالي الأرباح
-      paid_amount: number;          // أرباح تم صرفها
-      pending_amount: number;       // أرباح معلّقة
-
-      available_balance: number;    // رصيد متاح للسحب
-      pending_withdraw: number;   
-    };
-    upcoming_sessions: Array<{
-      id: number;
-      title: string;
-      session_date: string;
-      start_time: string;
-      end_time: string;
-      duration_minutes: number;
-      status: string;
-      meeting_link: string;
-      student_name: string;
-      subject_name: string;
-    }>;
-    recent_homework: Array<{
-      id: number;
-      title: string;
-      description: string;
-      due_date: string;
-      status: string;
-      grade: string | null;
-      student_name: string;
-    }>;
-    upcoming_exams: Array<{
-      id: number;
-      title: string;
-      description: string;
-      exam_date: string;
-      start_time: string;
-      total_marks: string;
-      status: string;
-      subject_name: string;
-    }>;
+  teacher: {
+    name: string;
   };
+  statistics: {
+    students_count: number;
+    sessions_today: number;
+    sessions_completed: number;
+    sessions_upcoming: number;
+  };
+  salary: {
+    total_hours: number;
+    hourly_rate: number;          // رقم مش string
+    currency: string;
+
+    total_earned: number;         // إجمالي الأرباح
+    paid_amount: number;          // أرباح تم صرفها
+    pending_amount: number;       // أرباح معلّقة
+
+    available_balance: number;    // رصيد متاح للسحب
+    pending_withdraw: number;   
+  };
+  upcoming_sessions: Session[];
+  recent_homework: Homework[];
+  upcoming_exams: Exam[];
 }
 
 export default function TeacherDashboard() {
-  const { data, isLoading, error } = useQuery<TeacherData>({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: async () => {
       const response = await axiosInstance.get('/teacher/dashboard?teacher_id=1');
@@ -284,7 +287,7 @@ export default function TeacherDashboard() {
               </div>
             ) : (
               <div className="space-y-4">
-                {upcomingSessions.map((session) => (
+                {upcomingSessions.map((session: Session) => (
                   <div key={session.id} className="border border-gray-200 rounded-lg p-4 hover:border-purple-300 transition">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-semibold text-gray-900">{session.title || 'بدون عنوان'}</h3>
@@ -325,7 +328,7 @@ export default function TeacherDashboard() {
               </div>
             ) : (
               <div className="space-y-3">
-                {recentHomework.map((hw) => (
+                {recentHomework.map((hw: Homework) => (
                   <div key={hw.id} className="border border-gray-200 rounded p-3 hover:border-blue-300 transition">
                     <div className="flex items-start justify-between mb-1">
                       <h4 className="font-semibold text-sm text-gray-900">{hw.title || 'بدون عنوان'}</h4>
@@ -360,7 +363,7 @@ export default function TeacherDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {upcomingExams.map((exam) => (
+            {upcomingExams.map((exam: Exam) => (
               <div key={exam.id} className="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition">
                 <h3 className="font-semibold text-gray-900 mb-2">{exam.title || 'بدون عنوان'}</h3>
                 <p className="text-sm text-gray-600 mb-3">{exam.description || 'بدون وصف'}</p>

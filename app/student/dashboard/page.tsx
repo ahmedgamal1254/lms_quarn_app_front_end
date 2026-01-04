@@ -17,16 +17,61 @@ import {
 import axios from 'axios';
 import axiosInstance from '@/lib/axios';
 
+interface Session{
+  id: number;
+  subject_name: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  title: string;
+  session_date: string;
+  duration_minutes: number;
+  meeting_link: string;
+  status: string
+}
+
+interface pending_homework{
+  id: number;
+  description: string;
+  due_date: string;
+  grade: string;
+  subject_name: string;
+  date: string;
+  title: string;
+  status: string
+}
+
 interface DashboardData {
-  totalStudents: number;
-  totalTeachers: number;
-  totalSessions: number;
-  totalExams: number;
-  totalHomeworks: number;
+  student: {
+    name: string;
+  },
+  teacher:{
+    name: string;
+    email: string;
+    phone: string;
+    subject_name: string;
+  },
+  subscription:{
+    plan_name: string;
+    price: number;
+    currency: string;
+    sessions_remaining: number;
+    status: string;
+    sessions_used: number;
+    sessions_total: number;
+  },
+  statistics:{
+    sessions_today: number;
+    sessions_completed: number;
+    sessions_upcoming: number;
+    sessions_total: number;
+  },
+  upcoming_sessions:Session[]
+  pending_homework:pending_homework[]
 }
 
 export default function StudentDashboard() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -284,7 +329,7 @@ export default function StudentDashboard() {
 
 /* ================= Components ================= */
 
-function StatCard({ title, value, icon, color }) {
+function StatCard({ title, value, icon, color }: any) {
   return (
     <div className={`${color} rounded-xl shadow-md p-5 border border-gray-100 hover:shadow-lg transition-shadow`}>
       <div className="flex items-center justify-between mb-3">
@@ -296,7 +341,7 @@ function StatCard({ title, value, icon, color }) {
   );
 }
 
-function Section({ title, children }) {
+function Section({ title, children }: any) {
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-5 flex items-center gap-2">

@@ -22,7 +22,7 @@ import axiosInstance from '@/lib/axios';
 
 
 // Fetch sessions
-const fetchSessions = async (params) => {
+const fetchSessions = async (params: any) => {
   const response = await axiosInstance.get('/student/sessions', {
     params,
   });
@@ -31,26 +31,29 @@ const fetchSessions = async (params) => {
 
 // Fetch single session
 const fetchSessionDetails = async (id: number) => {
+  if (!id) return null;
   const response = await axiosInstance.get(`/student/sessions/${id}`);
   return response.data.data;
 };
 
+interface Session{
+  id: number | null;
+  notes: string | null;
+  meeting_link: string | null;
+  title: string | null;
+  description: string | null;
+  dateString: string | null;
+  session_date: string | null;
+  start_time: string | null;
+  end_time: string | null;
+  duration_minutes: number | null;
+  status: string | null;
+  subject: { name: string } | null;
+  teacher: { name: string; email?: string; phone?: string } | null;
+};
+
 export default function StudentSessionsPage() {
-  const [selectedSession, setSelectedSession] = useState<{
-    id: number | null;
-    notes: string | null;
-    meeting_link: string | null;
-    title: string | null;
-    description: string | null;
-    dateString: string | null;
-    session_date: string | null;
-    start_time: string | null;
-    end_time: string | null;
-    duration_minutes: number | null;
-    status: string | null;
-    subject: { name: string } | null;
-    teacher: { name: string; email?: string; phone?: string } | null;
-  }>(null);
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
@@ -73,7 +76,7 @@ export default function StudentSessionsPage() {
   // Fetch selected session details
   const { data: sessionDetails } = useQuery({
     queryKey: ['session', selectedSession?.id],
-    queryFn: () => fetchSessionDetails(selectedSession?.id),
+    queryFn: () => fetchSessionDetails(selectedSession?.id as number),
     enabled: !!selectedSession?.id,
     staleTime: 5 * 60 * 1000,
   });
@@ -106,7 +109,8 @@ export default function StudentSessionsPage() {
     return { isUpcoming, statusColor, statusText };
   };
 
-  const formatTime = (dateString: string) => {
+  const formatTime = (dateString: string | null) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleTimeString('ar-SA', {
       hour: '2-digit',
@@ -379,7 +383,7 @@ export default function StudentSessionsPage() {
                 <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-100">
                   <p className="text-indigo-600 text-sm font-semibold mb-1">التاريخ</p>
                   <p className="text-gray-900 font-bold text-sm">
-                    {formatDate(selectedSession.session_date)}
+                    {formatDate(selectedSession.session_date as string)}
                   </p>
                 </div>
 
