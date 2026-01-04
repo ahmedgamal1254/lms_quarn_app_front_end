@@ -8,6 +8,7 @@ import {
     FileText, Award
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 interface Teacher {
     id: number;
@@ -121,6 +122,25 @@ const getCurrencySymbol = (currencyCode: string): string => {
     return currencyMap[currencyCode] || currencyCode;
 };
 
+ const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const getColorForInitials = (id: number) => {
+    const colors = [
+      'bg-gradient-to-br from-blue-500 to-purple-600',
+      'bg-gradient-to-br from-green-500 to-emerald-600',
+      'bg-gradient-to-br from-pink-500 to-rose-600',
+      'bg-gradient-to-br from-orange-500 to-red-600',
+      'bg-gradient-to-br from-cyan-500 to-blue-600',
+    ];
+    return colors[id % colors.length];
+  };
 export default function TeacherPage() {
     const params = useParams();
     const id = params.id as string;
@@ -347,10 +367,101 @@ export default function TeacherPage() {
                 </div>
                 </div>
 
-            </div>
-        </div>
-    );
-}
+                {/* teacher */}
+                <div className="mb-4">
+                    <h2 className="text-2xl font-bold text-gray-800">طلابى</h2>
+                </div>
+                {students.map((student) => (
+                            <div
+                            key={student.id}
+                            className="bg-white rounded-lg shadow-md mb-4 hover:shadow-md transition-shadow p-6"
+                            >
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 order-1 md:order-3 w-full md:w-auto">
+                                {/* Right Side - Avatar & Name */}
+                                <div className="flex items-center gap-4 order-2 md:order-1">
+                                <div
+                                    className={`${getColorForInitials(
+                                    student.id
+                                    )} text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0`}
+                                >
+                                    {getInitials(student.name)}
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900">
+                                    {student.name}
+                                    </h3>
+                                    <div className="flex flex-col gap-1 text-sm text-gray-600 mt-2">
+                                    <div className="flex items-center gap-2">
+                                        <Mail className="w-4 h-4" />
+                                        {student.email}
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Phone className="w-4 h-4" />
+                                        {student.phone}
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                {/* Middle - Status Cards */}
+                                <div className="grid grid-cols-2 gap-3 order-1 md:order-3 w-full md:w-auto">
+                                {/* Plan Name */}
+                                <div className="text-center">
+                                    <p className="text-xs text-gray-600 mb-2">الخطة</p>
+                                    <p className="font-bold text-gray-900 text-sm">
+                                    {student.plan?.name || 'بدون'}
+                                    </p>
+                                </div>
+
+                                {/* Status */}
+                                <div className="text-center">
+                                    <p className="text-xs text-gray-600 mb-2">الحالة</p>
+                                    <span
+                                    className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded ${
+                                        student.status === 'active'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-gray-100 text-gray-700'
+                                    }`}
+                                    >
+                                    {student.status === 'active' ? (
+                                        <>
+                                        <CheckCircle className="w-3 h-3" />
+                                        نشط
+                                        </>
+                                    ) : (
+                                        <>
+                                        <Clock className="w-3 h-3" />
+                                        {student.status}
+                                        </>
+                                    )}
+                                    </span>
+                                </div>
+
+                                {/* Remaining */}
+                                <div className="text-center bg-blue-50 rounded-lg p-2">
+                                    <p className="text-xs text-blue-600 mb-1">المتبقي</p>
+                                    <p className="font-bold text-blue-700 text-lg">
+                                    {student.plan?.sessions_remaining || 0}
+                                    </p>
+                                </div>
+
+                                {/* Used */}
+                                <div className="text-center bg-orange-50 rounded-lg p-2">
+                                    <p className="text-xs text-orange-600 mb-1">المستخدم</p>
+                                    <p className="font-bold text-orange-700 text-lg">
+                                    {student.plan?.sessions_used || 0}
+                                    </p>
+                                </div>
+                                </div>
+
+                                
+                            </div>
+                            </div>
+                        ))}
+                            </div>
+                        </div>
+                    );
+                }
 
 
 function StatCard({ icon: Icon, label, value }: any) {

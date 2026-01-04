@@ -68,6 +68,12 @@ interface StudentData {
     plan_name: string;
     plan_price: string;
     plan_currency: string;
+    teacher: {
+        name: string;
+        email: string;
+        phone: string;
+        subject_name: string;
+    }
     join_date: string;
 }
 
@@ -194,6 +200,8 @@ export default function StudentPage() {
                                 </button>
                             </div>
                         </div>
+                        
+                        
 
                         {/* Plan & Teacher Info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -296,6 +304,40 @@ export default function StudentPage() {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* Teacher Info Card */}
+                <div className='p-2 md:p-6'>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">معلومات المعلم</h2>
+                    {studentData.teacher && (
+                    <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 hover:shadow-xl transition-shadow">
+                        <div className="flex items-start justify-between flex-wrap gap-4">
+                            <div className="flex items-center gap-4">
+                            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
+                                <User className="w-8 h-8 text-white" />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">{studentData.teacher?.name}</h2>
+                                <p className="text-indigo-600 font-semibold text-sm mt-1">{studentData.teacher?.subject_name}</p>
+                            </div>
+                            </div>
+                            <div className="flex gap-6 flex-wrap">
+                            {studentData.teacher?.email && (
+                                <div className="flex items-center gap-2 text-gray-700">
+                                <Mail className="w-5 h-5 text-indigo-600" />
+                                <span className="text-sm">{studentData.teacher.email}</span>
+                                </div>
+                            )}
+                            {studentData.teacher?.phone && (
+                                <div className="flex items-center gap-2 text-gray-700">
+                                <Phone className="w-5 h-5 text-indigo-600" />
+                                <span className="text-sm">{studentData.teacher.phone}</span>
+                                </div>
+                            )}
+                            </div>
+                        </div>
+                    </div>
+                    )}
                 </div>
 
                 {/* Parents Section */}
