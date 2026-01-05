@@ -29,7 +29,7 @@ interface Wallet {
     owner: Teacher;
 }
 
-interface DepositRequest {
+interface WithdrawRequest {
     id: number;
     wallet_id: number;
     amount: string;
@@ -45,18 +45,16 @@ interface DepositRequest {
     wallet: Wallet;
 }
 
-interface DepositResponse {
+interface WithdrawResponse {
     success: boolean;
-    data: {
-        deposit_requests: DepositRequest[];
-        current_page: number;
-        per_page: number;
-        last_page: number;
-        total: number;
-    };
+    data: WithdrawRequest[];
+    total: number;
+    current_page: number;
+    per_page: number;
+    last_page: number;
 }
 
-export default function DepositPage() {
+export default function page() {
     const [page, setPage] = useState(1);
     const [per_page, setPerPage] = useState(10);
     const queryClient = useQueryClient();
@@ -67,45 +65,51 @@ export default function DepositPage() {
     const [showRejectModal, setShowRejectModal] = useState(false);
 
     const { data, isLoading, error } = useQuery({
-        queryKey: ['deposit-requests', page, per_page],
+        queryKey: ['withdraw-requests'],
         queryFn: async () => {
             const params = new URLSearchParams();
             params.append('page', page.toString());
             params.append('per_page', per_page.toString());
-            const { data } = await axiosInstance.get<DepositResponse>('/deposit-requests', { params });
-            return data.data;
+            const { data } = await axiosInstance.get<WithdrawResponse>('/withdraw-requests', { params });
+            return data;
         },
     });
 
     const approveMutation = useMutation({
         mutationFn: async ({ id, reason }: { id: number; reason: string }) => {
-            const { data } = await axiosInstance.post(`/deposit-requests/${id}/approve`, {
+            const { data } = await axiosInstance.post(`/withdraw-requests/${id}/approve`, {
                 approve_reason: reason,
             });
             return data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['deposit-requests'] });
+            queryClient.invalidateQueries({ queryKey: ['withdraw-requests'] });
             toast.success('تم تصديق الطلب بنجاح');
             setShowApproveModal(false);
             setApproveReason('');
             setSelectedRequest(null);
         },
+        onError: () => {
+            toast.error('حدث خطأ أثناء الموافقة على الطلب');
+        },
     });
 
     const rejectMutation = useMutation({
         mutationFn: async ({ id, reason }: { id: number; reason: string }) => {
-            const { data } = await axiosInstance.post(`/deposit-requests/${id}/reject`, {
+            const { data } = await axiosInstance.post(`/withdraw-requests/${id}/reject`, {
                 reject_reason: reason,
             });
             return data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['deposit-requests'] });
+            queryClient.invalidateQueries({ queryKey: ['withdraw-requests', page, per_page] });
             toast.error('تم رفض الطلب بنجاح');
             setShowRejectModal(false);
             setRejectReason('');
             setSelectedRequest(null);
+        },
+        onError: () => {
+            toast.error('حدث خطأ أثناء رفض الطلب');
         },
     });
 
@@ -161,8 +165,8 @@ export default function DepositPage() {
         <div className="min-h-screen bg-gray-50 p-6" dir="rtl">
             <div className="max-w-7xl mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">طلبات الإيداع</h1>
-                    <p className="text-gray-600 mt-2">إدارة طلبات إيداع المعلمين</p>
+                    <h1 className="text-3xl font-bold text-gray-900">طلبات السحب</h1>
+                    <p className="text-gray-600 mt-2">إدارة طلبات سحب المعلمين</p>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-4">
@@ -180,7 +184,7 @@ export default function DepositPage() {
                 </div>
 
                 <div className="space-y-4">
-                    {data?.deposit_requests.map((request) => (
+                    {data?.data.map((request) => (
                         <div key={request.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
@@ -202,7 +206,7 @@ export default function DepositPage() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div>
                                         <p className="text-xs text-gray-600 mb-1">المبلغ</p>
-                                        <p className="text-lg font-bold text-green-600">{request.amount} {request.currency}</p>
+                                        <p className="text-lg font-bold text-red-600">{request.amount} {request.currency}</p>
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-600 mb-1">الرصيد قبل</p>
@@ -251,20 +255,21 @@ export default function DepositPage() {
                         </div>
                     ))}
 
-                    {data?.deposit_requests.length === 0 && (
+                    {data?.data.length === 0 && (
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
                             <DollarSign className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-600">لا توجد طلبات إيداع</p>
+                            <p className="text-gray-600">لا توجد طلبات سحب</p>
                         </div>
                     )}
 
+                    {/* pagination */}
                     {
-                        (data?.deposit_requests?.length ?? 0) > 0 && (
-                            <Pagination 
-                                currentPage={page || 1}
-                                lastPage={data?.last_page || 1}
-                                onPageChange={(page) => setPage(page)}
-                                total={data?.total || 0}
+                        (data?.data.length ?? 0) > 0 && (
+                            <Pagination
+                                currentPage={page}
+                                total={data?.total ?? 0}
+                                lastPage={data?.last_page ?? 0}    
+                                onPageChange={()=>setPage(page)}    
                             />
                         )
                     }

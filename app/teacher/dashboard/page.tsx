@@ -1,9 +1,13 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Users, Calendar, CheckCircle, Clock, DollarSign, BookOpen, FileText } from 'lucide-react';
 import Link from 'next/link';
 import axiosInstance from '@/lib/axios';
+import { Button, Form, Input, InputNumber, Modal } from 'antd';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 interface Session{
   id: number;
@@ -67,6 +71,12 @@ interface TeacherData {
 }
 
 export default function TeacherDashboard() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [form] = Form.useForm();
+
+    const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: async () => {
@@ -76,6 +86,27 @@ export default function TeacherDashboard() {
     staleTime: 5 * 60 * 1000,
     retry: 2,
   });
+
+   const withdrawMutation = useMutation({
+    mutationFn: async (payload) => {
+      const res = await axiosInstance.post("teacher/make-withdraw", payload);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["teacher-dashboard"],
+      });
+      form.resetFields();
+      setIsModalOpen(false);
+      toast.success("تم تسجيل السحب بنجاح");
+    },
+    onError: (error: any) => {
+      const axiosError = error as AxiosError<any>;
+      toast.error(error.response?.data?.message || "حدث خطاء في تسجيل السحب");
+    },
+  });
+
+  
 
   if (isLoading) {
     return (
@@ -106,6 +137,35 @@ export default function TeacherDashboard() {
   const upcomingSessions = dashboardData.upcoming_sessions || [];
   const recentHomework = dashboardData.recent_homework || [];
   const upcomingExams = dashboardData.upcoming_exams || [];
+
+  const handleOk = async () => {
+    if(salary.available_balance - salary.pending_withdraw < 0){
+      toast.error("لا يوجد رصيد كافي للسحب");
+    }
+
+    const payload = form.getFieldsValue();
+
+    if(payload.amount > salary.available_balance - salary.pending_withdraw){
+      toast.error("لا يوجد رصيد كافي للسحب");
+      return
+    }
+    
+    try {
+      await form.validateFields();
+      form.submit();
+    } catch {
+      // validation errors
+    }
+  };
+
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handle_model_withdraw_request=()=>{
+    setIsModalOpen(true);
+  }
 
   const getHomeworkStatusColor = (status: string) => {
     switch (status) {
@@ -250,7 +310,7 @@ export default function TeacherDashboard() {
           <div className="p-4 rounded-lg border border-emerald-200 bg-emerald-100">
             <p className="text-sm text-emerald-700 mb-1">رصيد متاح للسحب</p>
             <p className="text-3xl font-extrabold text-emerald-900">
-              {(salary.available_balance || 0).toFixed(2)}
+              {((salary.available_balance || 0).toFixed(2) - (salary.pending_withdraw || 0).toFixed(2)).toFixed(2)}
             </p>
           </div>
 
@@ -262,6 +322,16 @@ export default function TeacherDashboard() {
             </p>
           </div>
 
+          {/* طلب سحب */}
+          {
+            (salary.available_balance - salary.pending_withdraw) > 0 && 
+            (
+              <div className="p-4">
+                <Button type='primary' onClick={() => handle_model_withdraw_request()}>طلب سحب</Button>
+              </div>
+            )
+          }
+          
         </div>
       </div>
 
@@ -397,6 +467,42 @@ export default function TeacherDashboard() {
           <p className="text-sm text-gray-600 mt-1">إدارة الامتحانات والدرجات</p>
         </Link>
       </div>
+
+      {/* modal with draw */}
+        <Modal
+      title="طلب سحب من الحساب"
+      open={isModalOpen}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      okText="إرسال الطلب"
+      cancelText="إلغاء"
+      confirmLoading={withdrawMutation.isPending}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={(values) => withdrawMutation.mutate(values)}
+      >
+        <Form.Item
+          label="المبلغ"
+          name="amount"
+          className='min-m-full'
+          rules={[
+            { required: true, message: "من فضلك أدخل المبلغ" },
+            { type: "number", min: 1, message: "أقل مبلغ 1" },
+          ]}
+        >
+          <InputNumber type="number"  style={{ width: "100%" }} placeholder="مثال: 500" />
+        </Form.Item>
+
+        <Form.Item label="ملاحظات" name="reason">
+          <Input.TextArea
+            rows={3}
+            placeholder="اختياري – سبب السحب أو ملاحظة"
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
     </div>
   );
 }
