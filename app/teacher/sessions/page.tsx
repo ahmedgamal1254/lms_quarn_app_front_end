@@ -40,16 +40,18 @@ interface SessionsResponse {
 export default function SessionsPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [dateFilter, setDateFilter] = useState<string>('');
   const [page, setPage] = useState(1);
   
   const { data, isLoading, error } = useQuery<SessionsResponse>({
-    queryKey: ['teacher-sessions', statusFilter, searchTerm,page],
+    queryKey: ['teacher-sessions', statusFilter, searchTerm, dateFilter,page],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.append('page', page.toString());
       if (statusFilter !== 'all') params.append('status', statusFilter);
       params.append('search', searchTerm);
       params.append('per_page', '10');
+      if(dateFilter) params.append('date', dateFilter);
       const response = await axiosInstance.get('/teacher/sessions', { params });
       return response.data;
     },
@@ -57,16 +59,6 @@ export default function SessionsPage() {
     retry: 2,
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">جاري تحميل الحصص...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -174,12 +166,23 @@ export default function SessionsPage() {
             />
             <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
           </div>
+
+          {/* Filter by date */}
+          <div className="relative">
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="w-full pr-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <Calendar className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+          </div>
         </div>
       </div>
 
       {/* Sessions List */}
       <div className="space-y-4">
-        {filteredSessions.length === 0 ? (
+        {filteredSessions.length === 0 && !isLoading ? (
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
             <Calendar className="w-16 h-16 mx-auto text-gray-300 mb-4" />
             <p className="text-gray-600 text-lg font-semibold">لا توجد حصص</p>
@@ -274,6 +277,17 @@ export default function SessionsPage() {
           })
         )}
       </div>
+
+      {
+        isLoading && (
+          <div className="flex items-center justify-center bg-white">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600 text-lg">جاري التحميل...</p>
+            </div>
+          </div>
+        )
+      }
 
       {/* Results Count */}
       {sessions.length > 0 && (

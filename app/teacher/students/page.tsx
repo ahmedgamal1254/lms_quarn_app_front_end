@@ -58,16 +58,16 @@ export default function TeacherStudentsPage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">جاري تحميل الطلاب...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+  //       <div className="text-center">
+  //         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  //         <p className="mt-4 text-gray-600">جاري تحميل الطلاب...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -134,7 +134,7 @@ export default function TeacherStudentsPage() {
       </div>
 
       {/* Students List */}
-      {students.length === 0 ? (
+      {students.length === 0 && !isLoading ? (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center">
           <Users className="w-16 h-16 mx-auto text-gray-300 mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -261,25 +261,19 @@ export default function TeacherStudentsPage() {
                   </div>
                 </div>
 
-                {/* Left - Actions */}
-                <div className="flex gap-2 order-4 md:order-4 w-full md:w-auto">
-                  <Link href={`/teacher/students/${student.id}`} className="flex-1 md:flex-none">
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors">
-                      التفاصيل
-                    </button>
-                  </Link>
-                  <Link
-                    href={`/teacher/homework?student_id=${student.id}`}
-                    className="flex-1 md:flex-none"
-                  >
-                    <button className="w-full bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors">
-                      الواجبات
-                    </button>
-                  </Link>
-                </div>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* overlay spinnner */}
+      {isLoading && (
+        <div className="flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600 text-lg">جاري التحميل...</p>
+          </div>
         </div>
       )}
 
