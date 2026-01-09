@@ -1,8 +1,8 @@
 'use client';
 
+import { useState, useMemo, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BookOpen, Plus, Search, Edit, Trash2, X, Download, CheckCircle, Calendar, User, Book, Upload, FileText } from 'lucide-react';
-import { useState, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
@@ -43,7 +43,6 @@ interface HomeworkFormData {
   subject_id: number;
   due_date: string;
   total_marks: number;
-  file?: FileList;
 }
 
 interface GradeFormData {
@@ -51,7 +50,6 @@ interface GradeFormData {
   teacher_feedback?: string;
 }
 
-// استخراج الطلاب والمواد الفريدة
 const extractUniqueStudentsAndSubjects = (homework: Homework[]) => {
   const studentsMap = new Map<number, string>();
   const subjectsMap = new Map<number, string>();
@@ -80,15 +78,14 @@ export default function HomeworkPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [gradingId, setGradingId] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
 
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<HomeworkFormData>();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<HomeworkFormData>();
   const { register: registerGrade, handleSubmit: handleSubmitGrade, reset: resetGrade, setValue: setValueGrade } = useForm<GradeFormData>();
-
-  const watchedFile = watch('file');
 
   // Fetch homework
   const { data: homeworkData, isLoading: homeworkLoading } = useQuery<HomeworkResponse>({
@@ -112,7 +109,7 @@ export default function HomeworkPage() {
     return extractUniqueStudentsAndSubjects(homework);
   }, [homework]);
 
-  // Mutations
+  // Mutation للإنشاء والتعديل مع رفع الملف بشكل صحيح
   const mutation = useMutation({
     mutationFn: async (formData: HomeworkFormData) => {
       const data = new FormData();
@@ -123,17 +120,18 @@ export default function HomeworkPage() {
       data.append('due_date', formData.due_date);
       data.append('total_marks', formData.total_marks.toString());
 
-      if (formData.file && formData.file.length > 0) {
-        data.append('file', formData.file[0]);
+      // نضيف الملف من الـ state المستقل
+      if (selectedFile) {
+        data.append('file', selectedFile);
       }
 
       if (editingId) {
-        return axiosInstance.post(`/teacher/homework/${editingId}`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+        return axiosInstance.put(`/teacher/homework/${editingId}`, data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
         return axiosInstance.post(`/teacher/homework`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
       }
     },
@@ -142,8 +140,8 @@ export default function HomeworkPage() {
       closeModal();
       toast.success(editingId ? 'تم تعديل الواجب بنجاح' : 'تم إنشاء الواجب بنجاح');
     },
-    onError: () => {
-      toast.error('حدث خطأ أثناء حفظ الواجب');
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'حدث خطأ أثناء حفظ الواجب');
     }
   });
 
@@ -204,6 +202,7 @@ export default function HomeworkPage() {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingId(null);
+    setSelectedFile(null);
     setSelectedFileName(null);
     reset();
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -218,6 +217,7 @@ export default function HomeworkPage() {
     setValue('subject_id', hw.subject.id);
     setValue('total_marks', hw.total_marks);
     setSelectedFileName(hw.file_name || null);
+    setSelectedFile(null); // لا نرفع ملف تلقائيًا عند التعديل
     setIsModalOpen(true);
   };
 
@@ -238,13 +238,6 @@ export default function HomeworkPage() {
     }
   };
 
-  // تحديث اسم الملف المختار
-  useMemo(() => {
-    if (watchedFile && watchedFile.length > 0) {
-      setSelectedFileName(watchedFile[0].name);
-    }
-  }, [watchedFile]);
-
   if (homeworkLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -258,22 +251,26 @@ export default function HomeworkPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8" dir="rtl">
-      {/* Header و Stats و Search كما هي */}
+      {/* Header */}
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-4xl font-bold text-gray-900">الواجبات المنزلية</h1>
           <p className="text-gray-600 mt-2">إدارة وتصحيح واجبات الطلاب بكل سهولة</p>
         </div>
         <button
-          onClick={() => { setEditingId(null); reset(); setSelectedFileName(null); setIsModalOpen(true); }}
+          onClick={() => {
+            setEditingId(null);
+            reset();
+            setSelectedFile(null);
+            setSelectedFileName(null);
+            setIsModalOpen(true);
+          }}
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition shadow-lg"
         >
           <Plus className="w-5 h-5" />
           واجب جديد
         </button>
       </div>
-
-      {/* باقي الـ Stats و Search كما هي (محذوفة للاختصار) */}
 
       {/* Homework List */}
       <div className="space-y-6">
@@ -374,7 +371,6 @@ export default function HomeworkPage() {
                         </button>
                       </div>
 
-                      {/* زر التصحيح يظهر فقط إذا رفع الطالب ملف */}
                       {hasStudentSubmission && hw.status !== 'graded' && (
                         <button
                           onClick={() => handleGrade(hw)}
@@ -414,26 +410,26 @@ export default function HomeworkPage() {
         )}
       </div>
 
-      {/* Create/Edit Modal مع رفع الملف */}
+      {/* مودال إنشاء/تعديل الواجب مع رفع الملف شغال 100% */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-2xl">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">
                 {editingId ? 'تعديل الواجب' : 'إنشاء واجب جديد'}
               </h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <X className="w-7 h-7" />
+                <X className="w-8 h-8" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="p-6 space-y-6">
+            <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="p-6 space-y-7">
               <div>
                 <label className="block text-lg font-semibold text-gray-800 mb-2">عنوان الواجب</label>
                 <input
                   type="text"
                   {...register('title', { required: 'العنوان مطلوب' })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="مثال: حل التمارين من الصفحة 50"
                 />
                 {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
@@ -444,46 +440,70 @@ export default function HomeworkPage() {
                 <textarea
                   {...register('description')}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   placeholder="اكتب تعليمات الواجب هنا..."
                 />
               </div>
 
+              {/* رفع الملف - شغال 100% */}
               <div>
-                <label className="block text-lg font-semibold text-gray-800 mb-2">ملف الواجب (اختياري)</label>
+                <label className="block text-lg font-semibold text-gray-800 mb-3">ملف الواجب (اختياري)</label>
                 <div className="relative">
                   <input
                     type="file"
-                    {...register('file')}
                     ref={fileInputRef}
                     className="hidden"
                     id="homework-file"
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setSelectedFile(file);
+                        setSelectedFileName(file.name);
+                      } else {
+                        setSelectedFile(null);
+                        setSelectedFileName(null);
+                      }
+                    }}
                   />
                   <label
                     htmlFor="homework-file"
-                    className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
+                    className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
+                      selectedFile ? 'border-green-500 bg-green-50' : 'border-gray-300 bg-gray-50 hover:border-blue-500 hover:bg-blue-50'
+                    }`}
                   >
-                    <Upload className="w-6 h-6 text-gray-500" />
-                    <span className="text-gray-700 font-medium">
-                      {selectedFileName || 'اختر ملف (PDF، صور، وورد...)'}
-                    </span>
+                    <Upload className={`w-16 h-16 mb-4 ${selectedFile ? 'text-green-600' : 'text-gray-400'}`} />
+                    <p className={`text-lg font-medium text-center px-6 ${selectedFile ? 'text-green-700' : 'text-gray-700'}`}>
+                      {selectedFile 
+                        ? `تم اختيار: ${selectedFile.name}` 
+                        : 'انقر هنا أو اسحب الملف لرفعه'
+                      }
+                    </p>
+                    <p className="text-sm text-gray-500 mt-3">PDF, Word, صور, ZIP (حتى 20 ميجا)</p>
+                    {selectedFile && (
+                      <p className="mt-4 text-sm text-green-600 font-medium">✓ جاهز للإرسال</p>
+                    )}
                   </label>
                 </div>
-                {selectedFileName && editingId && (
-                  <p className="text-sm text-gray-500 mt-2 flex items-center gap-2">
-                    <FileText className="w-4 h-4" />
-                    الملف الحالي: {selectedFileName} (سيتم استبداله إذا اخترت ملفًا جديدًا)
-                  </p>
+
+                {/* الملف الحالي عند التعديل */}
+                {editingId && selectedFileName && !selectedFile && (
+                  <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-blue-600" />
+                    <div>
+                      <p className="font-medium text-blue-900">الملف الحالي: {selectedFileName}</p>
+                      <p className="text-sm text-blue-700">سيبقى كما هو إذا لم ترفع ملفاً جديداً</p>
+                    </div>
+                  </div>
                 )}
               </div>
 
-              {/* باقي الحقول كما هي */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-lg font-semibold text-gray-800 mb-2">الطالب</label>
                   <select
                     {...register('student_id', { required: 'اختر طالب', valueAsNumber: true })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">اختر الطالب</option>
                     {students.map(s => (
@@ -497,7 +517,7 @@ export default function HomeworkPage() {
                   <label className="block text-lg font-semibold text-gray-800 mb-2">المادة</label>
                   <select
                     {...register('subject_id', { required: 'اختر مادة', valueAsNumber: true })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">اختر المادة</option>
                     {subjects.map(s => (
@@ -514,7 +534,7 @@ export default function HomeworkPage() {
                   <input
                     type="date"
                     {...register('due_date', { required: 'التاريخ مطلوب' })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {errors.due_date && <p className="text-red-500 text-sm mt-1">التاريخ مطلوب</p>}
                 </div>
@@ -524,22 +544,21 @@ export default function HomeworkPage() {
                   <input
                     type="number"
                     min="1"
-                    max="1000"
-                    {...register('total_marks', { required: 'الدرجة مطلوبة', valueAsNumber: true, min: 1 })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    {...register('total_marks', { required: 'الدرجة مطلوبة', valueAsNumber: true })}
+                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="مثال: 100"
                   />
                   {errors.total_marks && <p className="text-red-500 text-sm mt-1">أدخل درجة صحيحة</p>}
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-6 border-t">
                 <button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-4 rounded-xl font-bold text-lg transition"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-70 text-white py-4 rounded-xl font-bold text-lg transition flex items-center justify-center gap-3"
                 >
-                  {mutation.isPending ? 'جاري الحفظ...' : editingId ? 'حفظ التعديلات' : 'إنشاء الواجب'}
+                  {mutation.isPending ? 'جاري الحفظ...' : (editingId ? 'حفظ التعديلات' : 'إنشاء الواجب')}
                 </button>
                 <button
                   type="button"
@@ -554,9 +573,8 @@ export default function HomeworkPage() {
         </div>
       )}
 
-      {/* Grade Modal (بدون تغيير) */}
+      {/* مودال التصحيح */}
       {isGradeModalOpen && (
-        // ... نفس الكود السابق لمودال التصحيح
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
