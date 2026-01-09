@@ -41,9 +41,9 @@ interface HomeworkData {
   due_date: string;
   status: string;
   grade: string | null;
-  student_name: string;
-  teacher_name: string;
-  subject_name: string;
+  student: Student;
+  teacher: Teacher;
+  subject: Subject;
 }
 
 interface HomeworkResponse {
@@ -221,9 +221,9 @@ export default function HomeworkPage() {
   const openEditModal = (hw: HomeworkData) => {
     setModalMode('edit');
     setSelectedId(hw.id);
-    const student = students.find((s: Student) => s.name === hw.student_name);
-    const teacher = teachers.find((t: Teacher) => t.name === hw.teacher_name);
-    const subject = subjects.find((s: Subject) => s.name === hw.subject_name);
+    const student = students.find((s: Student) => s.name === hw?.student?.name);
+    const teacher = teachers.find((t: Teacher) => t.name === hw?.teacher?.name);
+    const subject = subjects.find((s: Subject) => s.name === hw?.subject?.name);
     
     setFormData({
       title: hw.title,
@@ -416,11 +416,11 @@ export default function HomeworkPage() {
                           const statusStyle = getStatusColor(hw.status);
                           return (
                             <tr key={hw.id} className="hover:bg-gray-50 transition-colors">
-                              <td className="px-6 py-4 text-sm font-medium text-gray-900">{hw.student_name}</td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{hw.teacher_name}</td>
+                              <td className="px-6 py-4 text-sm font-medium text-gray-900">{hw?.student?.name}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700">{hw?.teacher?.name}</td>
                               <td className="px-6 py-4 text-sm">
                                 <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                                  {hw.subject_name}
+                                  {hw?.subject?.name}
                                 </span>
                               </td>
                               <td className="px-6 py-4 text-sm text-gray-700">{hw.title}</td>
