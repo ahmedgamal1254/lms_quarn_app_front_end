@@ -294,6 +294,7 @@ export default function ExamsPage() {
 
             {/* Toolbar */}
             <div className="flex flex-col md:flex-row gap-4 mb-6">
+              {/* Add Exam Button 
               <button 
                 onClick={openCreateModal}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -301,6 +302,7 @@ export default function ExamsPage() {
                 <Plus size={18} />
                 <span>إضافة امتحان</span>
               </button>
+              */}
 
               <div className="relative flex-1">
                 <input

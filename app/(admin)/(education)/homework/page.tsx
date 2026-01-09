@@ -295,13 +295,13 @@ export default function HomeworkPage() {
             )}
 
             <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <button 
+              {/* <button 
                 onClick={openCreateModal}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 <Plus size={18} />
                 <span>إضافة واجب</span>
-              </button>
+              </button> */}
 
               <div className="relative flex-1">
                 <input
