@@ -19,6 +19,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
+import Pagination from '@/components/Pagination';
 
 interface Exam {
   id: number;
@@ -48,6 +49,8 @@ interface Exam {
 export default function StudentExamsPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
+  const [page,setPage] = useState<number>(1)
+
   const [submitModal, setSubmitModal] = useState<{ open: boolean; exam: Exam | null }>({ 
     open: false, 
     exam: null 
@@ -63,9 +66,10 @@ export default function StudentExamsPage() {
 
   // Fetch exams
   const { data: examsData, isLoading, error } = useQuery({
-    queryKey: ['student-exams', filter],
+    queryKey: ['student-exams', filter,page],
     queryFn: async () => {
       const params = new URLSearchParams();
+      params.append("page",page.toString())
       if (filter !== 'all') params.append('status', filter);
       const response = await axiosInstance.get(`/student/exams?${params.toString()}`);
       return response.data;
@@ -95,6 +99,13 @@ export default function StudentExamsPage() {
 
   const exams = examsData?.data?.exams || [];
   const statistics = examsData?.data?.statistics || {};
+  const pagination = {
+    "total" : examsData?.data?.total,
+    "per_page":examsData?.data?.per_page,
+    "last_page":examsData?.data?.last_page
+  }
+
+  console.log(pagination)
 
   // Filter exams based on search
   const filteredExams = exams.filter((exam: Exam) => {
@@ -181,7 +192,7 @@ export default function StudentExamsPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">الامتحانات</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">الامتحانات</h1>
           <p className="text-gray-600">عرض جميع الامتحانات والتسليمات</p>
         </div>
 
@@ -280,7 +291,7 @@ export default function StudentExamsPage() {
 
               return (
                 <div key={exam.id} className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
-                  <div className="flex justify-between items-start gap-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">
                         <FileText className="w-6 h-6 text-indigo-600 flex-shrink-0 mt-1" />
@@ -367,6 +378,13 @@ export default function StudentExamsPage() {
             })}
           </div>
         )}
+
+        <Pagination 
+          currentPage={page}
+          total={pagination.total}
+          lastPage={pagination.last_page}
+          onPageChange={(page) => setPage(page)}
+        />
       </div>
 
       {/* Submit Modal */}

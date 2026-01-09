@@ -29,7 +29,9 @@ interface Homework{
     due_date: string;
     status: string;
     grade: string | null;
-    student_name: string;
+    student: {
+      name: string;
+    };
 }
 
 interface Exam{
@@ -406,7 +408,7 @@ export default function TeacherDashboard() {
                         {getHomeworkStatusLabel(hw.status)}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mb-2">{hw.student_name || 'غير معروف'}</p>
+                    <p className="text-xs text-gray-500 mb-2">{hw?.student?.name || 'غير معروف'}</p>
                     <p className="text-xs text-gray-600">📅 {new Date(hw.due_date).toLocaleDateString('ar-SA')}</p>
                     {hw.grade && <p className="text-xs text-green-600 mt-1 font-semibold">الدرجة: {hw.grade}</p>}
                   </div>

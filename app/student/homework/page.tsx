@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
+import Pagination from '@/components/Pagination';
 
 // Types
 interface HomeworkItem {
@@ -50,6 +51,8 @@ const fetchHomeworkDetails = async (id: number) => {
   return response.data.data;
 };
 
+
+
 const submitHomework = async ({ id, file, notes }: { id: number; file: File; notes?: string }) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -64,6 +67,8 @@ const submitHomework = async ({ id, file, notes }: { id: number; file: File; not
 export default function StudentHomeworkPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
 
@@ -79,8 +84,8 @@ export default function StudentHomeworkPage() {
 
   // Queries
   const { data, isLoading, error } = useQuery({
-    queryKey: ['student-homework', currentPage, statusFilter],
-    queryFn: () => fetchHomework(currentPage, statusFilter),
+    queryKey: ['student-homework', page, statusFilter],
+    queryFn: () => fetchHomework(page, statusFilter),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -114,6 +119,40 @@ export default function StudentHomeworkPage() {
       toast.error(err.response?.data?.message || 'حدث خطأ أثناء التسليم');
     },
   });
+
+  const statsBadges = [
+    {
+      label: 'إجمالي الواجبات',
+      value: statistics?.total || 0,
+      color: 'border-blue-500',
+      icon: '📊',
+    },
+    {
+      label: 'قيد الانتظار',
+      value: statistics?.pending || 0,
+      color: 'border-yellow-500',
+      icon: '⏳',
+    },
+    {
+      label: 'تم التسليم',
+      value: statistics?.submitted || 0,
+      color: 'border-purple-500',
+      icon: '📤',
+    },
+    {
+      label: 'تم التصحيح',
+      value: statistics?.graded || 0,
+      color: 'border-green-500',
+      icon: '✅',
+    },
+    {
+      label: 'متأخر',
+      value: statistics?.late || 0,
+      color: 'border-red-500',
+      icon: '⚠️',
+    },
+  ];
+
 
   const filteredHomework = homework.filter((hw) =>
     hw.title?.toLowerCase().includes(search.toLowerCase()) ||
@@ -179,8 +218,23 @@ export default function StudentHomeworkPage() {
           <p className="text-gray-600 text-lg">تابع تقدمك وارفع إجاباتك في الوقت المناسب</p>
         </div>
 
-        {/* إحصائيات + بحث + فلتر (اختصرناها للتركيز على المودالات) */}
-        {/* ... يمكنك إضافتها من الكود السابق ... */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+          {statsBadges.map((stat, idx) => (
+            <div
+              key={idx}
+              className={`bg-white rounded-lg shadow-sm p-4 border-l-4 ${stat.color} hover:shadow-md transition`}
+            >
+              <p className="text-gray-600 text-xs md:text-sm font-medium mb-2 flex items-center gap-2">
+                <span>{stat.icon}</span>
+                {stat.label}
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900">
+                {stat.value}
+              </p>
+            </div>
+          ))}
+        </div>
+
 
         {isLoading ? (
           <div className="flex justify-center py-20">
@@ -275,6 +329,14 @@ export default function StudentHomeworkPage() {
           </div>
         )}
       </div>
+
+       <Pagination
+            currentPage={page || 1}
+            lastPage={pagination.last || 1}
+            total={pagination.total  || 0}
+            onPageChange={(page) => setPage(page)}
+          />
+
 
       {/* مودال تسليم الواجب */}
       {submitModalOpen && selectedHomework && (
@@ -400,9 +462,13 @@ export default function StudentHomeworkPage() {
                         <File className="w-8 h-8 text-indigo-600" />
                         <div><p className="font-semibold">{detailsData.file_name}</p><p className="text-sm text-gray-500">ملف الواجب الأصلي</p></div>
                       </div>
-                      <button onClick={() => downloadFile(detailsData.file_url, detailsData.file_name)} className="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 flex items-center gap-2">
+                      <a 
+                      href={`${detailsData.file_url}`}
+                      download
+                      target="_blank"
+                      className="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 flex items-center gap-2">
                         <Download className="w-5 h-5" /> تحميل
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -432,9 +498,11 @@ export default function StudentHomeworkPage() {
                         <FileText className="w-8 h-8 text-purple-600" />
                         <div><p className="font-semibold">{detailsData.student_file_name}</p><p className="text-sm text-gray-600">إجابتك المرفوعة</p></div>
                       </div>
-                      <button onClick={() => downloadFile(detailsData.student_file_url, detailsData.student_file_name)} className="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 flex items-center gap-2">
+                      <a href={`${detailsData.student_file_url}`}
+                      download target="_blank"
+                      className="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 flex items-center gap-2">
                         <Download className="w-5 h-5" /> تحميل
-                      </button>
+                      </a>
                     </div>
                   </div>
                   {detailsData.submitted_at && (

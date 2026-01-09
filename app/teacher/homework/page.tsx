@@ -6,6 +6,8 @@ import { BookOpen, Plus, Search, Edit, Trash2, X, Download, CheckCircle, Calenda
 import { useForm } from 'react-hook-form';
 import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
+import Pagination from '@/components/Pagination';
+import { DatePicker, DatePickerProps } from 'antd';
 
 interface Homework {
   id: number;
@@ -70,8 +72,12 @@ const extractUniqueStudentsAndSubjects = (homework: Homework[]) => {
   return { students, subjects };
 };
 
+
 export default function HomeworkPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState<number>(1);
+  const [per_page, setPerPage] = useState(5);
+  const [dateFilter, setDateFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGradeModalOpen, setIsGradeModalOpen] = useState(false);
@@ -81,6 +87,15 @@ export default function HomeworkPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [homeworkToDelete, setHomeworkToDelete] = useState<Homework | null>(null);
+
+  const deleteHomework=(hw:Homework)=>{
+    setHomeworkToDelete(hw);
+    setIsModalDeleteOpen(true);
+
+  }
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
 
@@ -89,10 +104,14 @@ export default function HomeworkPage() {
 
   // Fetch homework
   const { data: homeworkData, isLoading: homeworkLoading } = useQuery<HomeworkResponse>({
-    queryKey: ['teacher-homework', currentPage],
+    queryKey: ['teacher-homework', page, per_page, statusFilter, searchTerm, dateFilter],
     queryFn: async () => {
       const params = new URLSearchParams();
-      params.append('page', currentPage.toString());
+      params.append("page", page.toString());
+      params.append("per_page", per_page.toString());
+      if (statusFilter !== 'all') params.append('status', statusFilter);
+      if (searchTerm) params.append('search', searchTerm);
+      if (dateFilter) params.append('date', dateFilter);
       const response = await axiosInstance.get(`/teacher/homework?${params.toString()}`);
       return response.data;
     },
@@ -109,7 +128,7 @@ export default function HomeworkPage() {
     return extractUniqueStudentsAndSubjects(homework);
   }, [homework]);
 
-  // Mutation للإنشاء والتعديل مع رفع الملف بشكل صحيح
+
   const mutation = useMutation({
     mutationFn: async (formData: HomeworkFormData) => {
       const data = new FormData();
@@ -126,7 +145,7 @@ export default function HomeworkPage() {
       }
 
       if (editingId) {
-        return axiosInstance.put(`/teacher/homework/${editingId}`, data, {
+        return axiosInstance.post(`/teacher/homework/${editingId}`, data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
@@ -168,36 +187,9 @@ export default function HomeworkPage() {
     }
   });
 
-  const downloadFile = async (url: string | null | undefined, fileName: string | null | undefined, fallbackName: string) => {
-    if (!url || !fileName) {
-      toast.error('لا يوجد ملف متاح للتحميل');
-      return;
-    }
-
-    try {
-      const response = await axiosInstance.get(url, { responseType: 'blob' });
-      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.setAttribute('download', fileName || fallbackName);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      toast.error('فشل تحميل الملف');
-    }
+  const onChange: DatePickerProps['onChange'] = (_, dateString) => {
+    setDateFilter(typeof dateString === 'string' ? dateString : null);
   };
-
-  const filteredHomework = useMemo(() => {
-    return homework.filter((hw) => {
-      const matchesStatus = statusFilter === 'all' || hw.status === statusFilter;
-      const matchesSearch =
-        hw.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        hw.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        hw.subject.name.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesStatus && matchesSearch;
-    });
-  }, [homework, statusFilter, searchTerm]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -238,17 +230,6 @@ export default function HomeworkPage() {
     }
   };
 
-  if (homeworkLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">جاري تحميل الواجبات...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8" dir="rtl">
       {/* Header */}
@@ -272,16 +253,62 @@ export default function HomeworkPage() {
         </button>
       </div>
 
+      <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      {/* Status Filter */}
+      <div className="flex flex-wrap flex-col w-full items-stretch gap-3">
+        <label htmlFor="status" className="text-gray-600 font-semibold whitespace-nowrap">
+          حالة الواجب:
+        </label>
+        <select
+          id="status"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 w-full md:w-auto"
+        >
+          <option value="all">الكل</option>
+          <option value="pending">معلّق</option>
+          <option value="submitted">مُسلَّم</option>
+          <option value="graded">مُصحَّح</option>
+          <option value="late">متأخر</option>
+        </select>
+      </div>
+
+      {/* Search */}
+      <div className="flex flex-col w-full items-stretch gap-3">
+        <label htmlFor="search" className="text-gray-600 font-semibold whitespace-nowrap">
+          بحث:
+        </label>
+        <input
+          type="text"
+          id="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="ابحث بعنوان الواجب..."
+          className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 w-full"
+        />
+      </div>
+
+      {/* تاريخ التسليم */}
+      <div className='flex flex-col w-full items-stretch gap-3'>
+        <label htmlFor="date" className="text-gray-600 font-semibold whitespace-nowrap">
+          تاريخ التسليم:
+        </label>
+        <DatePicker onChange={onChange} placeholder='تاريخ التسليم' />
+      </div>
+    </div>
+
+
       {/* Homework List */}
-      <div className="space-y-6">
-        {filteredHomework.length === 0 ? (
+      <div className="space-y-6 mb-8">
+        {homework.length === 0 && !homeworkLoading ? (
           <div className="bg-white rounded-xl shadow-sm p-16 text-center">
             <BookOpen className="w-20 h-20 mx-auto text-gray-300 mb-6" />
             <p className="text-gray-600 text-xl font-semibold">لا توجد واجبات</p>
             <p className="text-gray-500 mt-2">ابدأ بإنشاء واجب جديد</p>
           </div>
         ) : (
-          filteredHomework.map((hw) => {
+          homework.map((hw) => {
             const status = getStatusColor(hw.status, hw.is_late);
             const hasStudentSubmission = !!hw.student_file_name;
 
@@ -363,7 +390,7 @@ export default function HomeworkPage() {
                           تعديل
                         </button>
                         <button
-                          onClick={() => deleteMutation.mutate(hw.id)}
+                          onClick={() => deleteHomework(hw)}
                           className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition text-sm"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -383,32 +410,92 @@ export default function HomeworkPage() {
 
                       <div className="grid grid-cols-2 gap-3 mt-2">
                         {hw.file_name && (
-                          <button
-                            onClick={() => downloadFile(hw.file_url!, hw.file_name!, 'ملف_الواجب.pdf')}
+                          <a
+                            href={`${hw.file_url}`}
+                            download
+                            target='_blank'
                             className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
                           >
                             <Download className="w-4 h-4" />
                             ملف الواجب
-                          </button>
+                          </a>
                         )}
                         {hw.student_file_name && (
-                          <button
-                            onClick={() => downloadFile(hw.student_file_url!, hw.student_file_name!, 'تسليم_الطالب.pdf')}
+                          <a
+                            href={`${hw.student_file_url}`}
+                            download
+                            target='_blank'
                             className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
                           >
                             <Download className="w-4 h-4" />
                             تسليم الطالب
-                          </button>
+                          </a>
                         )}
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* modal delete work */}
+                
+                {isModalDeleteOpen && (
+                  <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl max-w-xl w-full max-h-[95vh] overflow-y-auto">
+                      <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+                        <h2 className="text-2xl font-bold text-gray-900">حذف الواجب</h2>
+                        <button onClick={() => setIsModalDeleteOpen(false)} className="text-gray-500 hover:text-gray-700">
+                          <X className="w-8 h-8" />
+                        </button>
+                      </div>
+                      <div className="p-6 space-y-7">
+                        <p className="text-lg text-gray-700">هل تريد حذف {homeworkToDelete?.title}</p>
+
+                        <div className="flex items-center justify-end gap-3">
+                          <button
+                            onClick={() => setIsModalDeleteOpen(false)}
+                            className="w-16 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-bold text-md transition"
+                          >
+                            لا
+                          </button>
+                          <button
+                            onClick={() => deleteHomework(hw)}
+                            className="w-24 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl font-bold text-md transition"
+                          >
+                            نعم
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             );
           })
         )}
       </div>
+
+        {
+          homeworkLoading && (
+            <div className="flex items-center justify-center">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <p className="mt-4 text-gray-600">جاري تحميل الواجبات...</p>
+              </div>
+            </div>
+          )
+        }
+
+      {
+        homeworkData && (
+          <Pagination
+            currentPage={page}
+            lastPage={homeworkData?.data?.last_page || 1}
+            total={homeworkData?.data?.total || 0}
+            onPageChange={(page: number) => setPage(page)}
+          />
+        )
+      }
 
       {/* مودال إنشاء/تعديل الواجب مع رفع الملف شغال 100% */}
       {isModalOpen && (
@@ -556,14 +643,14 @@ export default function HomeworkPage() {
                 <button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-70 text-white py-4 rounded-xl font-bold text-lg transition flex items-center justify-center gap-3"
+                  className="flex px-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-70 text-white py-2 rounded-xl font-bold text-md transition flex items-center justify-center gap-3"
                 >
                   {mutation.isPending ? 'جاري الحفظ...' : (editingId ? 'حفظ التعديلات' : 'إنشاء الواجب')}
                 </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-4 rounded-xl font-bold text-lg transition"
+                  className="flex px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-bold text-md transition"
                 >
                   إلغاء
                 </button>
@@ -610,14 +697,14 @@ export default function HomeworkPage() {
                 <button
                   type="submit"
                   disabled={gradeMutation.isPending}
-                  className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 rounded-xl font-bold text-lg transition"
+                  className="flex bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-2 px-4 rounded-xl font-bold text-md transition"
                 >
                   {gradeMutation.isPending ? 'جاري...' : 'حفظ التصحيح'}
                 </button>
                 <button
                   type="button"
                   onClick={() => { setIsGradeModalOpen(false); resetGrade(); }}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-4 rounded-xl font-bold text-lg transition"
+                  className="flex bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-xl font-bold text-md transition"
                 >
                   إلغاء
                 </button>

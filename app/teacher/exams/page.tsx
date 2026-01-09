@@ -224,7 +224,7 @@ export default function TeacherExamsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex md:flex-raw gap-3 items-center md:items-start justify-between">
         <div>
           <h1 className="text-4xl font-bold text-gray-900">الامتحانات</h1>
           <p className="text-gray-600 mt-2">إدارة الامتحانات والتصحيح</p>
@@ -268,7 +268,7 @@ export default function TeacherExamsPage() {
       <div className="space-y-4">
         {filteredExams.map((exam: Exam) => (
           <div key={exam.id} className="bg-white rounded-lg shadow-sm p-6 border-r-4 border-blue-500">
-            <div className="flex justify-between items-start gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{exam.title}</h3>
                 <p className="text-gray-600 mb-3">{exam.description}</p>
@@ -306,7 +306,7 @@ export default function TeacherExamsPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-raw flex-wrap sm:flex-col gap-2">
                 <span className={`px-3 py-1 rounded-full text-sm font-semibold text-center ${getStatusColor(exam.status)}`}>
                   {getStatusLabel(exam.status)}
                 </span>
