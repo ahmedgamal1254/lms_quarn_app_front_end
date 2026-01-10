@@ -183,8 +183,7 @@ export default function UsersPage() {
             : { bg: 'bg-red-100', text: 'text-red-700', label: 'غير نشط' };
     };
 
-    // console.log(usersData);
-    console.log(permissions)
+
 
     return (
         <div className="min-h-screen bg-gray-50 p-2 md:p-8">

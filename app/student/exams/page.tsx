@@ -105,7 +105,6 @@ export default function StudentExamsPage() {
     "last_page":examsData?.data?.last_page
   }
 
-  console.log(pagination)
 
   // Filter exams based on search
   const filteredExams = exams.filter((exam: Exam) => {

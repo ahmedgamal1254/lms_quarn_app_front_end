@@ -5,11 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, GraduationCap, ArrowRight, Sparkles, UserCog, BookOpen, Users } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
+import toast from 'react-hot-toast';
 
-// Mock toast
-const showToast = (type: string, message: string) => {
-  console.log(`${type}: ${message}`);
-};
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -49,7 +47,7 @@ export default function LoginPage() {
         const message = err?.response?.data?.message || 'حدث خطأ في الاتصال بالخادم';
         setError(message);
         console.error(err);
-        showToast('error', message);
+        toast.error(message);
     } finally {
         setLoading(false);
     }

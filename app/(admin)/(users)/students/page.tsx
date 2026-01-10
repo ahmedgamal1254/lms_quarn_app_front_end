@@ -63,7 +63,6 @@ export default function StudentsPage() {
         password: ''
     });
 
-    console.log(selectedStudent);
 
     // Fetch Students and Plans
     const { data: studentsData, isLoading } = useQuery({

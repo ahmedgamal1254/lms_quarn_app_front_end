@@ -65,7 +65,6 @@ export default function TeacherStudentsPage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  console.log(data);
 
   if (error) {
     return (
