@@ -35,6 +35,7 @@ interface Teacher {
     image: string;
     subjects: string;
     status: 'active' | 'on_leave' | 'inactive';
+    session_link: string;
     created_at: string;
 }
 
@@ -174,7 +175,7 @@ export default function TeachersPage() {
                 status: teacher.status,
                 subjects: subjectsList,
                 password: '',
-                session_link:''
+                session_link: teacher.session_link
             });
         } else {
             setFormData({
