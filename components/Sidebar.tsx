@@ -109,6 +109,14 @@ const teacherMenuGroups = [
   { title: 'الطلاب', icon: Users, href: '/teacher/students' }
 ]
 
+interface MenuSidebar {
+  title: string;
+  icon: any;
+  href?: string;
+  items?: any[];
+  permission?: string;
+}
+
 /* ---------------- COMPONENT ---------------- */
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -128,7 +136,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     setPermissions(perms);
   }, []);
 
-  const filteredMenu = (menu: any[]) => {
+  const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
       .map(group => {
         if (group.items) {

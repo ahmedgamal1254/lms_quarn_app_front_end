@@ -11,7 +11,7 @@ export interface User {
     role: 'admin' | 'teacher' | 'student' | 'parent';
     phone?: string;
     image?: string;
-    Permissions?: []
+    permissions?: []
 }
 
 export interface AuthData {
