@@ -125,7 +125,7 @@ export default function UsersPage() {
                 country_code: user.country_code,
                 role: user.role,
                 password: '',
-                permissions: user.permissions || []
+                permissions: user.permissions.map(permission => permission.id) || []
             });
         } else {
             setFormData({
@@ -471,7 +471,7 @@ export default function UsersPage() {
                                                     acc[perm.group].push(perm);
                                                     return acc;
                                                 }, {} as Record<string, Permission[]>)
-                                            ).map(([group, perms]) => (
+                                            ).map(([group, perms] : any) => (
                                                 <div key={group} className="mb-6">
                                                     <h3 className="text-sm font-semibold text-gray-800 mb-2 capitalize">
                                                         {group === 'dashboard' ? 'لوحة التحكم' :
