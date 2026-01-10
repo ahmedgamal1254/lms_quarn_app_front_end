@@ -20,6 +20,13 @@ import {
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
 
+interface Permission {
+    id: number;
+    name: string;
+    name_ar: string;
+    group: string;
+}
+
 interface UserData {
     id: number;
     name: string;
@@ -30,6 +37,7 @@ interface UserData {
     image: string | null;
     status: 'active' | 'inactive';
     created_at: string;
+    permissions: Permission[];
 }
 
 interface UsersResponse {
@@ -40,19 +48,22 @@ interface UsersResponse {
     total: number|undefined;
 }
 
+
 export default function UsersPage() {
     const queryClient = useQueryClient();
     const [params, setParams] = useState({ page: 1, per_page: 5, search: '', role: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
     const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+    const [permissions, setPermissions] = useState<Permission[]>([]);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
         country_code: '+20',
         role: 'student',
-        password: ''
+        password: '',
+        permissions: [] as number[],
     });
 
     // Fetch Users
@@ -63,6 +74,16 @@ export default function UsersPage() {
             return data.data;
         },
         staleTime: 5 * 60 * 1000
+    });
+
+    // get permissions
+    const {data: permissionsData} = useQuery({
+        queryKey: ['permissions'],
+        queryFn: async () => {
+            const { data } = await axiosInstance.get('/usersdata/permissions');
+            return data.data;
+        },
+        staleTime: 10 * 60 * 1000,
     });
 
     // Save User Mutation
@@ -103,7 +124,8 @@ export default function UsersPage() {
                 phone: user.phone,
                 country_code: user.country_code,
                 role: user.role,
-                password: ''
+                password: '',
+                permissions: user.permissions || []
             });
         } else {
             setFormData({
@@ -112,7 +134,8 @@ export default function UsersPage() {
                 phone: '',
                 country_code: '+20',
                 role: 'student',
-                password: ''
+                password: '',
+                permissions: []
             });
         }
         setIsModalOpen(true);
@@ -127,7 +150,8 @@ export default function UsersPage() {
             phone: '',
             country_code: '+20',
             role: 'student',
-            password: ''
+            password: '',
+            permissions: []
         });
     };
 
@@ -158,6 +182,9 @@ export default function UsersPage() {
             ? { bg: 'bg-green-100', text: 'text-green-700', label: 'نشط' }
             : { bg: 'bg-red-100', text: 'text-red-700', label: 'غير نشط' };
     };
+
+    // console.log(usersData);
+    console.log(permissions)
 
     return (
         <div className="min-h-screen bg-gray-50 p-2 md:p-8">
@@ -352,6 +379,7 @@ export default function UsersPage() {
                                             <p className="text-xs text-gray-500 uppercase mb-1">الدور</p>
                                             <p className="font-semibold">{getRoleColor(selectedUser.role).label}</p>
                                         </div>
+
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-xs text-gray-500 uppercase mb-1">الحالة</p>
                                             <p className="font-semibold">{getStatusColor(selectedUser.status).label}</p>
@@ -430,8 +458,55 @@ export default function UsersPage() {
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
                                         </div>
-                                   
                                     </div>
+                                        
+                                        <div className="mt-6 w-full">
+                                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                                                الصلاحيات
+                                            </label>
+                                            
+                                            <div className='grid grid-cols-1 sm:grid-cols-3'>
+                                            {Object.entries(
+                                                permissionsData.reduce((acc: Record<string, Permission[]>, perm: Permission) => {
+                                                    if (!acc[perm.group]) acc[perm.group] = [];
+                                                    acc[perm.group].push(perm);
+                                                    return acc;
+                                                }, {} as Record<string, Permission[]>)
+                                            ).map(([group, perms]) => (
+                                                <div key={group} className="mb-6">
+                                                    <h3 className="text-sm font-semibold text-gray-800 mb-2 capitalize">
+                                                        {group === 'dashboard' ? 'لوحة التحكم' :
+                                                        group === 'users' ? 'المستخدمين' :
+                                                        group === 'finance' ? 'المالية' : group}
+                                                    </h3>
+                                                    <div className="grid grid-cols-1 gap-3">
+                                                        {perms.map((perm:any) => (
+                                                            <label
+                                                                key={perm.id}
+                                                                className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={formData.permissions.includes(perm.id)}
+                                                                    onChange={(e) => {
+                                                                        setFormData(prev => ({
+                                                                            ...prev,
+                                                                            permissions: e.target.checked
+                                                                                ? [...prev.permissions, perm.id]
+                                                                                : prev.permissions.filter(id => id !== perm.id)
+                                                                        }));
+                                                                    }}
+                                                                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                                                />
+                                                                <span className="text-sm text-gray-700">{perm.name_ar}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            </div>
+                                        </div>
+                                    
                                 </form>
                             )}
                         </div>

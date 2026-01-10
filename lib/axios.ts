@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api',
@@ -28,6 +29,11 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
+
+    if (error.response?.status === 403) {
+      window.location.href = '/403';
+    }
+
     return Promise.reject(error);
   }
 );

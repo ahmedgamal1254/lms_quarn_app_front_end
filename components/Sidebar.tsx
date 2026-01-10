@@ -32,15 +32,15 @@ import { getUser, logout } from '@/lib/auth';
 /* ---------------- MENUS ---------------- */
 
 const adminMenuGroups = [
-  { title: 'الرئيسية', icon: LayoutDashboard, href: '/dashboard' },
+  { title: 'الرئيسية', icon: LayoutDashboard, href: '/dashboard', permission: 'view-dashboard' },
 
   {
     title: 'إدارة المستخدمين',
     icon: Users,
     items: [
-      { title: 'المستخدمين', href: '/users', icon: Users },
-      { title: 'الطلاب', href: '/students', icon: GraduationCap },
-      { title: 'المعلمين', href: '/teachers', icon: UserCog }
+      { title: 'المستخدمين', href: '/users', icon: Users, permission: 'manage-users' },
+      { title: 'الطلاب', href: '/students', icon: GraduationCap, permission: 'manage-students' },
+      { title: 'المعلمين', href: '/teachers', icon: UserCog, permission: 'manage-teachers' }
     ]
   },
 
@@ -48,10 +48,10 @@ const adminMenuGroups = [
     title: 'المحتوى الأكاديمي',
     icon: BookOpen,
     items: [
-      { title: 'الحصص', href: '/sessions', icon: Video },
-      { title:"الاجندة",href:"/sessions/callender",icon:File},
-      { title: 'الامتحانات', href: '/exams', icon: FileQuestion },
-      { title: 'الواجبات', href: '/homework', icon: ClipboardList }
+      { title: 'الحصص', href: '/sessions', icon: Video, permission: 'manage-sessions' },
+      { title:"الاجندة", href:"/sessions/callender", icon:File, permission: 'manage-sessions' },
+      { title: 'الامتحانات', href: '/exams', icon: FileQuestion, permission: 'manage-exams' },
+      { title: 'الواجبات', href: '/homework', icon: ClipboardList, permission: 'manage-homework' }
     ]
   },
 
@@ -59,37 +59,40 @@ const adminMenuGroups = [
     title: 'الماليات',
     icon: Banknote,
     items: [
-      { title: 'العملات', href: '/finances/currencies', icon: Coins },
-      { title: 'المعاملات', href: '/finances/transactions', icon: ArrowRightLeft },
-      { title: 'المصاريف', href: '/finances/expenses', icon: Wallet }
+      { title: 'العملات', href: '/finances/currencies', icon: Coins, permission: 'manage-finance' },
+      { title: 'المعاملات', href: '/finances/transactions', icon: ArrowRightLeft, permission: 'manage-finance' },
+      { title: 'المصاريف', href: '/finances/expenses', icon: Wallet, permission: 'manage-finance' }
     ]
   },
 
   {
-    "title":"الاشتراكات",
-    "icon":CreditCard,
-    "items":[
-      { title: 'الاشتراكات', href: '/subscriptions', icon: CreditCard },
-      {title:"الخطط",href:"/plans",icon:CreditCard},
-      {title:"طلبات الاشتراك",href:"/subscription-requests",icon:CreditCard}
+    title:"الاشتراكات",
+    icon:CreditCard,
+    items:[
+      { title: 'الاشتراكات', href: '/subscriptions', icon: CreditCard, permission: 'manage-subscriptions' },
+      { title:"الخطط", href:"/plans", icon:CreditCard, permission: 'manage-plans' },
+      { title:"طلبات الاشتراك", href:"/subscription-requests", icon:CreditCard, permission: 'manage-subscriptions' }
     ]
   },
+
   {
     title: 'الطلبات',
     icon: WalletIcon,
     items: [
-      { title: 'طلبات السحب', href: '/orders/withdraw', icon: CreditCard },
-      { title: 'طلبات الأيداع', href: '/orders/deposit', icon: WalletCardsIcon },
+      { title: 'طلبات السحب', href: '/orders/withdraw', icon: CreditCard, permission: 'manage-withdraw-requests' },
+      { title: 'طلبات الأيداع', href: '/orders/deposit', icon: WalletCardsIcon, permission: 'manage-deposit-requests' },
     ]
-  }
-  ,{
+  },
+
+  {
     title: 'الإعدادات',
     icon: Settings,
     items: [
-      { title: 'المواد', href: '/subjects', icon: BookOpen }
+      { title: 'المواد', href: '/subjects', icon: BookOpen, permission: 'manage-subjects' }
     ]
   }
 ];
+
 
 const studentMenuGroups = [
   { title: 'الرئيسية', icon: LayoutDashboard, href: '/student/dashboard' },
@@ -111,20 +114,40 @@ const teacherMenuGroups = [
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [permissions, setPermissions] = useState<string[]>([]);
 
   const [expanded, setExpanded] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    setUser(getUser());
+    const u = getUser();
+    setUser(u);
+
+    // جلب permissions
+    const perms = u?.permissions || [];
+    setPermissions(perms);
   }, []);
+
+  const filteredMenu = (menu: any[]) => {
+    return menu
+      .map(group => {
+        if (group.items) {
+          const filteredItems = group.items.filter(item => !item.permission || permissions.includes(item.permission));
+          if (filteredItems.length === 0) return null;
+          return { ...group, items: filteredItems };
+        }
+        if (group.permission && !permissions.includes(group.permission)) return null;
+        return group;
+      })
+      .filter(Boolean);
+  };
 
   const menu =
   user?.role === 'student'
     ? studentMenuGroups
     : user?.role === 'teacher'
     ? teacherMenuGroups
-    : adminMenuGroups;
+    : filteredMenu(adminMenuGroups);
 
 
   const isActive = (href?: string) => href && pathname.startsWith(href);

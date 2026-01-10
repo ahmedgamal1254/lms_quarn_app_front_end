@@ -3,6 +3,7 @@
  * Handles token management and authentication checks
  */
 
+
 export interface User {
     id: number;
     name: string;
@@ -10,6 +11,7 @@ export interface User {
     role: 'admin' | 'teacher' | 'student' | 'parent';
     phone?: string;
     image?: string;
+    Permissions?: []
 }
 
 export interface AuthData {
