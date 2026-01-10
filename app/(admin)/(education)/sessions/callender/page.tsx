@@ -53,7 +53,10 @@ export default function CalendarPage() {
   const { data: sessionsData, isLoading } = useQuery({
     queryKey: ['sessions-calendar', currentMonth.format('YYYY-MM')],
     queryFn: async () => {
-      const response = await axiosInstance.get('/sessions?per_page=100');
+      const params= new URLSearchParams();
+      params.append('date', currentMonth.format('YYYY-MM'));
+      params.append('per_page', "31");
+      const response = await axiosInstance.get('/sessions', { params });
       return response.data;
     }
   });
@@ -120,8 +123,8 @@ export default function CalendarPage() {
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
           <div className="px-4 md:px-6 py-4 flex items-center justify-between">
 
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">تقويم الحصص</h1>
+            <div className="flex-1 text-center md:text-right">
+              <h1 className="text-2xl md:text-2xl font-bold text-gray-900">تقويم الحصص</h1>
               <p className="text-sm text-gray-500 mt-1">إدارة وتتبع جميع الحصص الدراسية</p>
             </div>
             <div className="hidden md:flex items-center space-x-4"></div>

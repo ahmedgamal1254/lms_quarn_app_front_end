@@ -5,6 +5,7 @@ import { Users, Mail, Phone, Globe, GraduationCap, CheckCircle, Clock, Search, C
 import Link from 'next/link';
 import { useState } from 'react';
 import axiosInstance from '@/lib/axios';
+import Pagination from '@/components/Pagination';
 
 interface Plan {
   id: number;
@@ -43,12 +44,18 @@ interface StudentsResponse {
 export default function TeacherStudentsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    setPage(newPage);
+  };
 
   const { data, isLoading, error } = useQuery<StudentsResponse>({
-    queryKey: ['teacher-students', currentPage, searchTerm],
+    queryKey: ['teacher-students', currentPage, searchTerm , page],
     queryFn: async () => {
       const params = new URLSearchParams();
-      params.append('page', currentPage.toString());
+      params.append('page', page.toString());
+      params.append('per_page', perPage.toString());
       if (searchTerm) {
         params.append('search', searchTerm);
       }
@@ -58,16 +65,7 @@ export default function TeacherStudentsPage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-  //       <div className="text-center">
-  //         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-  //         <p className="mt-4 text-gray-600">جاري تحميل الطلاب...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  console.log(data);
 
   if (error) {
     return (
@@ -166,9 +164,11 @@ export default function TeacherStudentsPage() {
                       {student.name}
                     </h3>
                     <div className="flex flex-col gap-1 text-sm text-gray-600 mt-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 break-words">
                         <Mail className="w-4 h-4" />
-                        {student.email}
+                        <span className="break-all">
+                          {student.email}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Phone className="w-4 h-4" />
@@ -277,57 +277,17 @@ export default function TeacherStudentsPage() {
         </div>
       )}
 
-      {/* Pagination */}
-      {lastPage > 1 && (
-        <div className="flex items-center justify-center gap-2 mt-8 p-4 bg-white rounded-lg shadow-sm flex-wrap">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPageNum === 1}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors text-sm"
-          >
-            <ChevronRight className="w-4 h-4" />
-            السابق
-          </button>
+      {
+        students && (
+          <Pagination 
+            currentPage={page}
+            total={data?.data?.total || 0}
+            lastPage={data?.data?.last_page || 0}
+            onPageChange={handlePageChange}
 
-          <div className="flex items-center gap-1">
-            {Array.from({ length: lastPage }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`w-9 h-9 rounded-lg font-semibold transition-colors text-sm ${
-                  currentPageNum === page
-                    ? 'bg-blue-600 text-white'
-                    : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(lastPage, p + 1))}
-            disabled={currentPageNum === lastPage}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors text-sm"
-          >
-            التالي
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-
-      {/* Results Info */}
-      {students.length > 0 && (
-        <div className="text-center text-gray-600 text-sm mt-6">
-          <p>
-            عرض <span className="font-semibold">{(currentPageNum - 1) * perPage + 1}</span> إلى{' '}
-            <span className="font-semibold">
-              {Math.min(currentPageNum * perPage, total)}
-            </span>{' '}
-            من <span className="font-semibold">{total}</span> طالب
-          </p>
-        </div>
-      )}
+          />
+        )
+      }
     </div>
   );
 }

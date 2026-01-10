@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
 import Head from 'next/head';
 import RegisterSW from '@/components/worker';
+import NextTopLoader from 'nextjs-toploader';
 
 export const cairo = Cairo({
   subsets: ['arabic'],
@@ -39,6 +40,7 @@ export default function RootLayout({
       </Head>
       <body className={`${almarai.className}`}>
         <Providers>
+          <NextTopLoader />
           <Toaster position="top-center" />
           <AuthGuard>
             {children}

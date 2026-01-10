@@ -5,6 +5,7 @@ import { FileText, Plus, Search, Edit, Trash2, X, Download, Users, CheckCircle }
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axiosInstance from '@/lib/axios';
+import Pagination from '@/components/Pagination';
 
 interface Exam {
   id: number;
@@ -46,6 +47,8 @@ interface Submission {
 
 export default function TeacherExamsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState<number>(1);
+  const [per_page, setPerPage] = useState(5);
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -70,9 +73,12 @@ export default function TeacherExamsPage() {
 
   // Fetch exams
   const { data: examsData, isLoading } = useQuery({
-    queryKey: ['teacher-exams', statusFilter],
+    queryKey: ['teacher-exams', statusFilter, page, per_page, searchTerm],
     queryFn: async () => {
       const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('per_page', per_page.toString());
+      if (searchTerm) params.append('search', searchTerm);
       if (statusFilter !== 'all') params.append('status', statusFilter);
       const response = await axiosInstance.get(`/teacher/exams?${params.toString()}`);
       return response.data;
@@ -339,6 +345,18 @@ export default function TeacherExamsPage() {
           </div>
         ))}
       </div>
+
+      {/* Pagination */}
+      {
+        filteredExams.length > 0 && (
+            <Pagination
+              currentPage={page}
+              total={examsData?.total || 0}
+              lastPage={examsData?.last_page || 1}
+              onPageChange={(page) => setPage(page)}
+            />
+        )
+      }
 
       {/* Exam Create/Edit Modal */}
       {isModalOpen && (

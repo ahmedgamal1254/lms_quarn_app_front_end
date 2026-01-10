@@ -26,7 +26,7 @@ const fetchSessions = async (params: any) => {
   const response = await axiosInstance.get('/student/sessions', {
     params,
   });
-  return response.data.data.sessions;
+  return response.data.data;
 };
 
 // Fetch single session
@@ -184,14 +184,17 @@ export default function StudentSessionsPage() {
         </div>
 
         {/* Loading State */}
-        {isLoading ? (
+
+       { isLoading && (
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
               <p className="text-gray-600 font-semibold">جاري التحميل...</p>
             </div>
           </div>
-        ) : sessionsData.length === 0 ? (
+        )}
+
+        { sessionsData?.sessions.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center border border-gray-100 mb-8">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-600 text-lg font-semibold">لا توجد حصص</p>
@@ -200,7 +203,7 @@ export default function StudentSessionsPage() {
           <>
             {/* Sessions Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {sessionsData.map((session: any) => {
+              {sessionsData?.sessions.map((session: any) => {
                 const { isUpcoming, statusColor, statusText } = getStatusInfo(session);
 
                 return (

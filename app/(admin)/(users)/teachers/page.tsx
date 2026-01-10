@@ -58,6 +58,7 @@ interface TeacherFormData {
   status: 'active' | 'inactive' | 'on_leave';
   subjects: string[];
   password: string;
+  session_link: string;
 }
 
 interface TeachersResponse {
@@ -94,7 +95,8 @@ export default function TeachersPage() {
         gender: 'male',
         status: 'active',
         subjects: [],
-        password: ''
+        password: '',
+        session_link:''
     });
 
 
@@ -171,7 +173,8 @@ export default function TeachersPage() {
                 gender: 'male',
                 status: teacher.status,
                 subjects: subjectsList,
-                password: ''
+                password: '',
+                session_link:''
             });
         } else {
             setFormData({
@@ -183,7 +186,8 @@ export default function TeachersPage() {
                 gender: 'male',
                 status: 'active',
                 subjects: [],
-                password: ''
+                password: '',
+                session_link:''
             });
         }
         setIsModalOpen(true);
@@ -201,7 +205,8 @@ export default function TeachersPage() {
             gender: 'male',
             status: 'active',
             subjects: [],
-            password: ''
+            password: '',
+            session_link:''
         });
     };
 
@@ -224,6 +229,7 @@ export default function TeachersPage() {
             currency: formData.currency,
             gender: formData.gender,
             status: formData.status,
+            session_link:formData.session_link,
             subjects: formData.subjects.join(', ')
         };
 
@@ -539,18 +545,29 @@ export default function TeachersPage() {
                                         placeholder="01012345678"
                                     />
                                 </div>
-                                {modalMode === 'create' && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">كلمة المرور *</label>
-                                        <input
-                                            type="password"
-                                            value={formData.password}
-                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="أدخل كلمة المرور"
-                                        />
-                                    </div>
-                                )}
+                                 
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">كلمة المرور *</label>
+                                    <input
+                                        type="password"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="أدخل كلمة المرور"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">رابط الاونلاين</label>
+                                    <input
+                                        type="text"
+                                        value={formData.session_link}
+                                        onChange={(e) => setFormData({ ...formData, session_link: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="ex :- https://meet.google.com/awr-rgpw-mdh"
+                                    />
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">سعر الساعة</label>
                                     <input

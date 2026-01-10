@@ -35,6 +35,18 @@ interface Subject {
   updated_at: string;
 }
 
+interface Teacher{
+  id: number;
+  user_id: number;
+  name: string;
+  email: string;
+  phone: string;
+  session_link: string;
+  subjects: Subject[];
+  created_at: string;
+  updated_at: string;
+}
+
 interface Session {
   id: number;
   student_id: number;
@@ -54,6 +66,7 @@ interface Session {
   updated_at: string;
   student: Student;
   subject: Subject;
+  teacher: Teacher;
 }
 
 interface ApiResponse {
@@ -189,7 +202,7 @@ export default function SessionPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{session.title}</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-2xl font-bold text-white mb-2">{session.title}</h1>
               <p className="text-blue-100 text-sm sm:text-base">{session.description}</p>
             </div>
             <button
@@ -261,6 +274,27 @@ export default function SessionPage() {
                       className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
                     >
                       {session.meeting_link}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {(!session.meeting_link && session?.teacher?.session_link) && (
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3">رابط الاجتماع</h2>
+                <div className="flex items-center gap-3 p-3 bg-gradient-to-l from-blue-50 to-blue-100 rounded-lg">
+                  <div className="p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <Video className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <a
+                      href={session.teacher.session_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
+                    >
+                      {session.teacher.session_link}
                     </a>
                   </div>
                 </div>
