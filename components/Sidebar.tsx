@@ -136,6 +136,13 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     setPermissions(perms);
   }, []);
 
+  const roleUrls = {
+    student: "/student/profile",
+    teacher: "/teacher/profile",
+  };
+
+  const url = roleUrls[user?.role] ?? "";
+
   const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
       .map(group => {
@@ -285,15 +292,17 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         {/* User */}
         <div className="p-4 border-t">
           {user && (
-            <div className="flex items-center gap-3 p-3 mb-3 bg-gray-50 rounded-lg">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-500 text-white">
-                <User size={18} />
+            <Link href={url}>
+              <div className="flex items-center gap-3 p-3 mb-3 bg-gray-50 rounded-lg">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-500 text-white">
+                  <User size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.role}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                <p className="text-xs text-gray-500">{user.role}</p>
-              </div>
-            </div>
+            </Link>
           )}
 
           <button

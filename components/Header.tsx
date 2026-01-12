@@ -3,6 +3,7 @@
 import { Bell, Globe, Menu, Moon, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getUser } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const [user, setUser] = useState<any>(null);
@@ -11,9 +12,13 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     setUser(getUser());
   }, []);
 
+  const url=user?.role=="student"?"/student/profile":""
+
+
   return (
     <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6">
   {/* Left */}
+  <Link href={url}>
   <div className="flex items-center gap-3">
     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-100 flex items-center justify-center">
       <User size={18} className="text-gray-500" />
@@ -27,6 +32,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
       </div>
     )}
   </div>
+  </Link>
 
   {/* Right */}
   <div className="flex items-center gap-1 sm:gap-2">

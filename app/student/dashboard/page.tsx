@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import axiosInstance from '@/lib/axios';
+import Link from 'next/link';
 
 interface Session{
   id: number;
@@ -135,9 +136,11 @@ export default function StudentDashboard() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <Link href={"/student/profile"}>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             مرحباً {student?.name} 👋
           </h1>
+          </Link>
           <p className="text-gray-600">رحباً بك في لوحة التحكم الخاصة بك</p>
         </div>
 
