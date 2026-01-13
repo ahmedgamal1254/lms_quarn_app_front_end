@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import axiosInstance from '@/lib/axios';
 import Pagination from '@/components/Pagination';
+import { Button } from 'antd';
+import toast from 'react-hot-toast';
 
 interface Session {
   id: number;
@@ -59,6 +61,14 @@ export default function SessionsPage() {
     retry: 2,
   });
 
+  const handleCheckIn = async (sessionId: number) => {
+    try {
+      const response = await axiosInstance.get(`/teacher/sessions/${sessionId}/checkin`);
+      window.open(response?.data?.data.meeting_link, '_blank');
+    } catch (error) {
+      toast.error('حدث خطاء في التسجيل');
+    }
+  };
 
   if (error) {
     return (
@@ -243,15 +253,15 @@ export default function SessionsPage() {
                     {/* Right - Action Buttons */}
                     <div className="flex flex-col gap-2 md:mt-0">
                       {session.status === 'scheduled' && (
-                        <a
-                          href={session.meeting_link}
-                          target="_blank"
+                        <Button
+                          onClick={() =>handleCheckIn(session.id)}
+                          type='primary'
                           rel="noopener noreferrer"
                           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center transition text-sm"
                         >
                           <Video className="w-4 h-4 ml-2" />
                           دخول الحصة
-                        </a>
+                        </Button>
                       )}
                       {session.status === 'completed' && (
                         <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-center font-semibold text-sm">

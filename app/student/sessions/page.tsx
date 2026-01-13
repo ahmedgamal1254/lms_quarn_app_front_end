@@ -19,6 +19,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
+import toast from 'react-hot-toast';
 
 
 // Fetch sessions
@@ -107,6 +108,15 @@ export default function StudentSessionsPage() {
         ? 'قادمة'
         : 'منتهية';
     return { isUpcoming, statusColor, statusText };
+  };
+
+  const handleCheckIn = async (sessionId: number) => {
+    try {
+      const response = await axiosInstance.get(`/student/sessions/${sessionId}/checkin`);
+      window.open(response?.data?.data.meeting_link, '_blank');
+    } catch (error) {
+      toast.error('حدث خطاء في التسجيل');
+    }
   };
 
   const formatTime = (dateString: string | null) => {

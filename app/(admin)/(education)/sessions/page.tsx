@@ -13,11 +13,14 @@ import {
   Menu,
   AlertCircle,
   Loader,
-  Clock
+  Clock,
+  Eye
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
 import SessionModal from '@/components/sessions/createmultisessions';
+import { Modal } from 'antd';
+import SessionAttendance from '@/components/sessions/SessionAttendance';
 
 interface Student {
   id: number;
@@ -92,6 +95,9 @@ export default function SessionsPage() {
 
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+
+  const [sessionData, setSessionData] = useState<SessionData[]>([]);
+  const [viewSessionModal, setViewSessionModal] = useState<boolean>(false);
 
   // Fetch sessions
   const { data: sessionsData, isLoading, error: sessionsError } = useQuery({
@@ -186,6 +192,12 @@ export default function SessionsPage() {
     setShowModal(true);
   };
 
+  const handleViewAttendance = (session: any) => {
+    setSessionData(session);
+
+    setViewSessionModal(true)
+  }
+
   const handleModalSubmit = (data: any, mode: 'single' | 'bulk') => {
     if (mode === 'single') {
       createSingleMutation.mutate(data);
@@ -270,6 +282,8 @@ export default function SessionsPage() {
               </button>
             </div>
 
+
+
             {/* Filters Dropdown */}
             {showFilters && (
               <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
@@ -336,6 +350,7 @@ export default function SessionsPage() {
                         <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">التاريخ والوقت</th>
                         <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">المدة</th>
                         <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">الحالة</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">بيانات الحضور</th>
                         <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">الإجراءات</th>
                       </tr>
                     </thead>
@@ -367,6 +382,17 @@ export default function SessionsPage() {
                                 <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${statusStyle.bg} ${statusStyle.border} ${statusStyle.text}`}>
                                   {getStatusText(session.status)}
                                 </span>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-700">
+                                <div className="flex items-center justify-center gap-2">
+                                  <button
+                                    onClick={() => handleViewAttendance(session)}
+                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    title="عرض الحضور"
+                                  >
+                                    <Eye size={16} />
+                                  </button>
+                                </div>
                               </td>
                               <td className="px-6 py-4 text-sm">
                                 <div className="flex items-center justify-center gap-2">
@@ -430,6 +456,22 @@ export default function SessionsPage() {
           </div>
         </div>
       )}
+
+      {/* view attendance modal */}
+      <Modal
+      open={viewSessionModal}
+      onCancel={() => setViewSessionModal(false)}
+      title="عرض الحضور"
+      footer={null}
+      >
+        {
+          sessionData && (
+            <div className="w-full h-full">
+              <SessionAttendance sessionData={sessionData} />
+            </div>
+          )
+        }
+      </Modal>
 
       {/* Session Modal */}
       <SessionModal
