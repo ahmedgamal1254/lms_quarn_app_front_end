@@ -11,8 +11,6 @@ import {
   Filter,
   X,
   BookOpen,
-  FileText,
-  Award,
   Loader2,
   AlertCircle,
   ChevronLeft,
@@ -20,6 +18,8 @@ import {
 } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
+import { useAppSettingsStore } from '@/store/appSetting';
+import { Button } from 'antd';
 
 
 // Fetch sessions
@@ -57,7 +57,7 @@ export default function StudentSessionsPage() {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('all');
+  const [filter, setFiltger] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
    const params = new URLSearchParams();
@@ -90,6 +90,15 @@ export default function StudentSessionsPage() {
     total: sessionsData?.total || 0,
   };
 
+    const settings=useAppSettingsStore((s) => s.app_settings);
+
+  const sessionDateTime = new Date(selectedSession?.session_date || '');
+  const sessionEnd = new Date(selectedSession?.end_time || '');
+
+  const minutesBefore = settings?.before_start_session ?? 15;
+  const canJoinTime = new Date(sessionDateTime.getTime() - minutesBefore * 60 * 1000);
+  const now = new Date();
+  const canJoin = now >= canJoinTime && now <= sessionEnd;
 
   const getStatusInfo = (session: any) => {
     const today = new Date().toISOString().split('T')[0];
@@ -115,9 +124,11 @@ export default function StudentSessionsPage() {
       const response = await axiosInstance.get(`/student/sessions/${sessionId}/checkin`);
       window.open(response?.data?.data.meeting_link, '_blank');
     } catch (error) {
-      toast.error('حدث خطاء في التسجيل');
+      toast.error(error?.response?.data?.error || 'حدث خطاء');
     }
   };
+
+
 
   const formatTime = (dateString: string | null) => {
     if (!dateString) return '';
@@ -215,6 +226,14 @@ export default function StudentSessionsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {sessionsData?.sessions.map((session: any) => {
                 const { isUpcoming, statusColor, statusText } = getStatusInfo(session);
+                const sessionStart = new Date(session.start_time);
+                const sessionEnd   = new Date(session.end_time);
+
+                const minutesBefore = settings?.before_start_session ?? 15;
+                const canJoinTime   = new Date(sessionStart.getTime() - minutesBefore * 60 * 1000);
+                const now           = new Date();
+
+                const canJoin = now >= canJoinTime && now <= sessionEnd;
 
                 return (
                   <div
@@ -261,17 +280,16 @@ export default function StudentSessionsPage() {
                         >
                           التفاصيل
                         </button>
-                        {session.meeting_link && isUpcoming && (
-                          <a
-                            href={session.meeting_link}
-                            target="_blank"
+                        {session.meeting_link && (
+                          <Button                            
                             rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={() => handleCheckIn(session.id)}
+                            disabled={!canJoin}
                             className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold text-sm flex items-center justify-center gap-2"
                           >
                             <Video className="w-4 h-4" />
                             انضم
-                          </a>
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -375,17 +393,16 @@ export default function StudentSessionsPage() {
                 {(() => {
                   const { isUpcoming } = getStatusInfo(selectedSession);
                   return (
-                    selectedSession.meeting_link &&
-                    isUpcoming && (
-                      <a
-                        href={selectedSession.meeting_link}
-                        target="_blank"
+                    selectedSession.meeting_link && (
+                      <Button
+                        onClick={()=>handleCheckIn(selectedSession?.id)}
                         rel="noopener noreferrer"
+                        disabled={!canJoin}
                         className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
                       >
                         <Video className="w-5 h-5" />
                         الانضمام للحصة
-                      </a>
+                      </Button>
                     )
                   );
                 })()}
@@ -462,14 +479,14 @@ export default function StudentSessionsPage() {
               {selectedSession.meeting_link && (
                 <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
                   <h4 className="font-semibold text-gray-900 mb-2">رابط الاجتماع</h4>
-                  <a
-                    href={selectedSession.meeting_link}
+                  <Button
+                    onClick={() => handleCheckIn(selectedSession?.id)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-indigo-600 hover:text-indigo-700 break-all text-sm"
                   >
                     {selectedSession.meeting_link}
-                  </a>
+                  </Button>
                 </div>
               )}
             </div>

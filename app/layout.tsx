@@ -7,6 +7,9 @@ import Providers from './providers';
 import Head from 'next/head';
 import RegisterSW from '@/components/worker';
 import NextTopLoader from 'nextjs-toploader';
+import AppSettingsProvider from '@/components/providers';
+import { useAppSettingsStore } from '@/store/appSetting';
+import SettingsHead from '@/components/SettingsHead';
 
 export const cairo = Cairo({
   subsets: ['arabic'],
@@ -23,6 +26,9 @@ export const almarai = Almarai({
 export const metadata: Metadata = {
   title: 'أكاديمية التميز',
   description: 'نظام إدارة المنصة التعليمية',
+  icons: {
+    icon: '/favicon.ico', // fallback
+  },
 }
 
 export default function RootLayout({
@@ -30,21 +36,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  
   return (
     <html lang="ar" dir="rtl">
       <RegisterSW />
-       <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-    
-      </Head>
       <body className={`${almarai.className}`}>
         <Providers>
-          <NextTopLoader />
-          <Toaster position="top-center" />
-          <AuthGuard>
-            {children}
-          </AuthGuard>
+          <AppSettingsProvider>
+            <SettingsHead />
+            <NextTopLoader />
+            <Toaster position="top-center" />
+            <AuthGuard>
+              {children}
+            </AuthGuard>
+          </AppSettingsProvider>
         </Providers>
       </body>
     </html>

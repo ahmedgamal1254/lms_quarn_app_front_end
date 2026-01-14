@@ -8,6 +8,7 @@ import axiosInstance from '@/lib/axios';
 import Pagination from '@/components/Pagination';
 import { Button } from 'antd';
 import toast from 'react-hot-toast';
+import { useAppSettingsStore } from '@/store/appSetting';
 
 interface Session {
   id: number;
@@ -60,6 +61,8 @@ export default function SessionsPage() {
     staleTime: 5 * 60 * 1000,
     retry: 2,
   });
+
+  const settings = useAppSettingsStore((s) => s.app_settings);
 
   const handleCheckIn = async (sessionId: number) => {
     try {
@@ -201,6 +204,14 @@ export default function SessionsPage() {
         ) : (
           filteredSessions.map((session) => {
             const colors = getStatusColor(session.status);
+            const sessionDateTime = new Date(`${session.session_date}T${session.start_time}:00`);
+            const sessionEnd = new Date(`${session.session_date}T${session.end_time}:00`);
+
+            const minutesBefore = settings?.before_start_session ?? 15;
+            const canJoinTime = new Date(sessionDateTime.getTime() - minutesBefore * 60 * 1000);
+            const now = new Date();
+            const canJoin = now >= canJoinTime && now <= sessionEnd;
+
             return (
               <div
                 key={session.id}
@@ -257,6 +268,7 @@ export default function SessionsPage() {
                           onClick={() =>handleCheckIn(session.id)}
                           type='primary'
                           rel="noopener noreferrer"
+                          disabled={!canJoin}
                           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center transition text-sm"
                         >
                           <Video className="w-4 h-4 ml-2" />

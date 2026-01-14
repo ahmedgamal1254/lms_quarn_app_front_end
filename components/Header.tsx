@@ -4,6 +4,7 @@ import { Bell, Globe, Menu, Moon, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getUser } from '@/lib/auth';
 import Link from 'next/link';
+import { useAppSettingsStore  } from '@/store/appSetting';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const [user, setUser] = useState<any>(null);
@@ -11,6 +12,8 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   useEffect(() => {
     setUser(getUser());
   }, []);
+
+    const settings = useAppSettingsStore((state) => state.app_settings);
 
   const url=user?.role=="student"?"/student/profile":""
 

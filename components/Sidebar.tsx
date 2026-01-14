@@ -21,13 +21,16 @@ import {
   File,
   WalletIcon,
   WalletMinimalIcon,
-  WalletCardsIcon
+  WalletCardsIcon,
+  Settings2Icon
 } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { getUser, logout } from '@/lib/auth';
+import { useAppSettingsStore } from '@/store/appSetting';
+import { SettingFilled } from '@ant-design/icons';
 
 /* ---------------- MENUS ---------------- */
 
@@ -88,6 +91,7 @@ const adminMenuGroups = [
     title: 'الإعدادات',
     icon: Settings,
     items: [
+      { title: 'الإعدادت', href: '/settings', icon: Settings2Icon, permission: 'manage-subjects' },
       { title: 'المواد', href: '/subjects', icon: BookOpen, permission: 'manage-subjects' }
     ]
   }
@@ -117,6 +121,9 @@ interface MenuSidebar {
   permission?: string;
 }
 
+type UserRole = 'student' | 'teacher' | "admin";
+
+
 /* ---------------- COMPONENT ---------------- */
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -127,6 +134,9 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   const [expanded, setExpanded] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
 
+      const settings = useAppSettingsStore((state) => state.app_settings);
+  
+
   useEffect(() => {
     const u = getUser();
     setUser(u);
@@ -136,12 +146,15 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     setPermissions(perms);
   }, []);
 
-  const roleUrls = {
-    student: "/student/profile",
-    teacher: "/teacher/profile",
+  const roleUrls: Record<UserRole, string> = {
+    student: '/student/profile',
+    teacher: '/teacher/profile',
+    admin:"/admin/profile"
   };
 
-  const url = roleUrls[user?.role] ?? "";
+  const role = user?.role as UserRole | undefined;
+
+  const url = role ? roleUrls[role] : '';
 
   const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
@@ -206,13 +219,31 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 >
 
         {/* Logo */}
-        <div className="flex items-center gap-3 p-6 border-b">
-          <BookOpen className="text-emerald-600" />
-          <div>
-            <p className="font-semibold text-gray-900">أكاديمية</p>
-            <p className="text-xs text-gray-500">التميز</p>
-          </div>
-        </div>
+<div className="flex items-center gap-4 p-6 border-b">
+  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
+    {settings?.logo ? (
+      <img
+        src={settings.logo}
+        alt={settings?.app_name || 'App Logo'}
+        className="w-full h-full object-contain"
+      />
+    ) : (
+      <span className="text-sm text-gray-400 font-semibold">
+        LOGO
+      </span>
+    )}
+  </div>
+
+  <div className="flex flex-col">
+    <span className="text-lg font-bold text-gray-900">
+      {settings?.app_name || 'اسم المدرسة'}
+    </span>
+    <span className="text-sm text-gray-500">
+      لوحة التحكم
+    </span>
+  </div>
+</div>
+
 
         {/* Menu */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-2">
