@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Eye, EyeOff, GraduationCap, ArrowRight, Sparkles, UserCog, BookOpen, Users } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
-
+import { getFcmToken } from "@/utils/getFcmToken";
 
 
 export default function LoginPage() {
@@ -26,6 +26,7 @@ export default function LoginPage() {
         const res = await axiosInstance.post('/auth/login', {
             email,
             password,
+            token: await getFcmToken(),
             }, {
             headers: {
                 'Content-Type': 'application/json',

@@ -14,9 +14,12 @@ import {
   Award,
   ArrowRight,
 } from 'lucide-react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import axiosInstance from '@/lib/axios';
 import Link from 'next/link';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from "next/navigation";
+import { Button } from 'antd';
 
 interface Session{
   id: number;
@@ -47,6 +50,8 @@ interface DashboardData {
     name: string;
   },
   teacher:{
+    id: number;
+    user_id: number;
     name: string;
     email: string;
     phone: string;
@@ -72,29 +77,37 @@ interface DashboardData {
 }
 
 export default function StudentDashboard() {
-  const [data, setData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
+    const router = useRouter();
 
-  async function loadDashboard() {
-    try {
-      const res = await axiosInstance.get('/student/dashboard');
-      setData(res.data.data);
-    } catch (err ) {
-        if (axios.isAxiosError(err)) {
-            // TypeScript عارف دلوقتي إن err من نوع AxiosError
-            setError(err.response?.data?.message || 'حدث خطأ في تحميل البيانات');
-        } else {
-            setError('حدث خطأ في تحميل البيانات');
-        }
-    } finally {
-      setLoading(false);
-    }
-  }
+  const {data, isLoading:loading, error:dashboardError} = useQuery<DashboardData>({
+    queryKey: ['student-dashboard'],
+    queryFn: async () => {
+      const response = await axiosInstance.get('/student/dashboard');
+      return response.data?.data;
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
+  });
+
+  const startConversationMutation = useMutation({
+    mutationFn: async (teacherId: number) => {
+      const response = await axiosInstance.get(`/conversations/${teacherId}`);
+      return response.data;
+    },
+    onSuccess: (data) => {      
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+      router.push(`/student/chat`);      
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      // toast.error(error?.response?.data?.error || 'فشل إرسال الرسالة');
+    },
+  });
+
 
   if (loading) {
     return (
@@ -129,6 +142,12 @@ export default function StudentDashboard() {
     );
   }
 
+
+
+  const handleStartChat=(id: number) => {
+    startConversationMutation.mutate(id);
+  };
+
   const { student, teacher, subscription, statistics, upcoming_sessions, pending_homework } = data;
 
   return (
@@ -157,7 +176,8 @@ export default function StudentDashboard() {
                 <p className="text-indigo-600 font-semibold text-sm mt-1">{data.teacher?.subject_name}</p>
               </div>
             </div>
-            <div className="flex gap-6 flex-wrap">
+            <div className='flex flex-col items-end gap-2'>
+              <div className="flex gap-6 flex-wrap">
               {data.teacher?.email && (
                 <div className="flex items-center gap-2 text-gray-700">
                   <Mail className="w-5 h-5 text-indigo-600" />
@@ -170,6 +190,11 @@ export default function StudentDashboard() {
                   <span className="text-sm">{data.teacher.phone}</span>
                 </div>
               )}
+            </div>
+            {/* button */}
+            <Button 
+            loading={startConversationMutation.isPending}
+            onClick={() => handleStartChat(data.teacher.user_id)} type="primary">ابداء محادثة</Button>
             </div>
           </div>
         </div>
@@ -273,15 +298,14 @@ export default function StudentDashboard() {
                       </div>
                     </div>
                     {session.meeting_link && (
-                    <a
-                      href={session.meeting_link}
-                      target="_blank"
+                    <Link
+                      href={"/student/sessions"}
                       rel="noopener noreferrer"
                       className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all hover:from-indigo-600 hover:to-blue-600 text-sm font-semibold flex items-center gap-2 flex-shrink-0"
                     >
                       الانضمام
                       <ArrowRight className="w-4 h-4" />
-                    </a>
+                    </Link>
                     )}
                   </div>
                 </div>

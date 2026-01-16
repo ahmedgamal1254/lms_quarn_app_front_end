@@ -10,6 +10,7 @@ import NextTopLoader from 'nextjs-toploader';
 import AppSettingsProvider from '@/components/providers';
 import { useAppSettingsStore } from '@/store/appSetting';
 import SettingsHead from '@/components/SettingsHead';
+import FirebaseNotificationsListener from '@/utils/notifications_firbae';
 
 export const cairo = Cairo({
   subsets: ['arabic'],
@@ -49,6 +50,7 @@ export default function RootLayout({
             <AuthGuard>
               {children}
             </AuthGuard>
+            <FirebaseNotificationsListener />
           </AppSettingsProvider>
         </Providers>
       </body>

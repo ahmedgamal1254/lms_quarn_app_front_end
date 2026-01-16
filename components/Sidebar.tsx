@@ -22,7 +22,8 @@ import {
   WalletIcon,
   WalletMinimalIcon,
   WalletCardsIcon,
-  Settings2Icon
+  Settings2Icon,
+  MessageCircle
 } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
@@ -102,7 +103,8 @@ const studentMenuGroups = [
   { title: 'الرئيسية', icon: LayoutDashboard, href: '/student/dashboard' },
   { title: 'الحصص', icon: Video, href: '/student/sessions' },
   { title: 'الواجبات', icon: ClipboardList, href: '/student/homework' },
-  { title: 'الامتحانات', icon: FileQuestion, href: '/student/exams' }
+  { title: 'الامتحانات', icon: FileQuestion, href: '/student/exams' },
+  { title: 'المحدثات', icon: MessageCircle, href: '/student/chat' },
 ];
 
 const teacherMenuGroups = [
@@ -110,7 +112,8 @@ const teacherMenuGroups = [
   { title: 'الحصص', icon: Video, href: '/teacher/sessions' },
   { title: 'الواجبات', icon: ClipboardList, href: '/teacher/homework' },
   { title: 'الامتحانات', icon: FileQuestion, href: '/teacher/exams' },
-  { title: 'الطلاب', icon: Users, href: '/teacher/students' }
+  { title: 'الطلاب', icon: Users, href: '/teacher/students' },
+  { title: 'المحدثات', icon: MessageCircle, href: '/teacher/chat' },
 ]
 
 interface MenuSidebar {

@@ -1,11 +1,14 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Users, Mail, Phone, Globe, GraduationCap, CheckCircle, Clock, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import axiosInstance from '@/lib/axios';
 import Pagination from '@/components/Pagination';
+import { Button } from 'antd';
+import { AxiosError } from 'axios';
+import { useRouter } from "next/navigation";
 
 interface Plan {
   id: number;
@@ -27,6 +30,7 @@ interface Student {
   image: string;
   status: string;
   plan: Plan;
+  user_id: number;
   created_at: string;
 }
 
@@ -90,6 +94,29 @@ export default function TeacherStudentsPage() {
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const startConversationMutation = useMutation({
+    mutationFn: async (studentId: number) => {
+      const response = await axiosInstance.get(`/conversations/${studentId}`);
+      return response.data;
+    },
+    onSuccess: (data) => {      
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+      router.push(`/teacher/chat`);      
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      // toast.error(error?.response?.data?.error || 'فشل إرسال الرسالة');
+    },
+  });
+
+  const handleStartChat=(id: number) => {
+    startConversationMutation.mutate(id);
   };
 
   const getColorForInitials = (id: number) => {
@@ -174,6 +201,9 @@ export default function TeacherStudentsPage() {
                         {student.phone}
                       </div>
                     </div>
+                    <Button className="mt-4" type='primary'
+                    loading={startConversationMutation.isPending}
+                    onClick={() => handleStartChat(student.user_id)}>بدء دردشة</Button>
                   </div>
                 </div>
 

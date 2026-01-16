@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { getUser } from '@/lib/auth';
 import Link from 'next/link';
 import { useAppSettingsStore  } from '@/store/appSetting';
+import toast from 'react-hot-toast';
+import Notifications from './Notifications';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const [user, setUser] = useState<any>(null);
@@ -13,10 +15,9 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     setUser(getUser());
   }, []);
 
-    const settings = useAppSettingsStore((state) => state.app_settings);
+  const settings = useAppSettingsStore((state) => state.app_settings);
 
   const url=user?.role=="student"?"/student/profile":""
-
 
   return (
     <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6">
@@ -44,9 +45,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
       <Moon size={18} />
     </button>
 
-    <button className="p-2 rounded-lg hover:bg-gray-100">
-      <Bell size={18} />
-    </button>
+    <Notifications />
 
     <button className="p-2 rounded-lg hover:bg-gray-100 hidden md:block">
       <Globe size={18} />
@@ -60,6 +59,8 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
       <Menu size={20} />
     </button>
   </div>
+
+  
 </header>
 
   );
