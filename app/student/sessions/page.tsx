@@ -20,6 +20,7 @@ import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
 import { useAppSettingsStore } from '@/store/appSetting';
 import { Button } from 'antd';
+import { AxiosError } from 'axios';
 
 
 // Fetch sessions
@@ -47,6 +48,7 @@ interface Session{
   session_date: string | null;
   start_time: string | null;
   end_time: string | null;
+  can_join: boolean | null;
   duration_minutes: number | null;
   status: string | null;
   subject: { name: string } | null;
@@ -57,7 +59,7 @@ export default function StudentSessionsPage() {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
   const [search, setSearch] = useState('');
-  const [filter, setFiltger] = useState('all');
+  const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
    const params = new URLSearchParams();
@@ -124,7 +126,8 @@ export default function StudentSessionsPage() {
       const response = await axiosInstance.get(`/student/sessions/${sessionId}/checkin`);
       window.open(response?.data?.data.meeting_link, '_blank');
     } catch (error) {
-      toast.error(error?.response?.data?.error || 'حدث خطاء');
+      const axiosError = error as AxiosError<{ error: string }>;
+      toast.error(axiosError?.response?.data?.error || 'حدث خطأ');
     }
   };
 
@@ -226,15 +229,7 @@ export default function StudentSessionsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {sessionsData?.sessions.map((session: any) => {
                 const { isUpcoming, statusColor, statusText } = getStatusInfo(session);
-                const sessionStart = new Date(session.start_time);
-                const sessionEnd   = new Date(session.end_time);
-
-                const minutesBefore = settings?.before_start_session ?? 15;
-                const canJoinTime   = new Date(sessionStart.getTime() - minutesBefore * 60 * 1000);
-                const now           = new Date();
-
-                const canJoin = now >= canJoinTime && now <= sessionEnd;
-
+              
                 return (
                   <div
                     key={session.id}
@@ -284,7 +279,7 @@ export default function StudentSessionsPage() {
                           <Button                            
                             rel="noopener noreferrer"
                             onClick={() => handleCheckIn(session.id)}
-                            disabled={!canJoin}
+                            disabled={!session?.can_join}
                             className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold text-sm flex items-center justify-center gap-2"
                           >
                             <Video className="w-4 h-4" />
@@ -395,9 +390,9 @@ export default function StudentSessionsPage() {
                   return (
                     selectedSession.meeting_link && (
                       <Button
-                        onClick={()=>handleCheckIn(selectedSession?.id)}
+                        onClick={()=>handleCheckIn(selectedSession?.id as number)}
                         rel="noopener noreferrer"
-                        disabled={!canJoin}
+                        disabled={!selectedSession?.can_join}
                         className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
                       >
                         <Video className="w-5 h-5" />
@@ -480,7 +475,7 @@ export default function StudentSessionsPage() {
                 <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
                   <h4 className="font-semibold text-gray-900 mb-2">رابط الاجتماع</h4>
                   <Button
-                    onClick={() => handleCheckIn(selectedSession?.id)}
+                    onClick={() => handleCheckIn(selectedSession?.id as number)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-indigo-600 hover:text-indigo-700 break-all text-sm"

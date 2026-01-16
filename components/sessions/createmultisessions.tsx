@@ -5,6 +5,7 @@ import { X, Calendar, Clock, User, BookOpen, AlertCircle, Loader, Info } from 'l
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ar';
+import { timeToUTC } from '@/utils/date';
 
 interface Student {
   id: number;
@@ -288,8 +289,8 @@ export default function SessionModal({
       title: singleForm.title,
       description: singleForm.description,
       session_date: singleForm.session_date,
-      start_time: singleForm.start_time,
-      end_time: singleForm.end_time,
+      start_time: timeToUTC(singleForm.start_time, singleForm.session_date),
+      end_time: timeToUTC(singleForm.end_time, singleForm.session_date),
       meeting_link: singleForm.meeting_link,
       notes: singleForm.notes
     }, 'single');
@@ -307,8 +308,8 @@ export default function SessionModal({
       subject_id: parseInt(bulkForm.subject_id),
       title: session.title,
       session_date: session.session_date,
-      start_time: session.start_time,
-      end_time: session.end_time
+      start_time: timeToUTC(session.start_time, session.session_date),
+      end_time: timeToUTC(session.end_time, session.session_date),
     }));
 
     onSubmit({

@@ -21,6 +21,7 @@ import Pagination from '@/components/Pagination';
 import SessionModal from '@/components/sessions/createmultisessions';
 import { Modal } from 'antd';
 import SessionAttendance from '@/components/sessions/SessionAttendance';
+import { utcToLocalDate, utcToLocalDateTime, utcToLocalTime } from '@/utils/date';
 
 interface Student {
   id: number;
@@ -96,12 +97,20 @@ export default function SessionsPage() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
+  // filters data
+  const [filteredData, setFilteredData] = useState<any>({
+    "variation": "all",
+    "student": "all",
+    "teacher": "all",
+    "subject": "all",
+  });
+
   const [sessionData, setSessionData] = useState<SessionData[]>([]);
   const [viewSessionModal, setViewSessionModal] = useState<boolean>(false);
 
   // Fetch sessions
   const { data: sessionsData, isLoading, error: sessionsError } = useQuery({
-    queryKey: ['sessions', searchQuery, statusFilter, currentPage, fromDate, toDate],
+    queryKey: ['sessions', searchQuery, statusFilter, currentPage, fromDate, toDate , filteredData],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
@@ -109,6 +118,10 @@ export default function SessionsPage() {
       if (fromDate) params.append('from_date', fromDate);
       if (toDate) params.append('to_date', toDate);
       params.append('page', currentPage.toString());
+      if (filteredData.variation !== 'all') params.append("variation", filteredData.variation);
+      if (filteredData.student !== 'all') params.append("student", filteredData.student);
+      if (filteredData.teacher !== 'all') params.append("teacher", filteredData.teacher);
+      if (filteredData.subject !== 'all') params.append("subject", filteredData.subject);
       const response = await axiosInstance.get(`/sessions?${params}`);
       return response.data;
     }
@@ -126,6 +139,7 @@ export default function SessionsPage() {
   const students = allData?.data?.students || [];
   const teachers = allData?.data?.teachers || [];
   const sessions = sessionsData?.data?.sessions || [];
+  const subjects = allData?.data?.subjects || [];
   
   const currentPageNum = sessionsData?.data?.current_page || 1;
   const lastPage = sessionsData?.data?.last_page || 1;
@@ -287,7 +301,7 @@ export default function SessionsPage() {
             {/* Filters Dropdown */}
             {showFilters && (
               <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       الحالة
@@ -326,6 +340,80 @@ export default function SessionsPage() {
                       onChange={(e) => setToDate(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     />
+                  </div>
+
+                  {/* filter viration باليوم والاسبوع والشهر */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      فلترة الحصص
+                    </label>
+                    <select
+                      value={filteredData.variation}
+                      onChange={(e) => setFilteredData({ ...filteredData, variation: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    >
+                      <option value="all">الكل</option>
+                      <option value="today">اليوم</option>
+                      <option value="week">الاسبوع</option>
+                      <option value="month">الشهر</option>
+                    </select>
+                  </div>
+
+                  {/* filter teacher */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      فلترة المعلم
+                    </label>
+                    <select
+                      value={filteredData.teacher}
+                      onChange={(e) => setFilteredData({ ...filteredData, teacher: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    >
+                      <option value="all">الكل</option>
+                      {teachers.map((teacher) => (
+                        <option key={teacher.id} value={teacher.id}>
+                          {teacher.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* filter student */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      فلترة الطالب
+                    </label>
+                    <select
+                      value={filteredData.student}
+                      onChange={(e) => setFilteredData({ ...filteredData, student: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    >
+                      <option value="all">الكل</option>
+                      {students.map((student) => (
+                        <option key={student.id} value={student.id}>
+                          {student.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Filter subjects */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      فلترة المواد
+                    </label>
+                    <select
+                      value={filteredData.subject}
+                      onChange={(e) => setFilteredData({ ...filteredData, subject: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    >
+                      <option value="all">الكل</option>
+                      {subjects.map((subject) => (
+                        <option key={subject.id} value={subject.id}>
+                          {subject.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -370,10 +458,10 @@ export default function SessionsPage() {
                               </td>
                               <td className="px-6 py-4 text-sm">
                                 <div className="flex flex-col gap-1">
-                                  <span className="text-gray-900 font-medium">{session.session_date}</span>
+                                  <span className="text-gray-900 font-medium">{utcToLocalDate(session.session_date)}</span>
                                   <span className="text-gray-500 text-xs flex items-center gap-1">
                                     <Clock size={12} />
-                                    {session.start_time} - {session.end_time}
+                                    {utcToLocalTime(session.start_time)} - {utcToLocalTime(session.end_time)}
                                   </span>
                                 </div>
                               </td>

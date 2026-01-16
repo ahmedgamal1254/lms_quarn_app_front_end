@@ -5,6 +5,8 @@ import axiosInstance from '@/lib/axios';
 import { Calendar, Clock, User, BookOpen, Video, FileText, Save, X, Edit } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useParams } from 'next/navigation';
+import { Button } from 'antd';
+import { AxiosError } from 'axios';
 
 type SessionStatus = 'scheduled' | 'completed' | 'cancelled' | 'missed';
 
@@ -58,6 +60,7 @@ interface Session {
   session_date: string;
   start_time: string;
   end_time: string;
+  can_join: boolean;
   duration_minutes: number;
   status: SessionStatus;
   meeting_link: string;
@@ -107,6 +110,16 @@ export default function SessionPage() {
       return sessionData;
     }
   });
+
+  const handleCheckIn = async (sessionId: number) => {
+    try {
+      const response = await axiosInstance.get(`/teacher/sessions/${sessionId}/checkin`);
+      window.open(response?.data?.data.meeting_link, '_blank');
+    } catch (error) {
+      const axiosError = error as AxiosError<{ error: string }>;
+      toast.error(axiosError?.response?.data?.error || 'حدث خطاء في التسجيل');
+    }
+  };
 
   const updateMutation = useMutation({
     mutationFn: async (data: UpdateSessionData) => {
@@ -267,14 +280,13 @@ export default function SessionPage() {
                     <Video className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <a
-                      href={session.meeting_link}
-                      target="_blank"
+                    <Button
+                      onClick={() => handleCheckIn(session.id)}
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
                     >
                       {session.meeting_link}
-                    </a>
+                    </Button>
                   </div>
                 </div>
               </div>

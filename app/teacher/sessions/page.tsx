@@ -9,6 +9,7 @@ import Pagination from '@/components/Pagination';
 import { Button } from 'antd';
 import toast from 'react-hot-toast';
 import { useAppSettingsStore } from '@/store/appSetting';
+import { utcToLocalDate, utcToLocalDateTime, utcToLocalTime } from '@/utils/date';
 
 interface Session {
   id: number;
@@ -16,6 +17,7 @@ interface Session {
   session_date: string;
   start_time: string;
   end_time: string;
+  can_join: boolean;
   duration_minutes: number;
   status: string;
   meeting_link: string;
@@ -204,14 +206,7 @@ export default function SessionsPage() {
         ) : (
           filteredSessions.map((session) => {
             const colors = getStatusColor(session.status);
-            const sessionDateTime = new Date(`${session.session_date}T${session.start_time}:00`);
-            const sessionEnd = new Date(`${session.session_date}T${session.end_time}:00`);
-
-            const minutesBefore = settings?.before_start_session ?? 15;
-            const canJoinTime = new Date(sessionDateTime.getTime() - minutesBefore * 60 * 1000);
-            const now = new Date();
-            const canJoin = now >= canJoinTime && now <= sessionEnd;
-
+            
             return (
               <div
                 key={session.id}
@@ -240,16 +235,24 @@ export default function SessionsPage() {
                         </div>
 
                         {/* Date */}
-                        <div className="flex items-center gap-2">
+                        {/* <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-green-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{new Date(session.session_date).toLocaleDateString('ar-SA')}</span>
+                          <span className="text-sm text-gray-700">{new Date(session.session_date).toDateString()}</span>
+                        </div> */}
+
+                        {/* Date */}
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-purple-600 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">
+                            {utcToLocalDate(session.start_time)}
+                          </span>
                         </div>
 
                         {/* Time */}
                         <div className="flex items-center gap-2">
                           <Clock className="w-4 h-4 text-purple-600 flex-shrink-0" />
                           <span className="text-sm text-gray-700">
-                            {session.start_time} - {session.end_time}
+                            من {utcToLocalTime(session.start_time)} إلى {utcToLocalTime(session.end_time)}
                           </span>
                         </div>
 
@@ -268,7 +271,7 @@ export default function SessionsPage() {
                           onClick={() =>handleCheckIn(session.id)}
                           type='primary'
                           rel="noopener noreferrer"
-                          disabled={!canJoin}
+                          disabled={!session?.can_join}
                           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center transition text-sm"
                         >
                           <Video className="w-4 h-4 ml-2" />

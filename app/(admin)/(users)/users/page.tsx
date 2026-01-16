@@ -221,17 +221,7 @@ export default function UsersPage() {
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    <select
-                        value={params.role}
-                        onChange={(e) => setParams({ ...params, role: e.target.value, page: 1 })}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="">جميع الأدوار</option>
-                        <option value="admin">مسؤول</option>
-                        <option value="teacher">معلم</option>
-                        <option value="student">طالب</option>
-                        <option value="parent">ولي أمر</option>
-                    </select>
+                    
                 </div>
 
                 {/* Table */}

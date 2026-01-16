@@ -21,6 +21,9 @@ import {
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
 import Link from 'next/link';
+import { Select } from 'antd';
+import { formatDateForInput } from '@/utils/date';
+import { count } from 'console';
 
 interface Student {
     id: number;
@@ -30,10 +33,18 @@ interface Student {
     gender: string;
     image: string | null;
     plan: { id: number; name: string } | null;
+    plan_id: string | null;
+    country: string;
     status: 'active' | 'inactive';
     created_at: string;
     country_code?: string;
     birth_date?: string;
+}
+
+interface Countries{
+    id: number;
+    name_ar: string;
+    flag: string;
 }
 
 interface StudentsResponse {
@@ -47,7 +58,7 @@ interface StudentsResponse {
 
 export default function StudentsPage() {
     const queryClient = useQueryClient();
-    const [params, setParams] = useState({ page: 1, per_page: 5, search: '' });
+    const [params, setParams] = useState({ page: 1, per_page: 5, search: '', status: 'all', country: '', plan_id: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -59,6 +70,7 @@ export default function StudentsPage() {
         gender: 'male',
         birth_date: '',
         plan_id: '',
+        country:'',
         status: 'active',
         password: ''
     });
@@ -73,6 +85,14 @@ export default function StudentsPage() {
         },
         staleTime: 5 * 60 * 1000
     });
+
+    const { data: countries } = useQuery<Countries[]>({
+        queryKey: ['countries_list'],
+        queryFn: async () => {
+            const { data } = await axiosInstance.get('/countries');
+            return data;
+        }
+    })
 
     // Save Student Mutation
     const saveMutation = useMutation({
@@ -113,10 +133,13 @@ export default function StudentsPage() {
                 country_code: student.country_code || '+20',
                 gender: student.gender,
                 birth_date: student.birth_date || '',
-                plan_id: student.plan?.id?.toString() || '',
+                plan_id: student.plan_id || '',
+                country: student.country || '',
                 status: student.status,
                 password: ''
             });
+
+            console.log(student);
         } else {
             setFormData({
                 name: '',
@@ -126,6 +149,7 @@ export default function StudentsPage() {
                 gender: 'male',
                 birth_date: '',
                 plan_id: '',
+                country: '',
                 status: 'active',
                 password: ''
             });
@@ -144,6 +168,7 @@ export default function StudentsPage() {
             gender: 'male',
             birth_date: '',
             plan_id: '',
+            country: '',
             status: 'active',
             password: ''
         });
@@ -158,6 +183,7 @@ export default function StudentsPage() {
             toast.error('كلمة المرور مطلوبة');
             return;
         }
+
         saveMutation.mutate(formData);
     };
 
@@ -218,7 +244,7 @@ export default function StudentsPage() {
             </div>
 
             {/* Table Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
                 {/* Search */}
                 <div className="flex gap-4 mb-6">
                     <div className="flex-1 relative">
@@ -231,8 +257,44 @@ export default function StudentsPage() {
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
+
+                    {/* Filter country */}
+                    <div className="flex flex-col w-1/3">
+                        <Select
+                            placeholder="الدولة"
+                            value={params.country || 'اختر الدولة'}
+                            showSearch
+                            onChange={(value) => setParams({ ...params, country: value })}
+                            className="flex-1"
+                            options={[
+                                { value: '', label: 'كل الدول' }
+                                ,
+                                ...countries?.map((country: any) => ({
+                                value: country.name_ar,
+                                label: country.name_ar, 
+                            })) || []]}                        
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-1/3">
+                        <Select
+                            placeholder="الخطة"
+                            value={params.plan_id}
+                            showSearch
+                            onChange={(value) => setParams({ ...params, plan_id: value })}
+                            className="flex-1"
+                            options={[
+                                { value: '', label: 'كل الخطط' },
+                                ...(studentsData?.plans?.map((plan: any) => ({
+                                    value: plan.id,
+                                    label: plan.name
+                                })) || [])
+                            ]}                  
+                        />
+                    </div>
                 </div>
 
+            
                 {/* Table */}
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -242,6 +304,7 @@ export default function StudentsPage() {
                                 <th className="text-right py-3 px-4 font-semibold text-gray-700">البريد الإلكتروني</th>
                                 <th className="text-right py-3 px-4 font-semibold text-gray-700">الهاتف</th>
                                 <th className="text-right py-3 px-4 font-semibold text-gray-700">الخطة</th>
+                                <th className="text-right py-3 px-4 font-semibold text-gray-700">الدولة</th>
                                 <th className="text-right py-3 px-4 font-semibold text-gray-700">الحالة</th>
                                 <th className="text-center py-3 px-4 font-semibold text-gray-700">الإجراءات</th>
                             </tr>
@@ -298,6 +361,8 @@ export default function StudentsPage() {
                                                 </span>
                                             )}
                                         </td>
+                                        {/* country */}
+                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs">{student.country}</td>
                                         <td className="py-3 px-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit ${
                                                 student.status === 'active'
@@ -419,6 +484,7 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">الاسم *</label>
                                             <input
                                                 type="text"
+                                                placeholder='ex :- Mohamed'
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -428,6 +494,7 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني *</label>
                                             <input
                                                 type="email"
+                                                placeholder='ex :- 6l6Tt@example.com'
                                                 value={formData.email}
                                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -437,6 +504,7 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">رمز الدولة</label>
                                             <input
                                                 type="text"
+                                                placeholder='+20'
                                                 value={formData.country_code}
                                                 onChange={(e) => setFormData({ ...formData, country_code: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -446,6 +514,7 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف *</label>
                                             <input
                                                 type="tel"
+                                                placeholder='ex :- 01091536978'
                                                 value={formData.phone}
                                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -454,10 +523,12 @@ export default function StudentsPage() {
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">الجنس</label>
                                             <select
+                                                
                                                 value={formData.gender}
                                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
+                                                <option value="">اختر الجنس</option>
                                                 <option value="male">ذكر</option>
                                                 <option value="female">أنثى</option>
                                             </select>
@@ -466,7 +537,7 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">تاريخ الميلاد</label>
                                             <input
                                                 type="date"
-                                                value={formData.birth_date}
+                                                value={formatDateForInput(formData.birth_date)}
                                                 onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
@@ -475,17 +546,39 @@ export default function StudentsPage() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">الخطة الدراسية</label>
                                             <select
                                                 value={formData.plan_id}
+                                                defaultValue={Number(formData.plan_id)}
                                                 onChange={(e) => setFormData({ ...formData, plan_id: e.target.value })}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
                                                 <option value="">بدون خطة</option>
                                                 {studentsData?.plans.map(plan => (
-                                                    <option key={plan.id} value={plan.id}>
+                                                    <option key={plan.id} value={plan.id}
+                                                    >
                                                         {plan.name}
                                                     </option>
                                                 ))}
                                             </select>
                                         </div>
+                                        {/* country */}
+                                        <div className='w-full'>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">الدولة</label>
+                                            <Select
+                                                showSearch
+                                                value={formData.country}
+                                                placeholder="اختر الدولة"
+                                                className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                                onChange={(value: string) => setFormData({ ...formData, country: value })}
+                                    
+                                                options={
+                                                    countries?.map((country: any) => ({
+
+                                                        value: country.name_ar,
+                                                        label: country.name_ar,
+                                                    }))
+                                                }
+                                            />
+                                        </div>
+
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">الحالة</label>
                                             <select
@@ -498,7 +591,7 @@ export default function StudentsPage() {
                                             </select>
                                         </div>
                                         
-                                        <div className="col-span-2">
+                                        <div className="">
                                             <label className="block text-sm font-medium text-gray-700 mb-2">كلمة المرور *</label>
                                             <input
                                                 type="password"

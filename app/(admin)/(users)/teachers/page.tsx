@@ -83,7 +83,7 @@ interface SubjectsResponse {
 
 export default function TeachersPage() {
     const queryClient = useQueryClient();
-    const [params, setParams] = useState({ page: 1, per_page: 15, search: '', status: '' });
+    const [params, setParams] = useState({ page: 1, per_page: 15, search: '', status: '', subject: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
     const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
@@ -352,16 +352,33 @@ export default function TeachersPage() {
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        <select
-                            value={params.status}
-                            onChange={(e) => setParams({ ...params, status: e.target.value, page: 1 })}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                        >
-                            <option value="">جميع الحالات</option>
-                            <option value="active">نشط</option>
-                            <option value="on_leave">في إجازة</option>
-                            <option value="inactive">غير نشط</option>
-                        </select>
+                        <div className='flex-1 relative'>
+                            <select
+                                value={params.status}
+                                onChange={(e) => setParams({ ...params, status: e.target.value, page: 1 })}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                            >
+                                <option value="">جميع الحالات</option>
+                                <option value="active">نشط</option>
+                                <option value="on_leave">في إجازة</option>
+                                <option value="inactive">غير نشط</option>
+                            </select>
+                        </div>
+                        {/* subjects */}
+                        <div className='flex-1 relative'>
+                            <select
+                                value={params.subject}
+                                onChange={(e) => setParams({ ...params, subject: e.target.value, page: 1 })}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                            >
+                                <option value="">جميع المواد الدراسية</option>
+                                {subjectsData?.map((subject) => (
+                                    <option key={subject.id} value={subject.id}>
+                                        {subject.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
