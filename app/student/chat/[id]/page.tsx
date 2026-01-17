@@ -19,6 +19,7 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { getUser } from '@/lib/auth';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 /* ================= TYPES ================= */
 
@@ -99,10 +100,19 @@ export default function ChatPage() {
     staleTime: 30 * 1000,
   });
 
+  const {data:conversationData, isLoading:conversationLoading} = useQuery({
+    queryKey: ['conversation', conversationId],
+    queryFn: () => {
+      return axiosInstance.get(`/conversations/${conversationId}`).then((res) => res.data.data);
+    },
+    enabled: !!conversationId,
+    staleTime: 30 * 1000,
+  });
+
   const messages = data?.messages ?? [];
-  const conversation = data?.conversation;
+  const conversation = conversationData;
   const otherUser =
-    conversation?.users?.find((u) => u.id !== user?.id) ??
+    conversation?.users?.find((u: UserType) => u.id !== user?.id) ??
     conversation?.users?.[0];
 
   /* ========== SEND MESSAGE ========== */
@@ -176,6 +186,10 @@ export default function ChatPage() {
     });
   };
 
+  console.log(conversationData)
+  console.log('conversation', conversation);
+  console.log('otherUser', otherUser);
+
   /* ================= UI ================= */
 
   return (
@@ -183,7 +197,7 @@ export default function ChatPage() {
       {/* ===== HEADER ===== */}
       <div className="bg-white border-b p-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <ArrowRight className="w-5 h-5 md:hidden" />
+          <Link href={"/student/chat"}><ArrowRight className="w-5 h-5 md:hidden" /></Link>
           <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white">
             {otherUser?.image ? (
               <img
@@ -272,8 +286,8 @@ export default function ChatPage() {
 
       {/* ===== INPUT ===== */}
       <div className="bg-white border-t p-4 flex gap-2">
-        <Paperclip />
-        <ImagePlus />
+        <Paperclip className='hidden sm:block' />
+        <ImagePlus className='hidden sm:block' />
         <textarea
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}

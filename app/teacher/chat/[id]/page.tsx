@@ -99,11 +99,24 @@ export default function ChatPage() {
     staleTime: 30 * 1000,
   });
 
+  const {data:conversationData, isLoading:conversationLoading} = useQuery({
+    queryKey: ['conversation', conversationId],
+    queryFn: () => {
+      return axiosInstance.get(`/conversations/${conversationId}`).then((res) => res.data.data);
+    },
+    enabled: !!conversationId,
+    staleTime: 30 * 1000,
+  });
+
+
   const messages = data?.messages ?? [];
-  const conversation = data?.conversation;
+  const conversation = conversationData;
   const otherUser =
-    conversation?.users?.find((u) => u.id !== user?.id) ??
+    conversation?.users?.find((u: UserType) => u.id !== user?.id) ??
     conversation?.users?.[0];
+
+  console.log('conversation', conversation);
+  console.log('otherUser', otherUser);
 
   /* ========== SEND MESSAGE ========== */
 
