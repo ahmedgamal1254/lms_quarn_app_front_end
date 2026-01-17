@@ -378,7 +378,7 @@ const user=getUser();
                   </div>
                 ) : (
                   <>
-                    {messages.reverse().map((message: Message, index: number) => {
+                    {messages.slice().reverse().map((message: Message, index: number) => {
                       const isOwn = message.sender_id === user?.id; // Current user
                       const showDate =
                         index === 0 ||

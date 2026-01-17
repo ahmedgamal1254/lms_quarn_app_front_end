@@ -129,6 +129,9 @@ export default function ChatPage() {
     hasMore: messagesData?.has_more || false,
   };
 
+  const orderedMessages = [...messages].reverse();
+
+
   // Scroll to bottom
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -156,6 +159,7 @@ export default function ChatPage() {
       setLoadingMore(false);
     }
   }, [messagesData, loadingMore]);
+
 
   // Handle send message
   const handleSendMessage = (e?: React.FormEvent | React.KeyboardEvent) => {
@@ -376,7 +380,7 @@ export default function ChatPage() {
                   </div>
                 ) : (
                   <>
-                    {messages.reverse().map((message: Message, index: number) => {
+                    {orderedMessages.map((message: Message, index: number) => {
                       const isOwn = message.sender_id === user?.id; // Current user
                       const showDate =
                         index === 0 ||
