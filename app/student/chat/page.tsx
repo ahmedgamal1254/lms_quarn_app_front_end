@@ -377,7 +377,7 @@ export default function ChatPage() {
                 ) : (
                   <>
                     {messages.reverse().map((message: Message, index: number) => {
-                      const isOwn = message.sender_id === 40; // Current user
+                      const isOwn = message.sender_id === user?.id; // Current user
                       const showDate =
                         index === 0 ||
                         new Date(message.created_at).toDateString() !==
@@ -600,7 +600,7 @@ export default function ChatPage() {
               })
             )}
           </div>
-        </div>
+      </div>
     </div>
   );
 }
