@@ -20,6 +20,7 @@ import axiosInstance from '@/lib/axios';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { getUser } from '@/lib/auth';
+import Link from 'next/link';
 
 // Types
 interface User {
@@ -203,9 +204,9 @@ const user=getUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50" dir="rtl">
-      <div className="h-screen flex">
+      <div className="h-screen flex-col md:flex-row hidden md:flex">
         {/* Sidebar - Conversations List */}
-        <div className="w-full md:w-96 bg-white border-l border-gray-200 flex flex-col">
+        <div className="w-full md:w-96 bg-white border-l border-gray-200 flex flex-col none md:flex">
           {/* Header */}
           <div className="p-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">الرسائل</h1>
@@ -224,7 +225,7 @@ const user=getUser();
           </div>
 
           {/* Conversations List */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto ">
             {conversationsLoading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
@@ -252,7 +253,7 @@ const user=getUser();
                         : 'hover:bg-gray-50'
                     }`}
                   >
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3 px-2">
                       {/* Avatar */}
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
                         {otherUser?.image ? (
@@ -301,7 +302,7 @@ const user=getUser();
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col bg-gray-50">
+        <div className="flex-1 flex-col bg-gray-50 shadow-sm hidden md:flex">
           {selectedConversation ? (
             <>
               {/* Chat Header */}
@@ -510,6 +511,100 @@ const user=getUser();
           )}
         </div>
       </div>
+
+      <div className="w-full md:w-96 bg-white border-l border-gray-200 flex h-screen flex-col sm:none">
+          {/* Header */}
+          <div className="p-4 border-b border-gray-200">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">الرسائل</h1>
+            
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="بحث في المحادثات..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-4 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right"
+              />
+            </div>
+          </div>
+
+          {/* Conversations List */}
+          <div className="flex-1 overflow-y-auto ">
+            {conversationsLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+              </div>
+            ) : conversations.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 px-4">
+                <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
+                <p className="text-gray-600 text-center">لا توجد محادثات</p>
+              </div>
+            ) : (
+              conversations.map((conversation: Conversation) => {
+                const otherUser = getOtherUser(conversation);
+                const isSelected = selectedConversation?.id === conversation.id;
+
+                return (
+                  <Link
+                    key={conversation.id}
+                    href={`/teacher/chat/${conversation.id}`}
+                    
+                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${
+                      isSelected
+                        ? 'bg-indigo-50 border-r-4 border-r-indigo-600'
+                        : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3 px-2">
+                      {/* Avatar */}
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                        {otherUser?.image ? (
+                          <img
+                            src={otherUser.image}
+                            alt={otherUser.name}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        ) : (
+                          <User className="w-6 h-6" />
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-1">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {otherUser?.name}
+                          </h3>
+                          {conversation.last_message && (
+                            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
+                              {formatDate(conversation.last_message.created_at)}
+                            </span>
+                          )}
+                          
+                        </div>
+                        {conversation.last_message && (
+                          <p className="text-sm text-gray-600 truncate">
+                            {conversation.last_message.message}
+
+                            {conversation.unread_messages_count && conversation.unread_messages_count > 0 && (
+                                <span className="mr-2 inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                    {conversation.unread_messages_count}
+                                </span>
+                            )}
+                          </p>
+                        )}
+                        
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+      </div>
+
     </div>
   );
 }
