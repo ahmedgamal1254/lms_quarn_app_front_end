@@ -20,7 +20,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     useEffect(() => {
         // Public routes that don't require authentication
         const publicRoutes = ['/login', '/register/student'];
-        const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+        // Remove locale prefix (e.g. /ar/login -> /login)
+        const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, '') || '/';
+        const isPublicRoute = publicRoutes.some(route => pathnameWithoutLocale.startsWith(route));
 
         // If it's a public route, allow access
         if (isPublicRoute) {
@@ -33,7 +35,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
         if (!authenticated) {
             // Not authenticated, redirect to login
-            router.push('/login');
+            const currentLocale = pathname.split('/')[1];
+            const locale = (['ar', 'en'].includes(currentLocale)) ? currentLocale : 'ar';
+            router.push(`/${locale}/login`);
             return;
         }
 
@@ -45,7 +49,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             if (!isAuthenticated()) {
                 // Token expired, logout and redirect
                 logout();
-                router.push('/login');
+                const currentLocale = pathname.split('/')[1];
+                const locale = (['ar', 'en'].includes(currentLocale)) ? currentLocale : 'ar';
+                router.push(`/${locale}/login`);
             }
         }, 60000); // Check every minute
 

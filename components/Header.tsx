@@ -3,14 +3,17 @@
 import { Bell, Globe, Menu, Moon, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getUser } from '@/lib/auth';
-import Link from 'next/link';
 import { useAppSettingsStore  } from '@/store/appSetting';
 import toast from 'react-hot-toast';
 import Notifications from './Notifications';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const [user, setUser] = useState<any>(null);
-
+  const tHeader = useTranslations('Header');
+  
   useEffect(() => {
     setUser(getUser());
   }, []);
@@ -20,7 +23,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const url=user?.role=="student"?"/student/profile":""
 
   return (
-    <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6">
+    <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
   {/* Left */}
   <Link href={url}>
   <div className="flex items-center gap-3">
@@ -47,9 +50,9 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
     <Notifications />
 
-    <button className="p-2 rounded-lg hover:bg-gray-100 hidden md:block">
-      <Globe size={18} />
-    </button>
+    <div>
+        <LanguageSwitcher />
+    </div>
 
     {/* Mobile Menu */}
     <button
@@ -62,6 +65,5 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   
 </header>
-
   );
 }

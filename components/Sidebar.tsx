@@ -27,124 +27,47 @@ import {
 } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { useParams } from 'next/navigation';
 import { getUser, logout } from '@/lib/auth';
 import { useAppSettingsStore } from '@/store/appSetting';
 import { SettingFilled } from '@ant-design/icons';
+import { useTranslations } from 'next-intl';
 
-/* ---------------- MENUS ---------------- */
+interface MenuItem {
+  title: string;
+  icon: any;
+  href?: string;
+  items?: MenuItem[];
+  permission?: string;
+}
 
-const adminMenuGroups = [
-  { title: 'الرئيسية', icon: LayoutDashboard, href: '/dashboard', permission: 'view-dashboard' },
-
-  {
-    title: 'إدارة المستخدمين',
-    icon: Users,
-    items: [
-      { title: 'المستخدمين', href: '/users', icon: Users, permission: 'manage-users' },
-      { title: 'الطلاب', href: '/students', icon: GraduationCap, permission: 'manage-students' },
-      { title: 'المعلمين', href: '/teachers', icon: UserCog, permission: 'manage-teachers' }
-    ]
-  },
-
-  {
-    title: 'المحتوى الأكاديمي',
-    icon: BookOpen,
-    items: [
-      { title: 'الحصص', href: '/sessions', icon: Video, permission: 'manage-sessions' },
-      { title:"الاجندة", href:"/sessions/callender", icon:File, permission: 'manage-sessions' },
-      { title: 'الامتحانات', href: '/exams', icon: FileQuestion, permission: 'manage-exams' },
-      { title: 'الواجبات', href: '/homework', icon: ClipboardList, permission: 'manage-homework' }
-    ]
-  },
-
-  {
-    title: 'الماليات',
-    icon: Banknote,
-    items: [
-      { title: 'العملات', href: '/finances/currencies', icon: Coins, permission: 'manage-finance' },
-      { title: 'المعاملات', href: '/finances/transactions', icon: ArrowRightLeft, permission: 'manage-finance' },
-      { title: 'المصاريف', href: '/finances/expenses', icon: Wallet, permission: 'manage-finance' }
-    ]
-  },
-
-  {
-    title:"الاشتراكات",
-    icon:CreditCard,
-    items:[
-      { title: 'الاشتراكات', href: '/subscriptions', icon: CreditCard, permission: 'manage-subscriptions' },
-      { title:"الخطط", href:"/plans", icon:CreditCard, permission: 'manage-plans' },
-      { title:"طلبات الاشتراك", href:"/subscription-requests", icon:CreditCard, permission: 'manage-subscriptions' }
-    ]
-  },
-
-  {
-    title: 'الطلبات',
-    icon: WalletIcon,
-    items: [
-      { title: 'طلبات السحب', href: '/orders/withdraw', icon: CreditCard, permission: 'manage-withdraw-requests' },
-      { title: 'طلبات الأيداع', href: '/orders/deposit', icon: WalletCardsIcon, permission: 'manage-deposit-requests' },
-    ]
-  },
-
-  {
-    title: 'الإعدادات',
-    icon: Settings,
-    items: [
-      { title: 'الإعدادت', href: '/settings', icon: Settings2Icon, permission: 'manage-subjects' },
-      { title: 'المواد', href: '/subjects', icon: BookOpen, permission: 'manage-subjects' }
-    ]
-  }
-];
-
-
-const studentMenuGroups = [
-  { title: 'الرئيسية', icon: LayoutDashboard, href: '/student/dashboard' },
-  { title: 'الحصص', icon: Video, href: '/student/sessions' },
-  { title: 'الواجبات', icon: ClipboardList, href: '/student/homework' },
-  { title: 'الامتحانات', icon: FileQuestion, href: '/student/exams' },
-  { title: 'المحدثات', icon: MessageCircle, href: '/student/chat' },
-];
-
-const teacherMenuGroups = [
-  { title: 'الرئيسية', icon: LayoutDashboard, href: '/teacher/dashboard' },
-  { title: 'الحصص', icon: Video, href: '/teacher/sessions' },
-  { title: 'الواجبات', icon: ClipboardList, href: '/teacher/homework' },
-  { title: 'الامتحانات', icon: FileQuestion, href: '/teacher/exams' },
-  { title: 'الطلاب', icon: Users, href: '/teacher/students' },
-  { title: 'المحدثات', icon: MessageCircle, href: '/teacher/chat' },
-]
+type UserRole = 'student' | 'teacher' | 'admin';
 
 interface MenuSidebar {
   title: string;
   icon: any;
-  href?: string;
-  items?: any[];
+  items?: MenuItem[];
   permission?: string;
 }
 
-type UserRole = 'student' | 'teacher' | "admin";
-
-
-/* ---------------- COMPONENT ---------------- */
+/* ---------------- MENUS ---------------- */
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const t = useTranslations('Sidebar');
   const pathname = usePathname();
   const router = useRouter();
   const [permissions, setPermissions] = useState<string[]>([]);
-
   const [expanded, setExpanded] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
-
-      const settings = useAppSettingsStore((state) => state.app_settings);
-  
+  const settings = useAppSettingsStore((state) => state.app_settings);
+  const tCommon = useTranslations('Common');
+  const params = useParams();
+  const isRTL = params.locale === 'ar';
 
   useEffect(() => {
     const u = getUser();
     setUser(u);
-
-    // جلب permissions
     const perms = u?.permissions || [];
     setPermissions(perms);
   }, []);
@@ -156,8 +79,82 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   };
 
   const role = user?.role as UserRole | undefined;
-
   const url = role ? roleUrls[role] : '';
+
+  // Define menus inside component to access translations
+  const adminMenuGroups = [
+    { title: t('home'), icon: LayoutDashboard, href: '/dashboard', permission: 'view-dashboard' },
+    {
+      title: t('userManagement'),
+      icon: Users,
+      items: [
+        { title: t('users'), href: '/users', icon: Users, permission: 'manage-users' },
+        { title: t('students'), href: '/students', icon: GraduationCap, permission: 'manage-students' },
+        { title: t('teachers'), href: '/teachers', icon: UserCog, permission: 'manage-teachers' }
+      ]
+    },
+    {
+      title: t('academicContent'),
+      icon: BookOpen,
+      items: [
+        { title: t('sessions'), href: '/sessions', icon: Video, permission: 'manage-sessions' },
+        { title: t('calendar'), href: "/sessions/callender", icon:File, permission: 'manage-sessions' },
+        { title: t('exams'), href: '/exams', icon: FileQuestion, permission: 'manage-exams' },
+        { title: t('homework'), href: '/homework', icon: ClipboardList, permission: 'manage-homework' }
+      ]
+    },
+    {
+      title: t('finances'),
+      icon: Banknote,
+      items: [
+        { title: t('currencies'), href: '/finances/currencies', icon: Coins, permission: 'manage-finance' },
+        { title: t('transactions'), href: '/finances/transactions', icon: ArrowRightLeft, permission: 'manage-finance' },
+        { title: t('expenses'), href: '/finances/expenses', icon: Wallet, permission: 'manage-finance' }
+      ]
+    },
+    {
+      title: t('subscriptions'),
+      icon:CreditCard,
+      items:[
+        { title: t('subscriptions'), href: '/subscriptions', icon: CreditCard, permission: 'manage-subscriptions' },
+        { title: t('plans'), href:"/plans", icon:CreditCard, permission: 'manage-plans' },
+        { title: t('subscriptionRequests'), href:"/subscription-requests", icon:CreditCard, permission: 'manage-subscriptions' }
+      ]
+    },
+    {
+      title: t('orders'),
+      icon: WalletIcon,
+      items: [
+        { title: t('withdrawRequests'), href: '/orders/withdraw', icon: CreditCard, permission: 'manage-withdraw-requests' },
+        { title: t('depositRequests'), href: '/orders/deposit', icon: WalletCardsIcon, permission: 'manage-deposit-requests' },
+      ]
+    },
+    {
+      title: t('settings'),
+      icon: Settings,
+      items: [
+        { title: t('generalSettings'), href: '/settings', icon: Settings2Icon, permission: 'manage-subjects' },
+        { title: t('subjects'), href: '/subjects', icon: BookOpen, permission: 'manage-subjects' }
+      ]
+    }
+  ];
+
+  const studentMenuGroups = [
+    { title: t('home'), icon: LayoutDashboard, href: '/student/dashboard' },
+    { title: t('sessions'), icon: Video, href: '/student/sessions' },
+    { title: t('homework'), icon: ClipboardList, href: '/student/homework' },
+    { title: t('exams'), icon: FileQuestion, href: '/student/exams' },
+    { title: t('chat'), icon: MessageCircle, href: '/student/chat' },
+  ];
+
+  const teacherMenuGroups = [
+    { title: t('home'), icon: LayoutDashboard, href: '/teacher/dashboard' },
+    { title: t('sessions'), icon: Video, href: '/teacher/sessions' },
+    { title: t('homework'), icon: ClipboardList, href: '/teacher/homework' },
+    { title: t('exams'), icon: FileQuestion, href: '/teacher/exams' },
+    { title: t('students'), icon: Users, href: '/teacher/students' },
+    { title: t('chat'), icon: MessageCircle, href: '/teacher/chat' },
+  ]
 
   const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
@@ -179,7 +176,6 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     : user?.role === 'teacher'
     ? teacherMenuGroups
     : filteredMenu(adminMenuGroups);
-
 
   const isActive = (href?: string) => href && pathname.startsWith(href);
 
@@ -205,21 +201,21 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 
       {/* Sidebar */}
       <aside
-  className={`
-    fixed top-0 right-0 h-screen
-    z-50
-    w-64 sm:w-72
-    bg-white border-l
-    transition-transform duration-300 ease-in-out
+        className={`
+          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-screen
+          z-50
+          w-64 sm:w-72
+          bg-white ${isRTL ? 'border-l' : 'border-r'}
+          transition-transform duration-300 ease-in-out
 
-    ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+          ${isOpen ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full'}
 
-    lg:translate-x-0
-    lg:sticky
-    lg:top-0
-    lg:h-screen
-  `}
->
+          lg:translate-x-0
+          lg:sticky
+          lg:top-0
+          lg:h-screen
+        `}
+      >
 
         {/* Logo */}
 <div className="flex items-center gap-4 p-6 border-b">
@@ -239,10 +235,10 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 
   <div className="flex flex-col">
     <span className="text-lg font-bold text-gray-900">
-      {settings?.app_name || 'اسم المدرسة'}
+      {settings?.app_name || tCommon('schoolName')}
     </span>
     <span className="text-sm text-gray-500">
-      لوحة التحكم
+      {tCommon('controlPanel')}
     </span>
   </div>
 </div>
@@ -274,7 +270,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                   </button>
 
                   {open && (
-                    <div className="mt-1 mr-6 space-y-1">
+                    <div className={`mt-1 ${isRTL ? 'mr-6' : 'ml-6'} space-y-1`}>
                       {group.items.map((item: any) => {
                         const ItemIcon = item.icon;
                         return (
@@ -345,7 +341,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
             bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
           >
             <LogOut size={18} />
-            تسجيل الخروج
+            {t('logout')}
           </button>
         </div>
       </aside>

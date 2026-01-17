@@ -1,5 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+
 interface PaginationProps {
   currentPage: number;
   lastPage: number;
@@ -13,15 +16,17 @@ export default function Pagination({
   total,
   onPageChange,
 }: PaginationProps) {
+  const t = useTranslations('Common');
+  const { locale } = useParams();
   if (total === 0) return null;
 
   return (
     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
       {/* Info */}
       <span className="text-xs sm:text-sm text-gray-600 text-center sm:text-right">
-        الصفحة <span className="font-semibold">{currentPage}</span> من{' '}
-        <span className="font-semibold">{lastPage}</span> | إجمالي:{' '}
-        <span className="font-semibold">{total}</span>
+        {t('page')} <span className="font-semibold">{currentPage.toLocaleString(locale as string)}</span> {t('pageOf')}{' '}
+        <span className="font-semibold">{lastPage?.toLocaleString(locale as string)}</span> | {t('totalCount')}:{' '}
+        <span className="font-semibold">{total?.toLocaleString(locale as string)}</span>
       </span>
 
       {/* Desktop Pagination */}
@@ -31,7 +36,7 @@ export default function Pagination({
           disabled={currentPage === 1}
           className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
         >
-          السابق
+          {t('previous')}
         </button>
 
         {[...Array(lastPage).keys()].map((page) => (
@@ -44,7 +49,7 @@ export default function Pagination({
                 : ''
             }`}
           >
-            {page + 1}
+            {(page + 1).toLocaleString(locale as string)}
           </button>
         ))}
 
@@ -53,7 +58,7 @@ export default function Pagination({
           disabled={currentPage >= lastPage}
           className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
         >
-          التالي
+          {t('next')}
         </button>
       </div>
 
@@ -64,11 +69,11 @@ export default function Pagination({
           disabled={currentPage === 1}
           className="px-4 py-2 border border-gray-300 rounded-lg text-sm disabled:opacity-50"
         >
-          السابق
+          {t('previous')}
         </button>
 
         <span className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-lg">
-          {currentPage}
+          {currentPage.toLocaleString(locale as string)}
         </span>
 
         <button
@@ -76,7 +81,7 @@ export default function Pagination({
           disabled={currentPage >= lastPage}
           className="px-4 py-2 border border-gray-300 rounded-lg text-sm disabled:opacity-50"
         >
-          التالي
+          {t('next')}
         </button>
       </div>
     </div>

@@ -30,13 +30,13 @@ span {
 .sidebar {
   width: 280px;
   background-color: var(--bg-secondary);
-  border-inline-end: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 1rem;
   transition: transform 0.3s ease;
   position: fixed;
-  inset-inline-start: 0;
+  right: 0;
   top: 0;
   bottom: 0;
   z-index: 50;
@@ -47,7 +47,7 @@ span {
 @media (max-width: 992px) {
   .responsive-sider {
     position: fixed !important;
-    inset-inline-start: 0;
+    right: 0;
     top: 0;
     height: 100vh;
     z-index: 1000;
@@ -100,7 +100,7 @@ span {
 }
 
 .submenu {
-  margin-inline-start: 1.5rem;
+  margin-right: 1.5rem;
   /* Indent for RTL */
   margin-top: 0.5rem;
   display: flex;
@@ -111,11 +111,11 @@ span {
 /* Main Content */
 .main-content {
   flex: 1;
-  margin-inline-start: 280px;
+  margin-right: 280px;
   /* Width of sidebar */
   display: flex;
   flex-direction: column;
-  transition: margin-inline-start 0.3s ease;
+  transition: margin-right 0.3s ease;
 }
 
 /* Header */
@@ -262,7 +262,7 @@ span {
   }
 
   .main-content {
-    margin-inline-start: 0;
+    margin-right: 0;
   }
 
   .dashboard-grid {
@@ -335,7 +335,7 @@ span {
 }
 
 .profile-info {
-  text-align: start;
+  text-align: right;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -519,7 +519,7 @@ span {
 .data-table th,
 .data-table td {
   padding: 1rem;
-  text-align: start;
+  text-align: right;
   /* RTL */
   border-bottom: 1px solid var(--border-color);
 }
@@ -696,7 +696,7 @@ span {
 .filter-dropdown {
   position: absolute;
   top: 100%;
-  inset-inline-start: 0;
+  right: 0;
   /* Align with button in RTL (check parent positioning) */
   margin-top: 0.5rem;
   width: 300px;
@@ -742,7 +742,7 @@ span {
   background-position: left 0.5rem center;
   /* RTL: arrow on left */
   background-size: 1.5em 1.5em;
-  padding-inline-end: 2.5rem;
+  padding-left: 2.5rem;
 }
 
 .filter-actions {
@@ -808,7 +808,7 @@ span {
 
 .password-toggle {
   position: absolute;
-  inset-inline-end: 1rem;
+  left: 1rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
@@ -844,7 +844,7 @@ span {
 .country-dropdown {
   position: absolute;
   top: 100%;
-  inset-inline-end: 0;
+  left: 0;
   width: 300px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1021,7 +1021,7 @@ span {
 .check-icon {
   position: absolute;
   top: 1rem;
-  inset-inline-end: 1rem;
+  left: 1rem;
   /* RTL: left */
   width: 24px;
   height: 24px;
@@ -1113,7 +1113,7 @@ span {
 .parent-delete-btn {
   position: absolute;
   top: -12px;
-  inset-inline-start: -12px;
+  right: -12px;
   /* RTL: left implies this should be left if direction is RTL? but screenshot shows right. Let's check direction. */
   /* The app is dir="rtl". "right" in CSS is physical right. 
      If the screenshot shows it on the top LEFT visually (because RTL reads right to left, so start is right, end is left?), 
@@ -1125,7 +1125,7 @@ span {
      Actually, let's look at the uploaded image. 
      The delete button is on the top RIGHT. 
      The text aligns right. 
-     So physically it is top: -X, inset-inline-start: -X. 
+     So physically it is top: -X, right: -X. 
   */
   width: 32px;
   height: 32px;
@@ -1145,7 +1145,7 @@ span {
 .parent-number {
   position: absolute;
   top: 1rem;
-  inset-inline-end: 1rem;
+  left: 1rem;
   width: 24px;
   height: 24px;
   background-color: rgba(16, 185, 129, 0.1);
@@ -1177,7 +1177,7 @@ span {
   
   /* Main Content - No Margin */
   .main-content {
-    margin-inline-start: 0 !important;
+    margin-right: 0 !important;
     width: 100%;
   }
   
@@ -1283,8 +1283,8 @@ span {
     position: fixed !important;
     top: auto !important;
     bottom: 0 !important;
-    inset-inline-end: 0 !important;
-    inset-inline-start: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100% !important;
     max-height: 70vh;
     overflow-y: auto;
@@ -1307,7 +1307,7 @@ span {
   
   /* Main Content */
   .main-content {
-    margin-inline-start: 0 !important;
+    margin-right: 0 !important;
   }
   
   /* Tables */
@@ -1360,7 +1360,7 @@ span {
   
   /* Main Content - With Sidebar Margin */
   .main-content {
-    margin-inline-start: 280px;
+    margin-right: 280px;
   }
   
   /* Grid - 2-3 Columns */
@@ -1382,7 +1382,7 @@ span {
   
   /* Main Content - With Sidebar Margin */
   .main-content {
-    margin-inline-start: 280px;
+    margin-right: 280px;
   }
   
   /* Grid - Full Flexibility */
@@ -1489,7 +1489,7 @@ span {
   }
   
   .main-content {
-    margin-inline-start: 0 !important;
+    margin-right: 0 !important;
   }
   
   .table-container {
@@ -1593,12 +1593,12 @@ body {
 .sidebar {
   width: 280px;
   background-color: var(--bg-secondary);
-  border-inline-end: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 1rem;
   position: fixed;
-  inset-inline-start: 0;
+  right: 0;
   top: 0;
   bottom: 0;
   z-index: 50;
@@ -1636,7 +1636,7 @@ body {
 }
 
 .submenu {
-  margin-inline-start: 1.5rem;
+  margin-right: 1.5rem;
   margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -1648,7 +1648,7 @@ body {
    ============================================ */
 .main-content {
   flex: 1;
-  margin-inline-start: 280px;
+  margin-right: 280px;
   display: flex;
   flex-direction: column;
   transition: margin 0.3s;
@@ -1809,7 +1809,7 @@ body {
     transform: translateX(0);
   }
   .main-content {
-    margin-inline-start: 0;
+    margin-right: 0;
   }
 }
 

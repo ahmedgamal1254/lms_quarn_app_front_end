@@ -1,0 +1,397 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import {
+  Loader2,
+  AlertCircle,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  Clock,
+  User,
+  Phone,
+  Mail,
+  Award,
+  ArrowRight,
+} from 'lucide-react';
+import axios, { AxiosError } from 'axios';
+import axiosInstance from '@/lib/axios';
+import { Link, useRouter } from '@/i18n/routing';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button } from 'antd';
+import { useTranslations } from 'next-intl';
+import { utcToLocalDate, utcToLocalTime } from '@/utils/date';
+import { useParams } from 'next/navigation';
+
+interface Session{
+  id: number;
+  subject_name: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  title: string;
+  session_date: string;
+  duration_minutes: number;
+  meeting_link: string;
+  status: string
+}
+
+interface pending_homework{
+  id: number;
+  description: string;
+  due_date: string;
+  grade: string;
+  subject_name: string;
+  date: string;
+  title: string;
+  status: string
+}
+
+interface DashboardData {
+  student: {
+    name: string;
+  },
+  teacher:{
+    id: number;
+    user_id: number;
+    name: string;
+    email: string;
+    phone: string;
+    subject_name: string;
+  },
+  subscription:{
+    plan_name: string;
+    price: number;
+    currency: string;
+    sessions_remaining: number;
+    status: string;
+    sessions_used: number;
+    sessions_total: number;
+  },
+  statistics:{
+    sessions_today: number;
+    sessions_completed: number;
+    sessions_upcoming: number;
+    sessions_total: number;
+  },
+  upcoming_sessions:Session[]
+  pending_homework:pending_homework[]
+}
+
+export default function StudentDashboard() {
+  const t = useTranslations('Dashboard');
+  const tCommon = useTranslations('Common');
+  const [error, setError] = useState('');
+  const queryClient = useQueryClient();
+
+    const params = useParams();
+    const router = useRouter();
+    const isRTL=params.locale === 'ar';
+
+  const {data, isLoading:loading, error:dashboardError} = useQuery<DashboardData>({
+    queryKey: ['student-dashboard'],
+    queryFn: async () => {
+      const response = await axiosInstance.get('/student/dashboard');
+      return response.data?.data;
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
+  });
+
+  const startConversationMutation = useMutation({
+    mutationFn: async (teacherId: number) => {
+      const response = await axiosInstance.get(`/conversations/${teacherId}`);
+      return response.data;
+    },
+    onSuccess: (data) => {      
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+      router.push(`/student/chat`);      
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      // toast.error(error?.response?.data?.error || 'فشل إرسال الرسالة');
+    },
+  });
+
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="text-center">
+          <Loader2 className="animate-spin text-indigo-600 mx-auto mb-4" size={48} />
+          <p className="text-gray-600 font-semibold">{tCommon('loading')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <p className="text-red-600 font-semibold">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-600 font-semibold">{tCommon('noData')}</p>
+        </div>
+      </div>
+    );
+  }
+
+
+
+  const handleStartChat=(id: number) => {
+    startConversationMutation.mutate(id);
+  };
+
+  const { student, teacher, subscription, statistics, upcoming_sessions, pending_homework } = data;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <Link href={"/student/profile"}>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            {t('welcome')} {student?.name} 👋
+          </h1>
+          </Link>
+          <p className="text-gray-600">{t('studentWelcomeSubtitle')}</p>
+        </div>
+
+        {/* Teacher Info Card */}
+        {data.teacher && (
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 hover:shadow-xl transition-shadow">
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
+                <User className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{data.teacher?.name}</h2>
+                <p className="text-indigo-600 font-semibold text-sm mt-1">{data.teacher?.subject_name}</p>
+              </div>
+            </div>
+            <div className='flex flex-col items-end gap-2'>
+              <div className="flex gap-6 flex-wrap">
+              {data.teacher?.email && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Mail className="w-5 h-5 text-indigo-600" />
+                  <span className="text-sm">{data.teacher.email}</span>
+                </div>
+              )}
+              {data.teacher?.phone && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Phone className="w-5 h-5 text-indigo-600" />
+                  <span className="text-sm">{data.teacher.phone}</span>
+                </div>
+              )}
+            </div>
+            {/* button */}
+            <Button 
+            loading={startConversationMutation.isPending}
+            onClick={() => handleStartChat(data.teacher.user_id)} type="primary">{t('startChat')}</Button>
+            </div>
+          </div>
+        </div>
+        )}
+
+        {/* Subscription & Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Subscription Card */}
+          {data.subscription && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">{t('currentSubscription')}</h3>
+              <Award className="w-6 h-6 text-amber-500" />
+            </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">{t('planName')}</span>
+                <span className="font-bold text-gray-900">{data.subscription?.plan_name}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">{t('price')}</span>
+                <span className="font-bold text-indigo-600">
+                  {data.subscription?.price} {data.subscription?.currency}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">{t('sessionsRemaining')}</span>
+                <span className="font-bold text-green-600">{data.subscription?.sessions_remaining}</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
+                <div
+                  className="bg-gradient-to-r from-indigo-500 to-blue-500 h-2 rounded-full transition-all"
+                  style={{
+                    width: `${((data.subscription?.sessions_total - data.subscription?.sessions_remaining) / data.subscription?.sessions_total) * 100}%`,
+                  }}
+                ></div>
+              </div>
+              <p className="text-sm text-gray-500 pt-2">
+                {data.subscription?.sessions_used} / {data.subscription?.sessions_total} 
+              </p>
+            </div>
+          </div>
+          )}
+
+          {/* Stats Grid */}
+          {data.statistics && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <StatCard
+              title={t('sessionsCompleted')}
+              value={data.statistics?.sessions_completed}
+              icon={<CheckCircle className="w-6 h-6 text-green-500" />}
+              color="bg-green-50"
+            />
+            <StatCard
+              title={t('sessionsUpcoming')}
+              value={data.statistics?.sessions_upcoming}
+              icon={<Calendar className="w-6 h-6 text-blue-500" />}
+              color="bg-blue-50"
+            />
+            <StatCard
+              title={t('totalSessions')}
+              value={data.statistics?.sessions_total}
+              icon={<BookOpen className="w-6 h-6 text-indigo-500" />}
+              color="bg-indigo-50"
+            />
+            <StatCard
+              title={tCommon('percentage')}
+              value={`${Math.round((data.statistics?.sessions_completed / data.statistics?.sessions_total) * 100)}%`}
+              icon={<Award className="w-6 h-6 text-amber-500" />}
+              color="bg-amber-50"
+            />
+          </div>
+          )}
+        </div>
+
+        {/* Upcoming Sessions */}
+        <Section title={t('upcomingSessions')}>
+          {data.upcoming_sessions?.length ? (
+            <div className="space-y-4">
+              {data.upcoming_sessions.map((session) => (
+                <div
+                  key={session.id}
+                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100"
+                >
+                  <div className="flex items-start justify-between flex-wrap gap-4">
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Calendar className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-gray-900 text-lg">{session.title}</h4>
+                        <p className="text-sm text-gray-600 mt-1">{session.subject_name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-700 flex-wrap">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            {utcToLocalDate(session.start_time)} ·{" "}
+                            {utcToLocalTime(session.start_time)} -{" "}
+                            {utcToLocalTime(session.end_time)}
+                          </span>
+                          <span>{session.session_date}</span>
+                          <span className="text-gray-500">({session.duration_minutes} {tCommon('minutes')})</span>
+                        </div>
+                      </div>
+                    </div>
+                    {session.meeting_link && (
+                    <Link
+                      href={"/student/sessions"}
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all hover:from-indigo-600 hover:to-blue-600 text-sm font-semibold flex items-center gap-2 flex-shrink-0"
+                    >
+                      {tCommon('join')}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Empty text={t('noSessions')} />
+          )}
+        </Section>
+
+        {/* Homework */}
+        <Section title={t('pendingHomework')}>
+          {data.pending_homework?.length ? (
+            <div className="space-y-4">
+              {data.pending_homework.map((hw) => (
+                <div
+                  key={hw.id}
+                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <BookOpen className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900">{hw.title}</h4>
+                      <p className="text-sm text-gray-600 mt-1">{hw.description}</p>
+                      <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
+                        <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-semibold">
+                          {t('dueDate')}: {hw.due_date}
+                        </span>
+                        {hw.grade && (
+                          <span className="text-sm font-bold text-green-600">{tCommon('grade')}: {hw.grade}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Empty text={t('noHomework')} />
+          )}
+        </Section>
+      </div>
+    </div>
+  );
+}
+
+/* ================= Components ================= */
+
+function StatCard({ title, value, icon, color }: any) {
+  return (
+    <div className={`${color} rounded-xl shadow-md p-5 border border-gray-100 hover:shadow-lg transition-shadow`}>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
+        {icon}
+      </div>
+      <p className="text-2xl font-bold text-gray-900">{value}</p>
+    </div>
+  );
+}
+
+function Section({ title, children }: any) {
+  return (
+    <div className="mb-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+        {title}
+      </h2>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function Empty({ text }: any) {
+  return (
+    <div className="bg-white rounded-xl shadow-md p-8 text-center border border-gray-100">
+      <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+      <p className="text-gray-600 font-semibold">{text}</p>
+    </div>
+  );
+}
