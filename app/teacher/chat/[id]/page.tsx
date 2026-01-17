@@ -285,8 +285,8 @@ export default function ChatPage() {
 
       {/* ===== INPUT ===== */}
       <div className="bg-white border-t p-4 flex gap-2">
-        <Paperclip />
-        <ImagePlus />
+        <Paperclip className='hidden sm:block' />
+        <ImagePlus className='hidden sm:block' />
         <textarea
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
