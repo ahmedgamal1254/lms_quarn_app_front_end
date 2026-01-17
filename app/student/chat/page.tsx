@@ -510,7 +510,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      <div className="w-full md:w-96 h-screen bg-white border-l border-gray-200 flex flex-col">
+      <div className="w-full md:w-96 h-screen bg-white border-l border-gray-200 flex flex-col sm:hidden">
           {/* Header */}
           <div className="p-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">الرسائل</h1>
