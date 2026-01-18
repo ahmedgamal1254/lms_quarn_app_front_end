@@ -21,41 +21,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const tAuth = useTranslations('Auth');
   const tCommon = useTranslations('Common');
 
+  const siderWidth = 280;
+
   return (
     <Layout
       style={{
         minHeight: '100vh',
         direction: isRTL ? 'rtl' : 'ltr',
-        overflow: 'hidden',
+        overflow: 'hidden', // ❗ مهم
       }}
     >
-      {/* Overlay (Mobile Only) */}
+      {/* Overlay (Mobile) */}
       {isMobile && !collapsed && (
         <div
           onClick={() => setCollapsed(true)}
           style={{
             position: 'fixed',
             inset: 0,
-            background: "transparent",
             zIndex: 99,
           }}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar (ثابت) */}
       <Sider
-        width={280}
+        width={siderWidth}
         collapsedWidth={0}
-        collapsible
         collapsed={collapsed}
         trigger={null}
         style={{
-          position: isMobile ? 'fixed' : 'sticky',
+          position: 'fixed', // ✅ ثابت فعلًا
           top: 0,
           bottom: 0,
           height: '100vh',
           zIndex: 100,
-          background:"transparent",
+          background: 'transparent',
           [isRTL ? 'right' : 'left']: 0,
         }}
       >
@@ -65,21 +65,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main Layout */}
       <Layout
         style={{
-          
+          marginLeft: !isRTL && !isMobile && !collapsed ? siderWidth : 0,
+          marginRight: isRTL && !isMobile && !collapsed ? siderWidth : 0,
           transition: 'all 0.3s ease',
         }}
       >
         {/* Header */}
         <AppHeader onMenuClick={() => setCollapsed(!collapsed)} />
 
-        {/* Content */}
+        {/* Content (هو اللي يتحرك) */}
         <Content
           style={{
             margin: isMobile ? '12px' : '16px',
             padding: isMobile ? '12px' : '16px',
             background: '#fff',
             borderRadius: 12,
-            minHeight: 'calc(100vh - 140px)',
+            height: 'calc(100vh - 140px)',
+            overflowY: 'auto', // ✅ scroll هنا
           }}
         >
           {children}

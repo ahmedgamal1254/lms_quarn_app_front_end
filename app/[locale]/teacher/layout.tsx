@@ -29,6 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 trigger={null}
                 className="responsive-sider"
             >
+                
                 <Sidebar
                     isOpen={!collapsed}
                     onClose={() => setCollapsed(true)}
