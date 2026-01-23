@@ -1,6 +1,6 @@
 /**
  * Shared API Types
- * 
+ *
  * Common TypeScript interfaces for API requests and responses.
  */
 
@@ -42,11 +42,12 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'admin' | 'teacher' | 'student' | 'parent';
+  role: "admin" | "teacher" | "student" | "parent";
   phone?: string;
   image?: string;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface LoginRequest {
@@ -78,22 +79,29 @@ export interface Student {
   name: string;
   email: string;
   phone?: string;
+  whatsapp_number?: string;
+  whatsapp_link?: string;
   birth_date?: string;
-  gender?: 'male' | 'female';
+  gender?: "male" | "female";
   address?: string;
   parent_id?: number;
   parent?: Parent;
   subscriptions?: Subscription[];
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateStudentRequest {
   name: string;
   email: string;
+  password: string;
   phone?: string;
+  whatsapp_number?: string;
   birth_date?: string;
-  gender?: 'male' | 'female';
+  gender?: "male" | "female";
+  country_code?: string;
+  country?: string;
   address?: string;
   parent_id?: number;
 }
@@ -110,21 +118,29 @@ export interface Teacher {
   name: string;
   email: string;
   phone?: string;
+  whatsapp_number?: string;
+  whatsapp_link?: string;
   specialization?: string;
   salary?: number;
+  hourly_rate?: number;
   currency_id?: number;
   currency?: Currency;
   subjects?: Subject[];
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateTeacherRequest {
   name: string;
   email: string;
+  password: string;
   phone?: string;
+  whatsapp_number?: string;
+  country_code?: string;
   specialization?: string;
   salary?: number;
+  hourly_rate?: number;
   currency_id?: number;
   subject_ids?: number[];
 }
@@ -142,7 +158,7 @@ export interface Session {
   date: string;
   start_time: string;
   end_time: string;
-  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  status: "scheduled" | "ongoing" | "completed" | "cancelled";
   teacher_id?: number;
   teacher?: Teacher;
   subject_id?: number;
@@ -150,6 +166,7 @@ export interface Session {
   students?: Student[];
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateSessionRequest {
@@ -164,7 +181,7 @@ export interface CreateSessionRequest {
 }
 
 export interface UpdateSessionRequest extends Partial<CreateSessionRequest> {
-  status?: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  status?: "scheduled" | "ongoing" | "completed" | "cancelled";
 }
 
 // =============================================================================
@@ -176,22 +193,29 @@ export interface Plan {
   name: string;
   description?: string;
   price: number;
-  duration_days: number;
+  currency?: string;
   sessions_count?: number;
+  teacher_id?: number;
+  teacher?: Teacher;
+  subject_id?: number;
+  subject?: Subject;
   features?: string[];
-  is_active: boolean;
+  status?: string;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreatePlanRequest {
   name: string;
   description?: string;
   price: number;
-  duration_days: number;
+  currency?: string;
   sessions_count?: number;
+  teacher_id?: number;
+  subject_id?: number;
   features?: string[];
-  is_active?: boolean;
+  status?: string;
 }
 
 export interface UpdatePlanRequest extends Partial<CreatePlanRequest> {}
@@ -208,10 +232,11 @@ export interface Subscription {
   plan?: Plan;
   start_date: string;
   end_date: string;
-  status: 'active' | 'expired' | 'cancelled' | 'pending';
+  status: "active" | "expired" | "cancelled" | "pending";
   remaining_sessions?: number;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateSubscriptionRequest {
@@ -221,7 +246,7 @@ export interface CreateSubscriptionRequest {
 }
 
 export interface UpdateSubscriptionRequest extends Partial<CreateSubscriptionRequest> {
-  status?: 'active' | 'expired' | 'cancelled' | 'pending';
+  status?: "active" | "expired" | "cancelled" | "pending";
 }
 
 // =============================================================================
@@ -242,6 +267,7 @@ export interface Exam {
   passing_marks: number;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateExamRequest {
@@ -270,9 +296,10 @@ export interface Homework {
   teacher_id?: number;
   teacher?: Teacher;
   due_date: string;
-  status: 'assigned' | 'submitted' | 'graded';
+  status: "assigned" | "submitted" | "graded";
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateHomeworkRequest {
@@ -285,7 +312,7 @@ export interface CreateHomeworkRequest {
 }
 
 export interface UpdateHomeworkRequest extends Partial<CreateHomeworkRequest> {
-  status?: 'assigned' | 'submitted' | 'graded';
+  status?: "assigned" | "submitted" | "graded";
 }
 
 // =============================================================================
@@ -297,18 +324,45 @@ export interface Subject {
   name: string;
   description?: string;
   code?: string;
+  icon?: string;
+  color?: string;
+  status?: string;
   teachers?: Teacher[];
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateSubjectRequest {
   name: string;
   description?: string;
   code?: string;
+  icon?: string;
+  color?: string;
+  status?: string;
 }
 
 export interface UpdateSubjectRequest extends Partial<CreateSubjectRequest> {}
+
+export interface Setting {
+    id: number;
+    key: string;
+    group: string;
+    type: string;
+    options?: any;
+    sort_order?: number;
+    value?: string;
+    label?: string;
+    description?: string;
+    created_at?: string;
+    updated_at?: string;
+    translations?: Record<string, { value: string; label: string; description: string }>;
+}
+
+export interface UpdateSettingRequest {
+    key: string;
+    translations: Record<string, { value: string; label: string; description: string }>;
+}
 
 // =============================================================================
 // Finance Types
@@ -323,6 +377,7 @@ export interface Currency {
   is_default: boolean;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string }>;
 }
 
 export interface CreateCurrencyRequest {
@@ -337,7 +392,7 @@ export interface UpdateCurrencyRequest extends Partial<CreateCurrencyRequest> {}
 
 export interface Transaction {
   id: number;
-  type: 'income' | 'expense' | 'payment';
+  type: "income" | "expense" | "payment";
   amount: number;
   currency_id?: number;
   currency?: Currency;
@@ -352,10 +407,11 @@ export interface Transaction {
   subscription?: Subscription;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateTransactionRequest {
-  type: 'income' | 'expense' | 'payment';
+  type: "income" | "expense" | "payment";
   amount: number;
   currency_id?: number;
   description?: string;
@@ -379,6 +435,7 @@ export interface Expense {
   date: string;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
 }
 
 export interface CreateExpenseRequest {
@@ -402,9 +459,47 @@ export interface Parent {
   name: string;
   email: string;
   phone?: string;
-  children?: Student[];
+  whatsapp_number?: string;
+  whatsapp_link?: string;
+  students?: Student[];
+  children_count?: number;
   created_at?: string;
   updated_at?: string;
+  translations?: Record<string, { name: string; description?: string }>;
+}
+
+export interface CreateParentRequest {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  whatsapp_number?: string;
+  country_code?: string;
+  student_ids?: number[];
+}
+
+export interface ParentDashboardStats {
+  parent: {
+    name: string;
+    email: string;
+    phone?: string;
+    whatsapp_number?: string;
+  };
+  children: Array<{
+    id: number;
+    name: string;
+    email: string;
+    plan?: string;
+    sessions_remaining: number;
+    upcoming_sessions: number;
+    pending_homework: number;
+    upcoming_exams: number;
+  }>;
+  statistics: {
+    total_children: number;
+    total_sessions_this_month: number;
+    total_homework_pending: number;
+  };
 }
 
 // =============================================================================

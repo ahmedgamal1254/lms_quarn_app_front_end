@@ -9,13 +9,23 @@ const axiosInstance = axios.create({
 });
 
 
-// Request interceptor - Add auth token
+// Request interceptor - Add auth token and language
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Get current locale from URL path or fallback
+    if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname;
+      const locale = pathname.split('/')[1];
+      const supportedLocales = ['ar', 'en'];
+      
+      config.headers['Accept-language'] = supportedLocales.includes(locale) ? locale : 'ar';
+    }
+
     return config;
   },
   (error) => Promise.reject(error)

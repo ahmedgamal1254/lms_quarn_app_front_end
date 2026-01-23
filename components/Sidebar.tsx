@@ -42,7 +42,7 @@ interface MenuItem {
   permission?: string;
 }
 
-type UserRole = 'student' | 'teacher' | 'admin';
+type UserRole = 'student' | 'teacher' | 'admin' | 'parent';
 
 interface MenuSidebar {
   title: string;
@@ -75,7 +75,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   const roleUrls: Record<UserRole, string> = {
     student: '/student/profile',
     teacher: '/teacher/profile',
-    admin:"/admin/profile"
+    admin: '/admin/profile',
+    parent: '/parent-dashboard'
   };
 
   const role = user?.role as UserRole | undefined;
@@ -90,7 +91,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
       items: [
         { title: t('users'), href: '/users', icon: Users, permission: 'manage-users' },
         { title: t('students'), href: '/students', icon: GraduationCap, permission: 'manage-students' },
-        { title: t('teachers'), href: '/teachers', icon: UserCog, permission: 'manage-teachers' }
+        { title: t('teachers'), href: '/teachers', icon: UserCog, permission: 'manage-teachers' },
+        { title: t('parents'), href: '/parent', icon: Users, permission: 'manage-users' }
       ]
     },
     {
@@ -154,7 +156,11 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     { title: t('exams'), icon: FileQuestion, href: '/teacher/exams' },
     { title: t('students'), icon: Users, href: '/teacher/students' },
     { title: t('chat'), icon: MessageCircle, href: '/teacher/chat' },
-  ]
+  ];
+
+  const parentMenuGroups = [
+    { title: t('home'), icon: LayoutDashboard, href: '/parent-dashboard' },
+  ];
 
   const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
@@ -175,6 +181,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
     ? studentMenuGroups
     : user?.role === 'teacher'
     ? teacherMenuGroups
+    : user?.role === 'parent'
+    ? parentMenuGroups
     : filteredMenu(adminMenuGroups);
 
   const isActive = (href?: string) => href && pathname.startsWith(href);
@@ -207,6 +215,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
           w-64 sm:w-72
           bg-white ${isRTL ? 'border-l' : 'border-r'}
           transition-transform duration-300 ease-in-out
+          flex flex-col
 
           ${isOpen ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full'}
 
@@ -245,7 +254,12 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 
 
         {/* Menu */}
-        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2 scroll-smooth
+          [&::-webkit-scrollbar]:w-1.5
+          [&::-webkit-scrollbar-track]:bg-transparent
+          [&::-webkit-scrollbar-thumb]:bg-gray-300
+          [&::-webkit-scrollbar-thumb]:rounded-full
+        ">
           {menu.map((group: any) => {
             const Icon = group.icon;
 

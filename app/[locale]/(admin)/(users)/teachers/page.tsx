@@ -26,6 +26,7 @@ import Pagination from '@/components/Pagination';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
+import { FieldError, useFormErrors } from '@/components/FieldError';
 
 interface Teacher {
     id: number;
@@ -93,6 +94,7 @@ export default function TeachersPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
     const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+    const { errors, setFieldErrors, clearErrors, getError, hasError } = useFormErrors();
     const [formData, setFormData] = useState<TeacherFormData>({
         name: '',
         email: '',
@@ -142,11 +144,17 @@ export default function TeachersPage() {
             const msg = modalMode === 'edit' ? tCommon('successUpdate') : tCommon('successAdd');
             toast.success(msg);
             queryClient.invalidateQueries({ queryKey: ['teachers'] });
+            clearErrors();
             closeModal();
         },
         onError: (err: unknown) => {
             const axiosError = err as AxiosError<any>;
-            toast.error(axiosError.response?.data?.message || tCommon('error'));
+            if (axiosError.response?.data?.errors) {
+                setFieldErrors(axiosError.response.data.errors);
+                toast.error(axiosError.response?.data?.message || 'يرجى تصحيح الأخطاء في النموذج');
+            } else {
+                toast.error(axiosError.response?.data?.message || tCommon('error'));
+            }
         }
     });
 
@@ -203,6 +211,7 @@ export default function TeachersPage() {
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedTeacher(null);
+        clearErrors();
         setFormData({
             name: '',
             email: '',
@@ -568,9 +577,10 @@ export default function TeachersPage() {
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${hasError('name') ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder={tCommon('name')}
                                     />
+                                    <FieldError error={getError('name')} />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('email')} *</label>
@@ -578,9 +588,10 @@ export default function TeachersPage() {
                                         type="email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr"
+                                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr ${hasError('email') ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="example@email.com"
                                     />
+                                    <FieldError error={getError('email')} />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('phone')} *</label>
@@ -588,9 +599,10 @@ export default function TeachersPage() {
                                         type="tel"
                                         value={formData.phone}
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr"
+                                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr ${hasError('phone') ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="01012345678"
                                     />
+                                    <FieldError error={getError('phone')} />
                                 </div>
                                  
                                 <div>
@@ -599,9 +611,10 @@ export default function TeachersPage() {
                                         type="password"
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${hasError('password') ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder={tCommon('password')}
                                     />
+                                    <FieldError error={getError('password')} />
                                 </div>
 
                                 <div>

@@ -20,6 +20,7 @@ import {
 import toast from 'react-hot-toast';
 import Pagination from '@/components/Pagination';
 import { useParams, useSearchParams } from 'next/navigation';
+import { FieldError, useFormErrors } from '@/components/FieldError';
 
 interface Permission {
     id: number;
@@ -64,6 +65,7 @@ export default function UsersPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
     const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+    const { errors, setFieldErrors, clearErrors, getError, hasError } = useFormErrors();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -106,10 +108,16 @@ export default function UsersPage() {
             const message = modalMode === 'edit' ? tCommon('successUpdate') : tCommon('successAdd');
             toast.success(message);
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            clearErrors();
             closeModal();
         },
         onError: (err: any) => {
-            toast.error(err.response?.data?.message || tCommon('error'));
+            if (err.response?.data?.errors) {
+                setFieldErrors(err.response.data.errors);
+                toast.error(err.response?.data?.message || 'يرجى تصحيح الأخطاء في النموذج');
+            } else {
+                toast.error(err.response?.data?.message || tCommon('error'));
+            }
         }
     });
 
@@ -152,6 +160,7 @@ export default function UsersPage() {
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedUser(null);
+        clearErrors();
         setFormData({
             name: '',
             email: '',
@@ -397,8 +406,9 @@ export default function UsersPage() {
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                 disabled={modalMode === 'view'}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 ${hasError('name') ? 'border-red-500' : 'border-gray-300'}`}
                                             />
+                                            <FieldError error={getError('name')} />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('email')}</label>
@@ -407,8 +417,9 @@ export default function UsersPage() {
                                                 value={formData.email}
                                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                 disabled={modalMode === 'view'}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 ${hasError('email') ? 'border-red-500' : 'border-gray-300'}`}
                                             />
+                                            <FieldError error={getError('email')} />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">{tUsers('countryCode')}</label>
@@ -427,8 +438,9 @@ export default function UsersPage() {
                                                 value={formData.phone}
                                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                                 disabled={modalMode === 'view'}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 dir-ltr text-left"
+                                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 dir-ltr text-left ${hasError('phone') ? 'border-red-500' : 'border-gray-300'}`}
                                             />
+                                            <FieldError error={getError('phone')} />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">{tUsers('role')}</label>
@@ -452,8 +464,9 @@ export default function UsersPage() {
                                                 value={formData.password}
                                                 placeholder={tCommon('password')}
                                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${hasError('password') ? 'border-red-500' : 'border-gray-300'}`}
                                             />
+                                            <FieldError error={getError('password')} />
                                         </div>
                                     </div>
                                         

@@ -20,7 +20,13 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   const settings = useAppSettingsStore((state) => state.app_settings);
 
-  const url=user?.role=="student"?"/student/profile":""
+  const url = user?.role === "student" 
+    ? "/student/profile" 
+    : user?.role === "teacher"
+    ? "/teacher/profile"
+    : user?.role === "parent"
+    ? "/parent-dashboard"
+    : "/admin/profile";
 
   return (
     <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
