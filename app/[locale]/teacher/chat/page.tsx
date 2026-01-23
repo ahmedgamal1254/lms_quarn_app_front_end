@@ -9,7 +9,6 @@ import {
   ArrowRight,
   User,
   Loader2,
-  AlertCircle,
   ImagePlus,
   Paperclip,
   MoreVertical,
@@ -21,6 +20,7 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { getUser } from '@/lib/auth';
 import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 
 // Types
 interface User {
@@ -75,6 +75,10 @@ const sendMessage = async (data: { conversation_id: number; message: string }) =
 };
 
 export default function ChatPage() {
+  const t = useTranslations('Chat');
+  const tCommon = useTranslations('Common');
+  const locale = useLocale();
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -85,6 +89,8 @@ export default function ChatPage() {
   const [conversationPage, setConversationPage] = useState(1);
   const [messagePage, setMessagePage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const user = getUser();
 
   // Fetch conversations
   const { data: conversationsData, isLoading: conversationsLoading } = useQuery({
@@ -115,7 +121,7 @@ export default function ChatPage() {
       scrollToBottom();
     },
     onError: (error: AxiosError<{ error: string }>) => {
-      toast.error(error?.response?.data?.error || 'فشل إرسال الرسالة');
+      toast.error(error?.response?.data?.error || t('sendMessageError'));
     },
   });
 
@@ -169,7 +175,7 @@ export default function ChatPage() {
   // Format time
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('ar-SA', {
+    return date.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -183,126 +189,143 @@ export default function ChatPage() {
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return 'اليوم';
+      return tCommon('today');
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'أمس';
+      return t('yesterday');
     } else {
-      return date.toLocaleDateString('ar-SA', {
+      return date.toLocaleDateString(locale, {
         day: 'numeric',
         month: 'short',
       });
     }
   };
 
-
-const user=getUser();
-
   // Get other user in conversation
   const getOtherUser = (conversation: Conversation): User | null => {
-    return conversation.users.find((u) => u.id !== user?.id) || conversation.users[0]; // 40 is current user ID
+    return conversation.users.find((u) => u.id !== user?.id) || conversation.users[0]; 
   };
 
+  // Deduplicated Conversation List Component
+  const ConversationList = ({ isMobile = false }) => (
+    <div className="flex-1 overflow-y-auto">
+      {conversationsLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+        </div>
+      ) : conversations.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 px-4">
+          <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
+          <p className="text-gray-600 text-center">{t('noConversations')}</p>
+        </div>
+      ) : (
+        conversations.map((conversation: Conversation) => {
+          const otherUser = getOtherUser(conversation);
+          const isSelected = selectedConversation?.id === conversation.id;
+
+          const content = (
+            <div className="flex items-start gap-3 px-2">
+              {/* Avatar */}
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                {otherUser?.image ? (
+                  <img
+                    src={otherUser.image}
+                    alt={otherUser.name}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <User className="w-6 h-6" />
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between mb-1">
+                  <h3 className="font-semibold text-gray-900 truncate">
+                    {otherUser?.name}
+                  </h3>
+                  {conversation.last_message && (
+                    <span className="text-xs text-gray-500 flex-shrink-0 mx-2">
+                      {formatDate(conversation.last_message.created_at)}
+                    </span>
+                  )}
+                </div>
+                {conversation.last_message && (
+                  <p className="text-sm text-gray-600 truncate">
+                    {conversation.last_message.message}
+                    {conversation.unread_messages_count && conversation.unread_messages_count > 0 && (
+                      <span className="mx-2 inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                        {conversation.unread_messages_count}
+                      </span>
+                    )}
+                  </p>
+                )}
+              </div>
+            </div>
+          );
+
+          const className = `p-4 border-b border-gray-100 cursor-pointer transition-colors block ${
+            isSelected
+              ? 'bg-indigo-50 border-s-4 border-indigo-600'
+              : 'hover:bg-gray-50'
+          }`;
+
+          if (isMobile) {
+            return (
+              <Link
+                key={conversation.id}
+                href={`/teacher/chat/${conversation.id}`}
+                className={className}
+              >
+                {content}
+              </Link>
+            );
+          }
+
+          return (
+            <div
+              key={conversation.id}
+              onClick={() => {
+                setSelectedConversation(conversation);
+                setMessagePage(1);
+              }}
+              className={className}
+            >
+              {content}
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50" dir={dir}>
+      {/* Desktop Layout */}
       <div className="h-screen flex-col md:flex-row hidden md:flex">
         {/* Sidebar - Conversations List */}
-        <div className="w-full md:w-96 bg-white border-l border-gray-200 flex flex-col none md:flex">
+        <div className="w-full md:w-96 bg-white border-e border-gray-200 flex flex-col">
           {/* Header */}
           <div className="p-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">الرسائل</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('messages')}</h1>
             
             {/* Search */}
             <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className={`absolute ${dir === 'rtl' ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5`} />
               <input
                 type="text"
-                placeholder="بحث في المحادثات..."
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right"
+                className={`w-full ${dir === 'rtl' ? 'pl-10 pr-4' : 'pr-10 pl-4'} py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
               />
             </div>
           </div>
 
-          {/* Conversations List */}
-          <div className="flex-1 overflow-y-auto ">
-            {conversationsLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-              </div>
-            ) : conversations.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 px-4">
-                <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                <p className="text-gray-600 text-center">لا توجد محادثات</p>
-              </div>
-            ) : (
-              conversations.map((conversation: Conversation) => {
-                const otherUser = getOtherUser(conversation);
-                const isSelected = selectedConversation?.id === conversation.id;
-
-                return (
-                  <div
-                    key={conversation.id}
-                    onClick={() => {
-                      setSelectedConversation(conversation);
-                      setMessagePage(1);
-                    }}
-                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${
-                      isSelected
-                        ? 'bg-indigo-50 border-r-4 border-r-indigo-600'
-                        : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3 px-2">
-                      {/* Avatar */}
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                        {otherUser?.image ? (
-                          <img
-                            src={otherUser.image}
-                            alt={otherUser.name}
-                            className="w-full h-full rounded-full object-cover"
-                          />
-                        ) : (
-                          <User className="w-6 h-6" />
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-1">
-                          <h3 className="font-semibold text-gray-900 truncate">
-                            {otherUser?.name}
-                          </h3>
-                          {conversation.last_message && (
-                            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
-                              {formatDate(conversation.last_message.created_at)}
-                            </span>
-                          )}
-                          
-                        </div>
-                        {conversation.last_message && (
-                          <p className="text-sm text-gray-600 truncate">
-                            {conversation.last_message.message}
-
-                            {conversation.unread_messages_count && conversation.unread_messages_count > 0 && (
-                                <span className="mr-2 inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                                    {conversation.unread_messages_count}
-                                </span>
-                            )}
-                          </p>
-                        )}
-                        
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+          <ConversationList isMobile={false} />
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex-col bg-gray-50 shadow-sm hidden md:flex">
+        <div className="flex-1 flex-col bg-gray-50 shadow-sm flex">
           {selectedConversation ? (
             <>
               {/* Chat Header */}
@@ -313,7 +336,7 @@ const user=getUser();
                       onClick={() => setSelectedConversation(null)}
                       className="md:hidden text-gray-600 hover:text-gray-900"
                     >
-                      <ArrowRight className="w-6 h-6" />
+                      <ArrowRight className={`w-6 h-6 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                     </button>
                     
                     {/* Avatar */}
@@ -335,8 +358,8 @@ const user=getUser();
                       </h2>
                       <p className="text-xs text-gray-500">
                         {getOtherUser(selectedConversation)?.role === 'teacher'
-                          ? 'معلم'
-                          : 'طالب'}
+                          ? t('teacher')
+                          : t('student')}
                       </p>
                     </div>
                   </div>
@@ -374,12 +397,12 @@ const user=getUser();
                 ) : messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full">
                     <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                    <p className="text-gray-600">ابدأ محادثة جديدة</p>
+                    <p className="text-gray-600">{t('startConversation')}</p>
                   </div>
                 ) : (
                   <>
                     {messages.slice().reverse().map((message: Message, index: number) => {
-                      const isOwn = message.sender_id === user?.id; // Current user
+                      const isOwn = message.sender_id === user?.id;
                       const showDate =
                         index === 0 ||
                         new Date(message.created_at).toDateString() !==
@@ -434,7 +457,7 @@ const user=getUser();
                               </div>
                               <span
                                 className={`text-xs text-gray-500 mt-1 block ${
-                                  isOwn ? 'text-left' : 'text-right'
+                                  isOwn ? (dir === 'rtl' ? 'text-left' : 'text-right') : (dir === 'rtl' ? 'text-right' : 'text-left')
                                 }`}
                               >
                                 {formatTime(message.created_at)}
@@ -475,9 +498,9 @@ const user=getUser();
                           handleSendMessage(e);
                         }
                       }}
-                      placeholder="اكتب رسالتك..."
+                      placeholder={t('typeMessage')}
                       rows={1}
-                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-right"
+                      className={`w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-50 resize-none ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                     />
                   </div>
 
@@ -490,7 +513,7 @@ const user=getUser();
                     {sendMessageMutation.isPending ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
-                      <Send className="w-5 h-5" />
+                      <Send className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} /> // Optional rotate for Send icon if needed
                     )}
                   </button>
                 </div>
@@ -501,10 +524,10 @@ const user=getUser();
               <div className="text-center">
                 <MessageCircle className="w-24 h-24 text-gray-300 mx-auto mb-4" />
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
-                  اختر محادثة للبدء
+                  {t('selectConversation')}
                 </h2>
                 <p className="text-gray-600">
-                  اختر محادثة من القائمة لعرض الرسائل
+                  {t('selectConversationDesc')}
                 </p>
               </div>
             </div>
@@ -512,99 +535,27 @@ const user=getUser();
         </div>
       </div>
 
-      <div className="w-full md:w-96 bg-white border-l border-gray-200 flex h-screen flex-col sm:none">
-          {/* Header */}
-          <div className="p-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">الرسائل</h1>
-            
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="بحث في المحادثات..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right"
-              />
-            </div>
+      {/* Mobile Layout */}
+      <div className="w-full bg-white border-e border-gray-200 flex h-screen flex-col md:hidden">
+        {/* Header */}
+        <div className="p-4 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('messages')}</h1>
+          
+          {/* Search */}
+          <div className="relative">
+            <Search className={`absolute ${dir === 'rtl' ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5`} />
+            <input
+              type="text"
+              placeholder={t('searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full ${dir === 'rtl' ? 'pl-10 pr-4' : 'pr-10 pl-4'} py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+            />
           </div>
+        </div>
 
-          {/* Conversations List */}
-          <div className="flex-1 overflow-y-auto ">
-            {conversationsLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-              </div>
-            ) : conversations.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 px-4">
-                <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                <p className="text-gray-600 text-center">لا توجد محادثات</p>
-              </div>
-            ) : (
-              conversations.map((conversation: Conversation) => {
-                const otherUser = getOtherUser(conversation);
-                const isSelected = selectedConversation?.id === conversation.id;
-
-                return (
-                  <Link
-                    key={conversation.id}
-                    href={`/teacher/chat/${conversation.id}`}
-                    
-                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${
-                      isSelected
-                        ? 'bg-indigo-50 border-r-4 border-r-indigo-600'
-                        : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3 px-2">
-                      {/* Avatar */}
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                        {otherUser?.image ? (
-                          <img
-                            src={otherUser.image}
-                            alt={otherUser.name}
-                            className="w-full h-full rounded-full object-cover"
-                          />
-                        ) : (
-                          <User className="w-6 h-6" />
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-1">
-                          <h3 className="font-semibold text-gray-900 truncate">
-                            {otherUser?.name}
-                          </h3>
-                          {conversation.last_message && (
-                            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
-                              {formatDate(conversation.last_message.created_at)}
-                            </span>
-                          )}
-                          
-                        </div>
-                        {conversation.last_message && (
-                          <p className="text-sm text-gray-600 truncate">
-                            {conversation.last_message.message}
-
-                            {conversation.unread_messages_count && conversation.unread_messages_count > 0 && (
-                                <span className="mr-2 inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                                    {conversation.unread_messages_count}
-                                </span>
-                            )}
-                          </p>
-                        )}
-                        
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })
-            )}
-          </div>
+        <ConversationList isMobile={true} />
       </div>
-
     </div>
   );
 }
