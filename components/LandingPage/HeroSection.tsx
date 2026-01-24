@@ -14,11 +14,11 @@ export default function HeroSection({ isRTL }: { isRTL: boolean }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
+            <h1 className="text-4xl lg:text-7xl font-bold leading-tight tracking-tight">
               {t('title.part1')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">{t('title.highlight')}</span> {t('title.part2')}
             </h1>
 
-            <p className="text-lg text-slate-300 max-w-xl leading-relaxed">
+            <p className="text-md lg:text-lg text-slate-300 max-w-xl leading-relaxed">
               {t('description')}
             </p>
 
