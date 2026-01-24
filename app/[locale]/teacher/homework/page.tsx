@@ -235,12 +235,12 @@ export default function HomeworkPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-2">{t('description')}</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{t('description')}</p>
         </div>
         <button
           onClick={() => {
@@ -261,14 +261,14 @@ export default function HomeworkPage() {
 
       {/* Status Filter */}
       <div className="flex flex-wrap flex-col w-full items-stretch gap-3">
-        <label htmlFor="status" className="text-gray-600 font-semibold whitespace-nowrap">
+        <label htmlFor="status" className="text-gray-600 dark:text-gray-400 font-semibold whitespace-nowrap">
           {t('homeworkStatus')}
         </label>
         <select
           id="status"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 w-full md:w-auto"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 w-full md:w-auto"
         >
           <option value="all">{t('all')}</option>
           <option value="pending">{t('pending')}</option>
@@ -280,7 +280,7 @@ export default function HomeworkPage() {
 
       {/* Search */}
       <div className="flex flex-col w-full items-stretch gap-3">
-        <label htmlFor="search" className="text-gray-600 font-semibold whitespace-nowrap">
+        <label htmlFor="search" className="text-gray-600 dark:text-gray-400 font-semibold whitespace-nowrap">
           {tCommon('search') || 'Search'}:
         </label>
         <input
@@ -289,13 +289,13 @@ export default function HomeworkPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 w-full"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 w-full"
         />
       </div>
 
       {/* تاريخ التسليم */}
       <div className='flex flex-col w-full items-stretch gap-3'>
-        <label htmlFor="date" className="text-gray-600 font-semibold whitespace-nowrap">
+        <label htmlFor="date" className="text-gray-600 dark:text-gray-400 font-semibold whitespace-nowrap">
           {t('dueDate')}:
         </label>
         <DatePicker onChange={onChange} placeholder={t('dueDate')} />
@@ -306,10 +306,10 @@ export default function HomeworkPage() {
       {/* Homework List */}
       <div className="space-y-6 mb-8">
         {homework.length === 0 && !homeworkLoading ? (
-          <div className="bg-white rounded-xl shadow-sm p-16 text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-16 text-center">
             <BookOpen className="w-20 h-20 mx-auto text-gray-300 mb-6" />
-            <p className="text-gray-600 text-xl font-semibold">{t('noHomework')}</p>
-            <p className="text-gray-500 mt-2">{t('startCreating')}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-xl font-semibold">{t('noHomework')}</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">{t('startCreating')}</p>
           </div>
         ) : (
           homework.map((hw) => {
@@ -317,24 +317,24 @@ export default function HomeworkPage() {
             const hasStudentSubmission = !!hw.student_file_name;
 
             return (
-              <div key={hw.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+              <div key={hw.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="p-6">
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-1">
                       <div className="flex items-start gap-4">
                         <div className={`w-4 h-4 rounded-full ${status.dot} mt-2 flex-shrink-0`}></div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900">{hw.title}</h3>
-                          <p className="text-gray-600 mt-2 leading-relaxed">{hw.description || t('noDescription')}</p>
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{hw.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">{hw.description || t('noDescription')}</p>
                           
                           <div className="flex flex-wrap gap-4 mt-4 text-sm">
-                            <div className="flex items-center gap-2 text-gray-600">
+                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                               <User className="w-4 h-4" />
-                              <span className="font-medium">{hw.student.name}</span>
+                              <span className="font-medium dark:text-white">{hw.student.name}</span>
                             </div>
-                            <div className="flex items-center gap-2 text-gray-600">
+                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                               <Book className="w-4 h-4" />
-                              <span className="font-medium">{hw.subject.name}</span>
+                              <span className="font-medium dark:text-white">{hw.subject.name}</span>
                             </div>
                           </div>
                         </div>
@@ -343,11 +343,11 @@ export default function HomeworkPage() {
 
                     <div className="space-y-4">
                       <div>
-                        <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           {t('dueDate')}
                         </p>
-                        <p className="font-bold text-lg mt-1">
+                        <p className="font-bold text-lg mt-1 text-gray-900 dark:text-gray-100">
                           {new Date(hw.due_date).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
                         {hw.is_late && hw.status === 'pending' && (
@@ -360,27 +360,27 @@ export default function HomeworkPage() {
                           {status.label}
                         </span>
                         {hasStudentSubmission && hw.status !== 'graded' && (
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700 ${locale === 'ar' ? 'mr-2' : 'ml-2'}`}>
+                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 ${locale === 'ar' ? 'mr-2' : 'ml-2'}`}>
                             {t('submitted')}
                           </span>
                         )}
                       </div>
 
                       <div>
-                        <p className="text-sm text-gray-600">{t('totalMarks')}</p>
-                        <p className="text-2xl font-bold">{hw.total_marks}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('totalMarks')}</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{hw.total_marks}</p>
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
                       {hw.obtained_marks !== null && (
-                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 text-center border border-green-200">
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 text-center border border-green-200 dark:border-green-700">
                           <p className="text-sm text-green-700 font-medium">{t('obtainedMarks')}</p>
                           <p className="text-3xl font-bold text-green-700 mt-1">
-                            {hw.obtained_marks} <span className="text-xl">/ {hw.total_marks}</span>
+                            {hw.obtained_marks} <span className="text-xl dark:text-green-300">/ {hw.total_marks}</span>
                           </p>
                           {hw.teacher_feedback && (
-                            <p className="text-xs text-gray-600 mt-2 italic">"{hw.teacher_feedback}"</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 italic">"{hw.teacher_feedback}"</p>
                           )}
                         </div>
                       )}
@@ -388,14 +388,14 @@ export default function HomeworkPage() {
                       <div className="grid grid-cols-2 gap-3">
                         <button
                           onClick={() => handleEdit(hw)}
-                          className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition text-sm"
+                          className="bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-4 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition text-sm"
                         >
                           <Edit className="w-4 h-4" />
                           {t('edit')}
                         </button>
                         <button
                           onClick={() => deleteHomework(hw)}
-                          className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition text-sm"
+                          className="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition text-sm"
                         >
                           <Trash2 className="w-4 h-4" />
                           {t('delete')}
@@ -418,7 +418,7 @@ export default function HomeworkPage() {
                             href={`${hw.file_url}`}
                             download
                             target='_blank'
-                            className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
+                            className="bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
                           >
                              <Download className="w-4 h-4" />
                              {t('homeworkFile')}
@@ -429,7 +429,7 @@ export default function HomeworkPage() {
                             href={`${hw.student_file_url}`}
                             download
                             target='_blank'
-                            className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
+                            className="bg-indigo-100 dark:bg-indigo-900/30 hover:bg-indigo-200 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition text-sm"
                           >
                              <Download className="w-4 h-4" />
                              {t('studentSubmission')}
@@ -444,20 +444,20 @@ export default function HomeworkPage() {
                 
                 {isModalDeleteOpen && (
                   <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl max-w-xl w-full max-h-[95vh] overflow-y-auto">
-                      <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-                        <h2 className="text-2xl font-bold text-gray-900">{t('deleteHomework')}</h2>
-                        <button onClick={() => setIsModalDeleteOpen(false)} className="text-gray-500 hover:text-gray-700">
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-xl w-full max-h-[95vh] overflow-y-auto">
+                      <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('deleteHomework')}</h2>
+                        <button onClick={() => setIsModalDeleteOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                           <X className="w-8 h-8" />
                         </button>
                       </div>
                       <div className="p-6 space-y-7">
-                        <p className="text-lg text-gray-700">{t('deleteConfirm') || `Are you sure you want to delete ${homeworkToDelete?.title}?`}</p>
+                        <p className="text-lg text-gray-700 dark:text-gray-300">{t('deleteConfirm') || `Are you sure you want to delete ${homeworkToDelete?.title}?`}</p>
 
                         <div className="flex items-center justify-end gap-3">
                           <button
                             onClick={() => setIsModalDeleteOpen(false)}
-                            className="w-16 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-bold text-md transition"
+                            className="w-16 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-800 dark:text-gray-100 py-2 rounded-xl font-bold text-md transition"
                           >
                             {t('no')}
                           </button>
@@ -484,7 +484,7 @@ export default function HomeworkPage() {
             <div className="flex items-center justify-center">
               <div className="text-center">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                <p className="mt-4 text-gray-600">{tCommon('loading') || 'Loading homework...'}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading') || 'Loading homework...'}</p>
               </div>
             </div>
           )
@@ -504,41 +504,41 @@ export default function HomeworkPage() {
       {/* مودال إنشاء/تعديل الواجب مع رفع الملف شغال 100% */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {editingId ? t('edit') : t('newHomework')}
               </h2>
-              <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+              <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-8 h-8" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="p-6 space-y-7">
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block text-lg font-semibold text-gray-800 mb-2">{tCommon('title')}</label>
+                <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{tCommon('title')}</label>
                 <input
                   type="text"
                   {...register('title', { required: t('titleRequired') })}
-                  className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={tCommon('title')}
                 />
                 {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block text-lg font-semibold text-gray-800 mb-2">{tCommon('description')}</label>
+                <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{tCommon('description')}</label>
                 <textarea
                   {...register('description')}
                   rows={4}
-                  className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   placeholder={tCommon('description')}
                 />
               </div>
 
               {/* رفع الملف - شغال 100% */}
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block text-lg font-semibold text-gray-800 mb-3">{t('homeworkFile')}</label>
+                <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('homeworkFile')}</label>
                 <div className="relative">
                   <input
                     type="file"
@@ -570,7 +570,7 @@ export default function HomeworkPage() {
                         : t('clickToSelect')
                       }
                     </p>
-                    <p className="text-sm text-gray-500 mt-3">{t('fileTypes')}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{t('fileTypes')}</p>
                     {selectedFile && (
                       <p className="mt-4 text-sm text-green-600 font-medium">✓ {t('sending')}</p>
                     )}
@@ -579,7 +579,7 @@ export default function HomeworkPage() {
 
                 {/* الملف الحالي عند التعديل */}
                 {editingId && selectedFileName && !selectedFile && (
-                  <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-3">
+                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-xl flex items-center gap-3">
                     <FileText className="w-6 h-6 text-blue-600" />
                     <div>
                       <p className="font-medium text-blue-900">{t('fileCurrent')}: {selectedFileName}</p>
@@ -591,10 +591,10 @@ export default function HomeworkPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                  <label className="block text-lg font-semibold text-gray-800 mb-2">{t('student')}</label>
+                  <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{t('student')}</label>
                   <select
                     {...register('student_id', { required: t('studentRequired'), valueAsNumber: true })}
-                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">{t('student')}</option>
                     {students.map(s => (
@@ -605,10 +605,10 @@ export default function HomeworkPage() {
                 </div>
 
                 <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                  <label className="block text-lg font-semibold text-gray-800 mb-2">{t('subject')}</label>
+                  <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{t('subject')}</label>
                   <select
                     {...register('subject_id', { required: t('subjectRequired'), valueAsNumber: true })}
-                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">{t('subject')}</option>
                     {subjects.map(s => (
@@ -621,22 +621,22 @@ export default function HomeworkPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                  <label className="block text-lg font-semibold text-gray-800 mb-2">{t('dueDate')}</label>
+                  <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{t('dueDate')}</label>
                   <input
                     type="date"
                     {...register('due_date', { required: t('dateRequired') })}
-                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {errors.due_date && <p className="text-red-500 text-sm mt-1">{t('dateRequired')}</p>}
                 </div>
 
                 <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                  <label className="block text-lg font-semibold text-gray-800 mb-2">{t('totalMarks')}</label>
+                  <label className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{t('totalMarks')}</label>
                   <input
                     type="number"
                     min="1"
                     {...register('total_marks', { required: tCommon('required'), valueAsNumber: true })}
-                    className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="100"
                   />
                   {errors.total_marks && <p className="text-red-500 text-sm mt-1">{tCommon('required')}</p>}
@@ -654,7 +654,7 @@ export default function HomeworkPage() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-bold text-md transition"
+                  className="flex px-4 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-800 dark:text-gray-100 py-2 rounded-xl font-bold text-md transition"
                 >
                   {t('cancel')}
                 </button>
@@ -667,10 +667,10 @@ export default function HomeworkPage() {
       {/* مودال التصحيح */}
       {isGradeModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-lg w-full">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
               <h2 className="text-2xl font-bold">{t('gradeTitle')}</h2>
-              <button onClick={() => { setIsGradeModalOpen(false); resetGrade(); }} className="text-gray-500 hover:text-gray-700">
+              <button onClick={() => { setIsGradeModalOpen(false); resetGrade(); }} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-7 h-7" />
               </button>
             </div>
@@ -683,7 +683,7 @@ export default function HomeworkPage() {
                   min="0"
                   max={homework.find(h => h.id === gradingId)?.total_marks || 100}
                   {...registerGrade('obtained_marks', { required: true, valueAsNumber: true })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-lg"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 text-lg"
                 />
               </div>
 
@@ -692,7 +692,7 @@ export default function HomeworkPage() {
                 <textarea
                   {...registerGrade('teacher_feedback')}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
                   placeholder="..."
                 />
               </div>
@@ -708,7 +708,7 @@ export default function HomeworkPage() {
                 <button
                   type="button"
                   onClick={() => { setIsGradeModalOpen(false); resetGrade(); }}
-                  className="flex bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-xl font-bold text-md transition"
+                  className="flex bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-800 dark:text-gray-100 py-2 px-4 rounded-xl font-bold text-md transition"
                 >
                   {t('cancel')}
                 </button>

@@ -173,14 +173,14 @@ export default function SubjectsPage() {
     // const icons = ['calculator', 'book', 'pencil', 'globe', 'flask', 'music', 'palette', 'microscope'];
 
     return (
-        <div className="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="sticky top-0 z-40 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-                            <div className="flex items-center gap-2 mt-2 text-gray-600">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+                            <div className="flex items-center gap-2 mt-2 text-gray-600 dark:text-gray-400">
                                 <Home size={16} />
                                 <Link href="/dashboard" className="hover:text-blue-600">{tCommon('dashboard')}</Link>
                                 <ChevronRight size={16} />
@@ -202,7 +202,7 @@ export default function SubjectsPage() {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Search */}
-                <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700 mb-8">
                     <div className="relative">
                         <Search size={18} className="absolute left-3 top-3 text-gray-400" />
                         <input
@@ -210,7 +210,7 @@ export default function SubjectsPage() {
                             placeholder={t('searchPlaceholder')}
                             value={params.search}
                             onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -221,9 +221,9 @@ export default function SubjectsPage() {
                         <Loader className="animate-spin text-blue-600" size={40} />
                     </div>
                 ) : !subjectsData?.subjects?.length ? (
-                    <div className="text-center py-16 bg-white rounded-lg border border-gray-200">
+                    <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700">
                         <AlertCircle size={48} className="mx-auto text-gray-300 mb-4" />
-                        <p className="text-gray-500 text-lg">{tCommon('noData')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-lg">{tCommon('noData')}</p>
                     </div>
                 ) : (
                     <>
@@ -232,7 +232,7 @@ export default function SubjectsPage() {
                             {subjectsData.subjects.map((subject) => (
                                 <div
                                     key={subject.id}
-                                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                                    className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
                                 >
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
@@ -264,8 +264,8 @@ export default function SubjectsPage() {
                                                 </button>
                                             </div>
                                         </div>
-                                        <h3 className="font-bold text-gray-900 text-lg mb-2">{subject.name}</h3>
-                                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                                        <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-2">{subject.name}</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
                                             {subject.description || tCommon('withoutDesc')}
                                         </p>
                                         <div className="flex items-center justify-between">
@@ -278,7 +278,7 @@ export default function SubjectsPage() {
                                                 {/* @ts-ignore */
                                                 subject.status === 'active' ? tCommon('active') : tCommon('inactive')}
                                             </span>
-                                            <span className="text-xs text-gray-500">
+                                            <span className="text-xs text-gray-500 dark:text-gray-400">
                                                 {subject.created_at && new Date(subject.created_at).toLocaleDateString('ar-EG')}
                                             </span>
                                         </div>
@@ -301,13 +301,13 @@ export default function SubjectsPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
-                            <h2 className="text-xl font-bold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? t('addSubject') : t('editSubject')}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">
                                 <X size={24} />
                             </button>
                         </div>
@@ -331,7 +331,7 @@ export default function SubjectsPage() {
                             />
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('color')}</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('color')}</label>
                                 <div className="grid grid-cols-4 gap-2">
                                     {colors.map((color) => (
                                         <button
@@ -349,11 +349,11 @@ export default function SubjectsPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('status')}</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('status')}</label>
                                 <select
                                     value={formData.status}
                                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="active">{tCommon('active')}</option>
                                     <option value="inactive">{tCommon('inactive')}</option>
@@ -362,10 +362,10 @@ export default function SubjectsPage() {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={closeModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>

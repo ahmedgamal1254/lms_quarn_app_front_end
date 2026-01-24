@@ -164,18 +164,18 @@ export default function SubscriptionRequestsPage() {
   const pendingCount = requests.filter((r:SubscriptionRequest) => r.status === 'pending').length;
 
   return (
-    <div className="flex h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
       
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+        <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 shadow-sm">
           <div className="px-6 py-4 flex items-center justify-between">
             
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{t('subscriptionRequests')}</h1>
-              <p className="text-sm text-gray-500 mt-0.5">{t('requestsSubtitle')}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('subscriptionRequests')}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t('requestsSubtitle')}</p>
             </div>
             {pendingCount > 0 && (
               <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-lg border border-amber-200">
@@ -190,7 +190,7 @@ export default function SubscriptionRequestsPage() {
         <div className="flex-1 overflow-auto">
           <div className="p-6 max-w-7xl mx-auto space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
                 <AlertCircle size={20} />
                 {t('loadingDataError')}
               </div>
@@ -204,7 +204,7 @@ export default function SubscriptionRequestsPage() {
                   placeholder={t('searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
               </div>
@@ -224,16 +224,16 @@ export default function SubscriptionRequestsPage() {
 
             {/* Filters */}
             {showFilters && (
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="max-w-xs">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('statusFilter')}</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('statusFilter')}</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => {
                       setStatusFilter(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                   >
                     <option value="pending">{t('pending')}</option>
                     <option value="active">{t('active')}</option>
@@ -248,22 +248,22 @@ export default function SubscriptionRequestsPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <Loader className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
-                <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-gray-700">
                       <tr>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('studentName')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('planName')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('startDate')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('endDate')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('sessions')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('subscriptionDate')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{tCommon('status')}</th>
-                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">{tCommon('actions')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('studentName')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('planName')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('startDate')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('endDate')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('sessions')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{t('subscriptionDate')}</th>
+                        <th className="px-6 py-3 text-start text-sm font-semibold text-gray-900 dark:text-gray-100">{tCommon('status')}</th>
+                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -274,32 +274,32 @@ export default function SubscriptionRequestsPage() {
                           const statusStyle = getStatusColor(req.status);
 
                           return (
-                            <tr key={req.id} className="hover:bg-gray-50 transition-colors">
+                            <tr key={req.id} className="hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                               <td className="px-6 py-4">
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900">{student?.name || tCommon('unknown')}</p>
-                                  <p className="text-xs text-gray-500">{student?.email}</p>
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{student?.name || tCommon('unknown')}</p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">{student?.email}</p>
                                 </div>
                               </td>
                               <td className="px-6 py-4">
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900">{plan?.name || tCommon('withoutTitle')}</p>
-                                  <p className="text-xs text-gray-500">{parseFloat(plan?.price || '0').toLocaleString(routeParams.locale as string)} {getCurrencySymbol(plan?.currency || 'SAR', tCommon)}</p>
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{plan?.name || tCommon('withoutTitle')}</p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">{parseFloat(plan?.price || '0').toLocaleString(routeParams.locale as string)} {getCurrencySymbol(plan?.currency || 'SAR', tCommon)}</p>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 {new Date(req.start_date).toLocaleDateString(routeParams.locale as string)}
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 {new Date(req.end_date).toLocaleDateString(routeParams.locale as string)}
                               </td>
                               <td className="px-6 py-4 text-sm">
-                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium text-xs">
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 font-medium text-xs">
                                   <Package size={14} />
                                   {t('sessionsCount', { count: req.total_sessions })}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 {new Date(req.created_at).toLocaleDateString(routeParams.locale as string)}
                               </td>
                               <td className="px-6 py-4 text-sm">
@@ -314,7 +314,7 @@ export default function SubscriptionRequestsPage() {
                                       <button
                                         onClick={() => activateMutation.mutate(req.id)}
                                         disabled={activateMutation.isPending}
-                                        className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors disabled:opacity-50 font-medium flex items-center gap-1"
+                                        className="p-2 text-emerald-600 hover:bg-emerald-50 dark:bg-emerald-900/20 rounded-lg transition-colors disabled:opacity-50 font-medium flex items-center gap-1"
                                         title="تفعيل"
                                       >
                                         <Check size={16} />
@@ -322,7 +322,7 @@ export default function SubscriptionRequestsPage() {
                                       <button
                                         onClick={() => rejectMutation.mutate(req.id)}
                                         disabled={rejectMutation.isPending}
-                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 font-medium flex items-center gap-1"
+                                        className="p-2 text-red-600 hover:bg-red-50 dark:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50 font-medium flex items-center gap-1"
                                         title="رفض"
                                       >
                                         <X size={16} />
@@ -330,12 +330,12 @@ export default function SubscriptionRequestsPage() {
                                     </>
                                   )}
                                   {req.status === 'active' && (
-                                    <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+                                    <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded">
                                       {t('active')}
                                     </span>
                                   )}
                                   {req.status === 'rejected' && (
-                                    <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">
+                                    <span className="text-xs font-semibold text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">
                                       {t('rejected')}
                                     </span>
                                   )}
@@ -346,7 +346,7 @@ export default function SubscriptionRequestsPage() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 font-medium">
+                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400 font-medium">
                             {t('noRequests')}
                           </td>
                         </tr>

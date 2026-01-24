@@ -91,13 +91,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Content (هو اللي يتحرك) */}
         <Content
+          className='bg-white dark:bg-slate-900'
           style={{
             margin: isMobile ? '12px' : '16px',
             padding: isMobile ? '12px' : '16px',
-            background: '#fff',
             borderRadius: 12,
-            height: 'calc(100vh - 140px)',
-            overflowY: 'auto', // ✅ scroll هنا
           }}
         >
           {children}

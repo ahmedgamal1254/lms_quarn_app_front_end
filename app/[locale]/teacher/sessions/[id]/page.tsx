@@ -192,7 +192,7 @@ export default function SessionPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -200,8 +200,8 @@ export default function SessionPage() {
 
   if (error || !session) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-3 rounded-lg text-sm">
           حدث خطأ في تحميل البيانات
         </div>
       </div>
@@ -209,7 +209,7 @@ export default function SessionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       {/* Header Section */}
       <div className="bg-gradient-to-l from-blue-600 to-blue-700 px-4 sm:px-6 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto">
@@ -220,7 +220,7 @@ export default function SessionPage() {
             </div>
             <button
               onClick={handleOpenModal}
-              className="flex items-center gap-2 px-4 py-2 bg-white text-blue-700 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium shadow-lg whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-blue-700 rounded-lg hover:bg-blue-50 dark:bg-blue-900/20 transition-colors text-sm font-medium shadow-lg whitespace-nowrap"
             >
               <Edit className="w-4 h-4" />
               تعديل الحصة
@@ -243,29 +243,29 @@ export default function SessionPage() {
           {/* Left Column - Session Details */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Date & Time Card */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
-              <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4">تفاصيل الموعد</h2>
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
+              <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">تفاصيل الموعد</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-50 rounded-lg flex-shrink-0">
+                  <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
                     <Calendar className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs text-gray-500 mb-1">تاريخ الحصة</p>
-                    <p className="text-gray-900 font-semibold text-sm break-words">{formatDate(session.session_date)}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">تاريخ الحصة</p>
+                    <p className="text-gray-900 dark:text-gray-100 font-semibold text-sm break-words">{formatDate(session.session_date)}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-50 rounded-lg flex-shrink-0">
+                  <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex-shrink-0">
                     <Clock className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs text-gray-500 mb-1">وقت الحصة</p>
-                    <p className="text-gray-900 font-semibold text-sm">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">وقت الحصة</p>
+                    <p className="text-gray-900 dark:text-gray-100 font-semibold text-sm">
                       {formatTime(session.start_time)} - {formatTime(session.end_time)}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">المدة: {session.duration_minutes} دقيقة</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">المدة: {session.duration_minutes} دقيقة</p>
                   </div>
                 </div>
               </div>
@@ -273,10 +273,10 @@ export default function SessionPage() {
 
             {/* Meeting Link Card */}
             {session.meeting_link && (
-              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
-                <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3">رابط الاجتماع</h2>
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">رابط الاجتماع</h2>
                 <div className="flex items-center gap-3 p-3 bg-gradient-to-l from-blue-50 to-blue-100 rounded-lg">
-                  <div className="p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                  <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm flex-shrink-0">
                     <Video className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -293,10 +293,10 @@ export default function SessionPage() {
             )}
 
             {(!session.meeting_link && session?.teacher?.session_link) && (
-              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
-                <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3">رابط الاجتماع</h2>
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">رابط الاجتماع</h2>
                 <div className="flex items-center gap-3 p-3 bg-gradient-to-l from-blue-50 to-blue-100 rounded-lg">
-                  <div className="p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                  <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm flex-shrink-0">
                     <Video className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -314,13 +314,13 @@ export default function SessionPage() {
             )}
 
             {/* Notes Card */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
               <div className="flex items-center gap-2 mb-3">
                 <FileText className="w-5 h-5 text-gray-400" />
-                <h2 className="text-base sm:text-lg font-bold text-gray-900">الملاحظات</h2>
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">الملاحظات</h2>
               </div>
               <div className="prose max-w-none">
-                <p className="text-gray-700 text-sm whitespace-pre-wrap leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap leading-relaxed">
                   {session.notes || 'لا توجد ملاحظات'}
                 </p>
               </div>
@@ -330,40 +330,40 @@ export default function SessionPage() {
           {/* Right Column - Student & Subject Info */}
           <div className="space-y-4 sm:space-y-6">
             {/* Student Card */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
               <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-purple-50 rounded-lg">
+                <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                   <User className="w-5 h-5 text-purple-600" />
                 </div>
-                <h2 className="text-base sm:text-lg font-bold text-gray-900">معلومات الطالب</h2>
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">معلومات الطالب</h2>
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">الاسم</p>
-                  <p className="text-gray-900 font-semibold text-sm">{session.student.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">الاسم</p>
+                  <p className="text-gray-900 dark:text-gray-100 font-semibold text-sm">{session.student.name}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">البريد الإلكتروني</p>
-                  <p className="text-gray-900 text-sm break-all">{session.student.email}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">البريد الإلكتروني</p>
+                  <p className="text-gray-900 dark:text-gray-100 text-sm break-all">{session.student.email}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">رقم الهاتف</p>
-                  <p className="text-gray-900 text-sm">{session.student.country_code} {session.student.phone}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">رقم الهاتف</p>
+                  <p className="text-gray-900 dark:text-gray-100 text-sm">{session.student.country_code} {session.student.phone}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">الجنس</p>
-                  <p className="text-gray-900 text-sm">{session.student.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">الجنس</p>
+                  <p className="text-gray-900 dark:text-gray-100 text-sm">{session.student.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
                 </div>
               </div>
             </div>
 
             {/* Subject Card */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5">
               <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-green-50 rounded-lg">
+                <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <BookOpen className="w-5 h-5 text-green-600" />
                 </div>
-                <h2 className="text-base sm:text-lg font-bold text-gray-900">المادة الدراسية</h2>
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">المادة الدراسية</h2>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
@@ -371,10 +371,10 @@ export default function SessionPage() {
                     className="w-3 h-3 rounded-full flex-shrink-0" 
                     style={{ backgroundColor: session.subject.color }}
                   ></div>
-                  <p className="text-gray-900 font-semibold text-sm">{session.subject.name}</p>
+                  <p className="text-gray-900 dark:text-gray-100 font-semibold text-sm">{session.subject.name}</p>
                 </div>
                 {session.subject.description && (
-                  <p className="text-gray-600 text-sm">{session.subject.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{session.subject.description}</p>
                 )}
               </div>
             </div>
@@ -385,7 +385,7 @@ export default function SessionPage() {
       {/* Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="sticky top-0 bg-gradient-to-l from-blue-600 to-blue-700 px-4 sm:px-6 py-4 flex items-center justify-between rounded-t-xl">
               <h3 className="text-lg sm:text-xl font-bold text-white">تعديل الحصة</h3>
@@ -400,13 +400,13 @@ export default function SessionPage() {
             {/* Modal Content */}
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   حالة الحصة
                 </label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as SessionStatus })}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                  className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
                 >
                   <option value="scheduled">مجدولة</option>
                   <option value="completed">مكتملة</option>
@@ -416,7 +416,7 @@ export default function SessionPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   <FileText className="w-4 h-4 inline ml-1" />
                   الملاحظات
                 </label>
@@ -424,26 +424,26 @@ export default function SessionPage() {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   rows={6}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none text-sm"
+                  className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none text-sm"
                   placeholder="أضف ملاحظاتك هنا..."
                 />
               </div>
 
               {updateMutation.isError && (
-                <div className="bg-red-50 border-2 border-red-200 text-red-700 px-3 py-2 rounded-lg text-sm">
+                <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 text-red-700 px-3 py-2 rounded-lg text-sm">
                   حدث خطأ أثناء حفظ التعديلات. الرجاء المحاولة مرة أخرى.
                 </div>
               )}
 
               {updateMutation.isSuccess && (
-                <div className="bg-green-50 border-2 border-green-200 text-green-700 px-3 py-2 rounded-lg text-sm">
+                <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 text-green-700 px-3 py-2 rounded-lg text-sm">
                   تم حفظ التعديلات بنجاح
                 </div>
               )}
             </div>
 
             {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-gray-50 px-4 sm:px-6 py-3 flex flex-col sm:flex-row gap-2 sm:gap-3 rounded-b-xl border-t">
+            <div className="sticky bottom-0 bg-gray-50 dark:bg-slate-900 px-4 sm:px-6 py-3 flex flex-col sm:flex-row gap-2 sm:gap-3 rounded-b-xl border-t">
               <button
                 onClick={handleSubmit}
                 disabled={updateMutation.isPending}
@@ -455,7 +455,7 @@ export default function SessionPage() {
               <button
                 onClick={handleCloseModal}
                 disabled={updateMutation.isPending}
-                className="px-4 py-2.5 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors font-medium text-sm order-2 sm:order-1"
+                className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:bg-slate-800 transition-colors font-medium text-sm order-2 sm:order-1"
               >
                 إلغاء
               </button>

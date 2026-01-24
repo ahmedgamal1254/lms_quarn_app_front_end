@@ -15,7 +15,7 @@ export default function Home() {
   const isRTL = locale === 'ar';
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="light min-h-screen bg-white">
       <LandingHeader />
       <HeroSection isRTL={isRTL} />
       <FeaturesSection />

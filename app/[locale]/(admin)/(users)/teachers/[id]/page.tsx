@@ -157,10 +157,10 @@ export default function TeacherPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-gray-700">جاري التحميل...</p>
+                    <p className="mt-4 text-gray-700 dark:text-gray-300">جاري التحميل...</p>
                 </div>
             </div>
         );
@@ -168,8 +168,8 @@ export default function TeacherPage() {
 
     if (isError || !teacherData) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-lg text-center border border-gray-200">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg text-center border border-gray-200 dark:border-gray-700">
                     <p className="text-red-600 text-lg mb-4">حدث خطأ في تحميل بيانات المعلم</p>
                     <button 
                         onClick={() => window.history.back()}
@@ -190,7 +190,7 @@ export default function TeacherPage() {
     );
 
     return (
-         <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6">
+         <div className="min-h-screen bg-gray-50 dark:bg-slate-900 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6">
             <div className="max-w-7xl mx-auto">
 
                 {/* Back Button */}
@@ -200,8 +200,8 @@ export default function TeacherPage() {
                     className="
                     w-full sm:w-auto
                     flex items-center justify-center sm:justify-start gap-2
-                    bg-white hover:bg-gray-50 text-gray-700
-                    px-4 py-2 rounded-lg border border-gray-300
+                    bg-white dark:bg-slate-800 hover:bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-gray-300
+                    px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600
                     transition-colors shadow-sm text-sm
                     "
                 >
@@ -211,7 +211,7 @@ export default function TeacherPage() {
                 </div>
 
                 {/* ================= Profile Card ================= */}
-                <div className="bg-white rounded-xl shadow border border-gray-200 mb-6">
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 mb-6">
                     <div className="p-4 sm:p-6">
 
                         {/* Header */}
@@ -226,11 +226,11 @@ export default function TeacherPage() {
                             </div>
 
                             <div className="flex-1">
-                            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                                 {teacher.name}
                             </h1>
 
-                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 text-sm mb-2">
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 dark:text-gray-400 text-sm mb-2">
                                 <div className="flex items-center gap-2">
                                 <Mail size={14} />
                                 <span>{teacher.email}</span>
@@ -264,15 +264,15 @@ export default function TeacherPage() {
 
                         {/* Rate & Status */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <p className="text-xs text-gray-600">السعر بالساعة</p>
+                        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 rounded-lg p-4">
+                            <p className="text-xs text-gray-600 dark:text-gray-400">السعر بالساعة</p>
                             <p className="font-bold text-xl">
                             {teacher.hourly_rate} {getCurrencySymbol(teacher.currency)}
                             </p>
                         </div>
 
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <p className="text-xs text-gray-600">الحالة</p>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-lg p-4">
+                            <p className="text-xs text-gray-600 dark:text-gray-400">الحالة</p>
                             <p className="font-bold text-xl">
                             {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
                             </p>
@@ -293,7 +293,7 @@ export default function TeacherPage() {
 
                 {/* Salary */}
                 {/* Salary Section */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
@@ -301,7 +301,7 @@ export default function TeacherPage() {
                     <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
                         <DollarSign className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-bold text-gray-800">تفاصيل الأرباح</h2>
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">تفاصيل الأرباح</h2>
                     </div>
                 </div>
 
@@ -309,23 +309,23 @@ export default function TeacherPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
                     {/* Total Hours */}
-                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
-                    <p className="text-sm text-gray-500 mb-1">إجمالي الساعات</p>
-                    <p className="text-2xl font-semibold text-gray-800">
+                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50 dark:bg-slate-900">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">إجمالي الساعات</p>
+                    <p className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
                         {salary.total_hours || 0}
                     </p>
                     </div>
 
                     {/* Hourly Rate */}
-                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
-                    <p className="text-sm text-gray-500 mb-1">السعر / ساعة</p>
-                    <p className="text-2xl font-semibold text-gray-800">
+                    <div className="p-4 rounded-lg border border-gray-100 bg-gray-50 dark:bg-slate-900">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">السعر / ساعة</p>
+                    <p className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
                         {salary.hourly_rate || 0} {salary.currency || ''}
                     </p>
                     </div>
 
                     {/* Total Earned */}
-                    <div className="p-4 rounded-lg border border-emerald-100 bg-emerald-50">
+                    <div className="p-4 rounded-lg border border-emerald-100 bg-emerald-50 dark:bg-emerald-900/20">
                     <p className="text-sm text-emerald-700 mb-1">إجمالي الأرباح</p>
                     <p className="text-2xl font-bold text-emerald-800">
                         {(salary.total_earned || 0).toFixed(2)}
@@ -333,7 +333,7 @@ export default function TeacherPage() {
                     </div>
 
                     {/* Paid Earnings */}
-                    <div className="p-4 rounded-lg border border-blue-100 bg-blue-50">
+                    <div className="p-4 rounded-lg border border-blue-100 bg-blue-50 dark:bg-blue-900/20">
                     <p className="text-sm text-blue-700 mb-1">أرباح تم صرفها</p>
                     <p className="text-2xl font-bold text-blue-800">
                         {(salary.paid_amount || 0).toFixed(2)}
@@ -341,7 +341,7 @@ export default function TeacherPage() {
                     </div>
 
                     {/* Pending Earnings */}
-                    <div className="p-4 rounded-lg border border-yellow-100 bg-yellow-50">
+                    <div className="p-4 rounded-lg border border-yellow-100 bg-yellow-50 dark:bg-yellow-900/20">
                     <p className="text-sm text-yellow-700 mb-1">أرباح معلّقة</p>
                     <p className="text-2xl font-bold text-yellow-800">
                         {(salary.pending_amount || 0).toFixed(2)}
@@ -357,7 +357,7 @@ export default function TeacherPage() {
                     </div>
 
                     {/* Pending Withdraw */}
-                    <div className="p-4 rounded-lg border border-red-100 bg-red-50">
+                    <div className="p-4 rounded-lg border border-red-100 bg-red-50 dark:bg-red-900/20">
                     <p className="text-sm text-red-700 mb-1">طلبات سحب معلّقة</p>
                     <p className="text-2xl font-bold text-red-800">
                         {(salary.pending_withdraw || 0).toFixed(2)}
@@ -369,12 +369,12 @@ export default function TeacherPage() {
 
                 {/* teacher */}
                 <div className="mb-4">
-                    <h2 className="text-2xl font-bold text-gray-800">طلابى</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">طلابى</h2>
                 </div>
                 {students.map((student) => (
                             <div
                             key={student.id}
-                            className="bg-white rounded-lg shadow-md mb-4 hover:shadow-md transition-shadow p-6"
+                            className="bg-white dark:bg-slate-800 rounded-lg shadow-md mb-4 hover:shadow-md transition-shadow p-6"
                             >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 order-1 md:order-3 w-full md:w-auto">
                                 {/* Right Side - Avatar & Name */}
@@ -387,10 +387,10 @@ export default function TeacherPage() {
                                     {getInitials(student.name)}
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-bold text-gray-900">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                     {student.name}
                                     </h3>
-                                    <div className="flex flex-col gap-1 text-sm text-gray-600 mt-2">
+                                    <div className="flex flex-col gap-1 text-sm text-gray-600 dark:text-gray-400 mt-2">
                                     <div className="flex items-center gap-2 break-all">
                                         <Mail className="w-4 h-4" />
                                         {student.email}
@@ -407,15 +407,15 @@ export default function TeacherPage() {
                                 <div className="grid grid-cols-2 gap-3 order-1 md:order-3 w-full md:w-auto">
                                 {/* Plan Name */}
                                 <div className="text-center">
-                                    <p className="text-xs text-gray-600 mb-2">الخطة</p>
-                                    <p className="font-bold text-gray-900 text-sm">
+                                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">الخطة</p>
+                                    <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
                                     {student.plan?.name || 'بدون'}
                                     </p>
                                 </div>
 
                                 {/* Status */}
                                 <div className="text-center">
-                                    <p className="text-xs text-gray-600 mb-2">الحالة</p>
+                                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">الحالة</p>
                                     <span
                                     className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded ${
                                         student.status === 'active'
@@ -438,7 +438,7 @@ export default function TeacherPage() {
                                 </div>
 
                                 {/* Remaining */}
-                                <div className="text-center bg-blue-50 rounded-lg p-2">
+                                <div className="text-center bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2">
                                     <p className="text-xs text-blue-600 mb-1">المتبقي</p>
                                     <p className="font-bold text-blue-700 text-lg">
                                     {student.plan?.sessions_remaining || 0}
@@ -446,7 +446,7 @@ export default function TeacherPage() {
                                 </div>
 
                                 {/* Used */}
-                                <div className="text-center bg-orange-50 rounded-lg p-2">
+                                <div className="text-center bg-orange-50 dark:bg-orange-900/20 rounded-lg p-2">
                                     <p className="text-xs text-orange-600 mb-1">المستخدم</p>
                                     <p className="font-bold text-orange-700 text-lg">
                                     {student.plan?.sessions_used || 0}
@@ -466,8 +466,8 @@ export default function TeacherPage() {
 
 function StatCard({ icon: Icon, label, value }: any) {
   return (
-    <div className="bg-gray-50 border rounded-lg p-4">
-      <div className="flex items-center gap-2 text-gray-600 text-sm">
+    <div className="bg-gray-50 dark:bg-slate-900 border rounded-lg p-4">
+      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
         <Icon size={16} />
         <span>{label}</span>
       </div>

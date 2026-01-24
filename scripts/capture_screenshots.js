@@ -35,6 +35,24 @@ const path = require('path');
     await page.screenshot({ path: screenshotMobilePath, fullPage: true });
     console.log(`Saved mobile screenshot to ${screenshotMobilePath}`);
 
+    // --- Dark Mode Screenshots ---
+    // Reset viewport to desktop
+    await page.setViewport({ width: 1920, height: 1080 });
+    
+    // Force dark mode via localStorage and reload
+    await page.evaluate(() => {
+        localStorage.setItem('theme', 'dark');
+    });
+    // We need to reload to ensure the theme provider picks it up if it doesn't listen to storage events instantly (though it usually does, reload is safer for initial state)
+    await page.reload({ waitUntil: 'networkidle2' });
+    
+    // Give it a second for any animations or mounting
+    await new Promise(r => setTimeout(r, 1000));
+
+    const screenshotDarkPath = path.join(downloadDir, `screenshot-home-dark-${timestamp}.png`);
+    await page.screenshot({ path: screenshotDarkPath, fullPage: true });
+    console.log(`Saved dark mode screenshot to ${screenshotDarkPath}`);
+
   } catch (error) {
     console.error('Error executing script:', error);
   } finally {

@@ -61,15 +61,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     // Show loading state while checking authentication
     if (isChecking) {
         return (
-            <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                fontSize: '1.25rem'
-            }}>
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#667eea] to-[#764ba2] dark:from-slate-900 dark:to-slate-800 text-white text-xl">
                 جاري التحميل...
             </div>
         );

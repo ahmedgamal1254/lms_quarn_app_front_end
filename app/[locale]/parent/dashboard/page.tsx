@@ -59,7 +59,7 @@ export default function ParentDashboard() {
         <h1 className="text-3xl font-bold mb-2">
           مرحباً، {dashboardData.parent.name}
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           متابعة تقدم أبنائك الدراسي
         </p>
       </div>
@@ -103,7 +103,7 @@ export default function ParentDashboard() {
         <h2 className="text-2xl font-bold mb-4">الأبناء</h2>
         {dashboardData.children.length === 0 ? (
           <Card>
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <UserOutlined style={{ fontSize: '48px', marginBottom: '16px' }} />
               <p>لم يتم ربط أي طالب بحسابك بعد</p>
             </div>

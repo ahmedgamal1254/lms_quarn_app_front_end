@@ -91,13 +91,13 @@ export default function StudentRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">تسجيل طالب جديد</h1>
-        <p className="text-gray-500 text-center mb-6">انضم إلى أكاديمية التميز وابدأ رحلتك التعليمية</p>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-2">تسجيل طالب جديد</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-center mb-6">انضم إلى أكاديمية التميز وابدأ رحلتك التعليمية</p>
 
         {error && (
-          <div className="bg-red-50 border border-red-300 text-red-700 p-3 rounded mb-4">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-300 text-red-700 p-3 rounded mb-4">
             {error}
           </div>
         )}
@@ -105,11 +105,11 @@ export default function StudentRegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">الاسم الكامل *</label>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">الاسم الكامل *</label>
             <input
               type="text"
               {...register('name', { required: 'الرجاء إدخال الاسم' })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="أحمد محمد"
             />
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -117,11 +117,11 @@ export default function StudentRegisterPage() {
 
           {/* Phone */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">رقم الهاتف *</label>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">رقم الهاتف *</label>
             <div className="flex gap-2">
               <select
                 {...register('country_code')}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="+966">+966 🇸🇦</option>
                 <option value="+20">+20 🇪🇬</option>
@@ -136,7 +136,7 @@ export default function StudentRegisterPage() {
                 type="tel"
                 {...register('phone', { required: 'الرجاء إدخال رقم الهاتف' })}
                 placeholder="500000000"
-                className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
@@ -144,31 +144,31 @@ export default function StudentRegisterPage() {
 
           {/* Email */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">البريد الإلكتروني *</label>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">البريد الإلكتروني *</label>
             <input
               type="email"
               {...register('email', { required: 'الرجاء إدخال البريد الإلكتروني' })}
               placeholder="student@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">كلمة المرور *</label>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">كلمة المرور *</label>
             <input
               type="password"
               {...register('password', { required: 'الرجاء إدخال كلمة المرور', minLength: { value: 6, message: 'يجب أن تكون 6 أحرف على الأقل' } })}
               placeholder="••••••••"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
           {/* Plans */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2">اختر الباقة *</label>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">اختر الباقة *</label>
             {loadingPlans ? (
               <div className="flex justify-center py-4">
                 <Loader2 className="animate-spin text-indigo-500" />
@@ -194,8 +194,8 @@ export default function StudentRegisterPage() {
                           onChange={() => field.onChange(plan.id.toString())}
                           className="hidden"
                         />
-                        <span className="font-semibold text-gray-800">{plan.name}</span>
-                        <span className="text-gray-500 text-sm">
+                        <span className="font-semibold text-gray-800 dark:text-gray-100">{plan.name}</span>
+                        <span className="text-gray-500 dark:text-gray-400 text-sm">
                           {plan.sessions_count} حصة • {plan.price} {plan.currency}
                         </span>
                         {plan.description && <span className="text-gray-400 text-xs mt-1">{plan.description}</span>}
@@ -221,7 +221,7 @@ export default function StudentRegisterPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-gray-500 text-sm">
+        <div className="mt-6 text-center text-gray-500 dark:text-gray-400 text-sm">
           بعد التسجيل، سيتم مراجعة طلبك من قبل الإدارة وسيتم إشعارك بالموافقة
         </div>
       </div>

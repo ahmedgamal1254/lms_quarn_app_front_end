@@ -157,7 +157,7 @@ export default function WithdrawPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
                 <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
             </div>
         );
@@ -165,24 +165,24 @@ export default function WithdrawPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
                 <div className="text-red-600">{t('loadingError')}</div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <div className="max-w-7xl mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">{t('withdrawRequests')}</h1>
-                    <p className="text-gray-600 mt-2">{t('withdrawSubtitle')}</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('withdrawRequests')}</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2">{t('withdrawSubtitle')}</p>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-4">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6 p-4">
                     <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-600">
-                            {t('totalRequests')}: <span className="font-semibold text-gray-900">{data?.total?.toLocaleString(params_route.locale as string) || 0}</span>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                            {t('totalRequests')}: <span className="font-semibold text-gray-900 dark:text-gray-100">{data?.total?.toLocaleString(params_route.locale as string) || 0}</span>
                         </div>
                         <div className="flex items-center gap-4 text-sm">
                             <div className="flex items-center gap-2">
@@ -195,15 +195,15 @@ export default function WithdrawPage() {
 
                 <div className="space-y-4">
                     {data?.data.map((request) => (
-                        <div key={request.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div key={request.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                                         <User className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-gray-900">{request.wallet.owner.name}</h3>
-                                        <p className="text-sm text-gray-600">{request.wallet.owner.email}</p>
+                                        <h3 className="font-semibold text-gray-900 dark:text-gray-100">{request.wallet.owner.name}</h3>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">{request.wallet.owner.email}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
@@ -212,28 +212,28 @@ export default function WithdrawPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                            <div className="bg-gray-50 dark:bg-slate-900 rounded-lg p-4 mb-4">
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div>
-                                        <p className="text-xs text-gray-600 mb-1">{t('requestAmount')}</p>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('requestAmount')}</p>
                                         <p className="text-lg font-bold text-red-600">
                                             {parseFloat(request.amount).toLocaleString(params_route.locale as string)} {request.currency}
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-gray-600 mb-1">{t('balanceBefore')}</p>
-                                        <p className="font-semibold text-gray-900">
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('balanceBefore')}</p>
+                                        <p className="font-semibold text-gray-900 dark:text-gray-100">
                                             {parseFloat(request.balance_before).toLocaleString(params_route.locale as string)} {request.currency}
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-gray-600 mb-1">{t('balanceAfter')}</p>
-                                        <p className="font-semibold text-gray-900">
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('balanceAfter')}</p>
+                                        <p className="font-semibold text-gray-900 dark:text-gray-100">
                                             {parseFloat(request.balance_after).toLocaleString(params_route.locale as string)} {request.currency}
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-gray-600 mb-1">{t('currentBalance')}</p>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('currentBalance')}</p>
                                         <p className="font-semibold text-blue-600">
                                             {parseFloat(request.wallet.balance).toLocaleString(params_route.locale as string)} {request.currency}
                                         </p>
@@ -242,14 +242,14 @@ export default function WithdrawPage() {
                             </div>
 
                             <div className="mb-4">
-                                <p className="text-sm text-gray-600 mb-1">{t('requestReason')}:</p>
-                                <p className="text-gray-900">{request.reason}</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('requestReason')}:</p>
+                                <p className="text-gray-900 dark:text-gray-100">{request.reason}</p>
                             </div>
 
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-white">
                                     <Calendar className="w-4 h-4" />
-                                    <span>{formatDate(request.created_at)}</span>
+                                    <span className="dark:text-white">{formatDate(request.created_at)}</span>
                                 </div>
                                 <div className="flex gap-2">
                                     <button
@@ -274,9 +274,9 @@ export default function WithdrawPage() {
                     ))}
 
                     {data?.data.length === 0 && (
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
                             <DollarSign className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-600">{t('noRequests')}</p>
+                            <p className="text-gray-600 dark:text-gray-400">{t('noRequests')}</p>
                         </div>
                     )}
 
@@ -296,15 +296,15 @@ export default function WithdrawPage() {
 
             {showApproveModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">{t('approveConfirm')}</h3>
-                        <p className="text-gray-600 mb-4">{t('approveQuestion')}</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t('approveConfirm')}</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-4">{t('approveQuestion')}</p>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('approveReason')}</label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('approveReason')}</label>
                             <textarea
                                 value={approveReason}
                                 onChange={(e) => setApproveReason(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 rows={3}
                                 placeholder={t('enterApproveReason')}
                             />
@@ -317,7 +317,7 @@ export default function WithdrawPage() {
                                     setSelectedRequest(null);
                                 }}
                                 disabled={approveMutation.isPending}
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>
@@ -336,15 +336,15 @@ export default function WithdrawPage() {
 
             {showRejectModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">{t('rejectConfirm')}</h3>
-                        <p className="text-gray-600 mb-4">{t('rejectQuestion')}</p>
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t('rejectConfirm')}</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-4">{t('rejectQuestion')}</p>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('rejectReason')} <span className="text-red-500">*</span></label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('rejectReason')} <span className="text-red-500">*</span></label>
                             <textarea
                                 value={rejectReason}
                                 onChange={(e) => setRejectReason(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                 rows={3}
                                 placeholder={t('enterRejectReason')}
                                 required
@@ -358,7 +358,7 @@ export default function WithdrawPage() {
                                     setSelectedRequest(null);
                                 }}
                                 disabled={rejectMutation.isPending}
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>

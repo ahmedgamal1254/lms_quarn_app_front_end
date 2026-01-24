@@ -324,14 +324,14 @@ export default function TeachersPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="sticky top-0 z-40 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{t('teachersManagement')}</h1>
-                            <div className="flex items-center gap-2 mt-2 text-gray-600">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('teachersManagement')}</h1>
+                            <div className="flex items-center gap-2 mt-2 text-gray-600 dark:text-gray-400">
                                 <Home size={16} />
                                 <span className="text-sm">{tCommon('dashboard')}</span>
                                 <ChevronRight size={16} />
@@ -356,11 +356,11 @@ export default function TeachersPage() {
                     {stats.map((stat, idx) => {
                         const Icon = stat.icon;
                         return (
-                            <div key={idx} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                            <div key={idx} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
-                                        <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{stat.label}</p>
+                                        <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">{stat.value}</p>
                                     </div>
                                     <div className={`p-3 ${stat.color} rounded-lg`}>
                                         <Icon size={24} className={stat.textColor} />
@@ -372,7 +372,7 @@ export default function TeachersPage() {
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex-1 relative">
                             <Search size={18} className="absolute left-3 top-3 text-gray-400 rtl:right-3 rtl:left-auto" />
@@ -381,14 +381,14 @@ export default function TeachersPage() {
                                 placeholder={t('searchPlaceholder')}
                                 value={params.search}
                                 onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
-                                className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                         <div className='flex-1 relative'>
                             <select
                                 value={params.status}
                                 onChange={(e) => setParams({ ...params, status: e.target.value, page: 1 })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800"
                             >
                                 <option value="">{tCommon('status')}</option>
                                 <option value="active">{tCommon('active')}</option>
@@ -401,7 +401,7 @@ export default function TeachersPage() {
                             <select
                                 value={params.subject}
                                 onChange={(e) => setParams({ ...params, subject: e.target.value, page: 1 })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800"
                             >
                                 <option value="">{tCommon('allCountries')}</option> {/*  Wait, "all subjects" ... I don't have "allSubjects" key. Reusing allCountries is wrong. "viewAll" -> "View All" maybe? Or just leave it as "All" */}
                                 {/* Using "viewAll" from Common is better for "All", but contextually "All Subjects" */}
@@ -416,7 +416,7 @@ export default function TeachersPage() {
                 </div>
 
                 {/* Table */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                     {isLoading ? (
                         <div className="flex justify-center items-center py-16">
                             <Loader className="animate-spin text-blue-600" size={40} />
@@ -424,31 +424,31 @@ export default function TeachersPage() {
                     ) : teachersData?.teachers.length === 0 ? (
                         <div className="text-center py-16">
                             <Search size={48} className="mx-auto text-gray-300 mb-4" />
-                            <p className="text-gray-500 text-lg">{tCommon('noResults')}</p>
+                            <p className="text-gray-500 dark:text-gray-400 text-lg">{tCommon('noResults')}</p>
                         </div>
                     ) : (
                         <>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-50">
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{t('viewTeacher')}</th> {/*  "Teacher"? "viewTeacher" = "Teacher Data"? I'll use tCommon('name') or wait. "Teacher" label. */}
+                                        <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{t('viewTeacher')}</th> {/*  "Teacher"? "viewTeacher" = "Teacher Data"? I'll use tCommon('name') or wait. "Teacher" label. */}
                                             {/* "teachers": "Teachers" in Sidebar. "viewTeacher": "View Teacher" in Users. */}
                                             {/* I'll use "Teachers" (singular? No). */}
                                             {/* I need "Teacher" key. Common has "student". Users has ... "addTeacher". */}
                                             {/* I'll use tCommon('name') for the name column, but the column header implies the entity. */}
                                             {/* Let's just use "Name" from Common. */}
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{tCommon('email')}</th>
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{tCommon('phone')}</th>
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{tCommon('amount')}</th>
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{tCommon('subject')}</th> {/*  Usage of "subject"? No "subject" in Common? Sidebar has "subjects". */}
-                                            <th className="px-6 py-3 text-start font-semibold text-gray-900">{tCommon('status')}</th>
-                                            <th className="px-6 py-3 text-center font-semibold text-gray-900">{tCommon('actions')}</th>
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{tCommon('email')}</th>
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{tCommon('phone')}</th>
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{tCommon('amount')}</th>
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{tCommon('subject')}</th> {/*  Usage of "subject"? No "subject" in Common? Sidebar has "subjects". */}
+                                            <th className="px-6 py-3 text-start font-semibold text-gray-900 dark:text-gray-100">{tCommon('status')}</th>
+                                            <th className="px-6 py-3 text-center font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {teachersData?.teachers.map((teacher) => (
-                                            <tr key={teacher.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <tr key={teacher.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                                                 <td className="px-6 py-3">
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
@@ -459,13 +459,13 @@ export default function TeachersPage() {
                                                                     className="w-full h-full rounded-full object-cover"
                                                                 />
                                                             ) : (
-                                                                <User size={20} className="text-gray-600" />
+                                                                <User size={20} className="text-gray-600 dark:text-gray-400" />
                                                             )}
                                                         </div>
-                                                        <p className="font-medium text-gray-900">{teacher.name}</p>
+                                                        <p className="font-medium text-gray-900 dark:text-gray-100">{teacher.name}</p>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-3 text-gray-600 dir-ltr text-xs text-start">{teacher.email}</td>
+                                                <td className="px-6 py-3 text-gray-600 dark:text-gray-400 dir-ltr text-xs text-start">{teacher.email}</td>
                                                 <td className="px-6 py-3 text-start">
                                                     <a
                                                         href={`https://wa.me/20${teacher.phone}`}
@@ -480,8 +480,8 @@ export default function TeachersPage() {
                                                 <td className="px-6 py-3">
                                                     <div className="flex items-center gap-1">
                                                         <DollarSign size={14} className="text-gray-400" />
-                                                        <span className="font-medium text-gray-900">{teacher.hourly_rate}</span>
-                                                        <span className="text-xs text-gray-600">{teacher.currency}</span>
+                                                        <span className="font-medium text-gray-900 dark:text-gray-100">{teacher.hourly_rate}</span>
+                                                        <span className="text-xs text-gray-600 dark:text-gray-400">{teacher.currency}</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-3">
@@ -557,13 +557,13 @@ export default function TeachersPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
-                            <h2 className="text-xl font-bold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? t('addTeacher') : t('editTeacher')}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">
                                 <X size={24} />
                             </button>
                         </div>
@@ -572,7 +572,7 @@ export default function TeachersPage() {
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('name')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('name')} *</label>
                                     <input
                                         type="text"
                                         value={formData.name}
@@ -583,7 +583,7 @@ export default function TeachersPage() {
                                     <FieldError error={getError('name')} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('email')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('email')} *</label>
                                     <input
                                         type="email"
                                         value={formData.email}
@@ -594,7 +594,7 @@ export default function TeachersPage() {
                                     <FieldError error={getError('email')} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('phone')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('phone')} *</label>
                                     <input
                                         type="tel"
                                         value={formData.phone}
@@ -606,7 +606,7 @@ export default function TeachersPage() {
                                 </div>
                                  
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('password')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('password')} *</label>
                                     <input
                                         type="password"
                                         value={formData.password}
@@ -618,35 +618,35 @@ export default function TeachersPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('sessionLink')} (Google Meet / Zoom)</label> {/* Missing translation key for 'sessionLink'. I will use hardcoded for now or add it later. */}
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('sessionLink')} (Google Meet / Zoom)</label> {/* Missing translation key for 'sessionLink'. I will use hardcoded for now or add it later. */}
                                     <input
                                         type="text"
                                         value={formData.session_link}
                                         onChange={(e) => setFormData({ ...formData, session_link: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-start dir-ltr"
                                         placeholder="ex :- https://meet.google.com/awr-rgpw-mdh"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('hourlyRate')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('hourlyRate')}</label>
                                     <input
                                         type="number"
                                         value={formData.hourly_rate}
                                         onChange={(e) => setFormData({ ...formData, hourly_rate: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder="150"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('currency')}</label> {/* Missing 'currency' in Common? Sidebar has 'currencies'. Common doesn't. */}
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('currency')}</label> {/* Missing 'currency' in Common? Sidebar has 'currencies'. Common doesn't. */}
                                     {/* Sidebar has "currencies". Common has "amount". */}
                                     {/* I'll use "Action" -> no. */}
                                     {/* I'll use "EGP", "SAR", "USD" directly or hardcoded for now, labels are translatable. */}
                                     <select
                                         value={formData.currency}
                                         onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="EGP">EGP</option>
                                         <option value="SAR">SAR</option>
@@ -654,23 +654,23 @@ export default function TeachersPage() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('gender')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('gender')}</label>
                                     <select
                                         value={formData.gender}
                                         onChange={(e) => setFormData({ ...formData, gender: e.target.value as GenderOption['value'] })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="male">{tCommon('male')}</option>
                                         <option value="female">{tCommon('female')}</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('status')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('status')}</label>
                                     <select
                                         value={formData.status}
                                         onChange={(e) => setFormData({ ...formData, status: e.target.value as TeacherStatusOption['value']
                                          })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="active">{tCommon('active')}</option>
                                         <option value="on_leave">On Leave</option>
@@ -680,12 +680,12 @@ export default function TeachersPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('subjects')}</label> {/* Sidebar has 'subjects'. */}
-                                <div className="grid grid-cols-2 gap-2 p-3 border border-gray-300 rounded-lg bg-gray-50 max-h-48 overflow-y-auto">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('subjects')}</label> {/* Sidebar has 'subjects'. */}
+                                <div className="grid grid-cols-2 gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-slate-900 max-h-48 overflow-y-auto">
                                     {subjectsData && subjectsData?.length > 0 ? (
                                         
                                         subjectsData?.map((subject:any) => (
-                                            <label key={subject.id} className="flex items-center gap-2 cursor-pointer p-1 hover:bg-white rounded">
+                                            <label key={subject.id} className="flex items-center gap-2 cursor-pointer p-1 hover:bg-white dark:bg-slate-800 rounded">
                                                 <input
                                                     type="checkbox"
                                                     checked={formData.subjects.includes(subject.name)}
@@ -702,23 +702,23 @@ export default function TeachersPage() {
                                                             });
                                                         }
                                                     }}
-                                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                    className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                                                 />
-                                                <span className="text-sm text-gray-900">{subject.name}</span>
+                                                <span className="text-sm text-gray-900 dark:text-gray-100">{subject.name}</span>
                                             </label>
                                         ))
                                     ) : (
-                                        <p className="text-gray-500 text-sm col-span-2">{tCommon('noData')}</p>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm col-span-2">{tCommon('noData')}</p>
                                     )}
                                 </div>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={closeModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>

@@ -166,14 +166,14 @@ export default function CurrenciesPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="sticky top-0 z-40 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-                            <div className="flex items-center gap-2 mt-2 text-gray-600">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+                            <div className="flex items-center gap-2 mt-2 text-gray-600 dark:text-gray-400">
                                 <Home size={16} />
                                 <Link href="/dashboard" className="hover:text-blue-600">{tCommon('dashboard')}</Link>
                                 <ChevronRight size={16} />
@@ -195,7 +195,7 @@ export default function CurrenciesPage() {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-2 py-4 md:px-6 md:py-8">
                 {/* Search */}
-                <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700 mb-8">
                     <div className="relative">
                         <Search size={18} className="absolute left-3 top-3 text-gray-400" />
                         <input
@@ -203,7 +203,7 @@ export default function CurrenciesPage() {
                             placeholder={t('searchPlaceholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -214,9 +214,9 @@ export default function CurrenciesPage() {
                         <Loader className="animate-spin text-blue-600" size={40} />
                     </div>
                 ) : filteredCurrencies.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-lg border border-gray-200">
+                    <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700">
                         <AlertCircle size={48} className="mx-auto text-gray-300 mb-4" />
-                        <p className="text-gray-500 text-lg">{tCommon('noResults')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-lg">{tCommon('noResults')}</p>
                     </div>
                 ) : (
                     <>
@@ -225,13 +225,13 @@ export default function CurrenciesPage() {
                             {filteredCurrencies.map((currency) => (
                                 <div
                                     key={currency.id}
-                                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                                    className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
                                 >
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
                                             <div>
-                                                <div className="text-3xl font-bold text-gray-900">{currency.symbol}</div>
-                                                <p className="text-sm text-gray-600 mt-1">{currency.code}</p>
+                                                <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">{currency.symbol}</div>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{currency.code}</p>
                                             </div>
                                             <div className="flex gap-2">
                                                 <button
@@ -259,14 +259,14 @@ export default function CurrenciesPage() {
                                                 </button>
                                             </div>
                                         </div>
-                                        <h3 className="font-bold text-gray-900 text-lg mb-3">{currency.name}</h3>
+                                        <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-3">{currency.name}</h3>
                                         <div className="space-y-2 text-sm">
                                             <div className="flex justify-between">
-                                                <span className="text-gray-600">{t('exchangeRate')}:</span>
-                                                <span className="font-medium text-gray-900">{currency.exchange_rate}</span>
+                                                <span className="text-gray-600 dark:text-gray-400">{t('exchangeRate')}:</span>
+                                                <span className="font-medium text-gray-900 dark:text-gray-100">{currency.exchange_rate}</span>
                                             </div>
                                             <div className="flex justify-between">
-                                                <span className="text-gray-600">{t('isDefault')}:</span>
+                                                <span className="text-gray-600 dark:text-gray-400">{t('isDefault')}:</span>
                                                 <span className={`px-2 py-1 rounded text-xs font-medium ${
                                                     currency.is_default
                                                         ? 'bg-blue-100 text-blue-700'
@@ -282,26 +282,26 @@ export default function CurrenciesPage() {
                         </div>
 
                         {/* Table View */}
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-start">
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-50 text-start">
-                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('code')}</th>
-                                            <th className="px-6 py-3 font-semibold text-gray-900">{tCommon('name')}</th>
-                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('shortSymbol')}</th>
-                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('exchangeRate')}</th>
-                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('default')}</th>
-                                            <th className="px-6 py-3 text-center font-semibold text-gray-900">{tCommon('actions')}</th>
+                                        <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 text-start">
+                                            <th className="px-6 py-3 font-semibold text-gray-900 dark:text-gray-100">{t('code')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900 dark:text-gray-100">{tCommon('name')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900 dark:text-gray-100">{t('shortSymbol')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900 dark:text-gray-100">{t('exchangeRate')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900 dark:text-gray-100">{t('default')}</th>
+                                            <th className="px-6 py-3 text-center font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredCurrencies.map((currency) => (
-                                            <tr key={currency.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors text-center">
-                                                <td className="px-6 py-3 font-bold text-gray-900">{currency.code}</td>
-                                                <td className="px-6 py-3 text-gray-900">{currency.name}</td>
-                                                <td className="px-6 py-3 text-2xl font-semibold text-gray-900">{currency.symbol}</td>
-                                                <td className="px-6 py-3 text-gray-600">{currency.exchange_rate}</td>
+                                            <tr key={currency.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900 transition-colors text-center">
+                                                <td className="px-6 py-3 font-bold text-gray-900 dark:text-gray-100">{currency.code}</td>
+                                                <td className="px-6 py-3 text-gray-900 dark:text-gray-100">{currency.name}</td>
+                                                <td className="px-6 py-3 text-2xl font-semibold text-gray-900 dark:text-gray-100">{currency.symbol}</td>
+                                                <td className="px-6 py-3 text-gray-600 dark:text-gray-400">{currency.exchange_rate}</td>
                                                 <td className="px-6 py-3">
                                                     <span className={`px-3 py-1 rounded text-xs font-medium ${
                                                         currency.is_default
@@ -351,13 +351,13 @@ export default function CurrenciesPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
-                            <h2 className="text-xl font-bold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? t('addCurrency') : t('editCurrency')}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">
                                 <X size={24} />
                             </button>
                         </div>
@@ -365,12 +365,12 @@ export default function CurrenciesPage() {
                         {/* Modal Content */}
                         <div className="p-6 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('currencyCode')} ({t('code')}) *</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('currencyCode')} ({t('code')}) *</label>
                                 <input
                                     type="text"
                                     value={formData.code}
                                     onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder={isRTL ? "USD, SAR, EGP" : "USD, SAR, EGP"}
                                     maxLength={3}
                                 />
@@ -385,49 +385,49 @@ export default function CurrenciesPage() {
                             />
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('shortSymbol')} *</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('shortSymbol')} *</label>
                                 <input
                                     type="text"
                                     value={formData.symbol}
                                     onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder={isRTL ? "$ أو ر.س" : "$ or SAR"}
                                     maxLength={5}
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('exchangeRate')} *</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('exchangeRate')} *</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     value={formData.exchange_rate}
                                     onChange={(e) => setFormData({ ...formData, exchange_rate: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="3.75"
                                 />
                             </div>
 
                              {/* Removed Status Field as it wasn't in original proper implementation or not critical for now, keeping simple */}
-                                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                                         <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-900 rounded-lg">
                                 <input
                                     type="checkbox"
                                     id="is_default"
                                     checked={formData.is_default}
                                     onChange={(e) => setFormData({ ...formData, is_default: e.target.checked })}
-                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                                 />
-                                <label htmlFor="is_default" className="text-sm font-medium text-gray-700 cursor-pointer">
+                                <label htmlFor="is_default" className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
                                     {t('makeDefault')}
                                 </label>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={closeModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>

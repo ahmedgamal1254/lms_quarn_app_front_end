@@ -193,9 +193,9 @@ export default function ChatPage() {
   /* ================= UI ================= */
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50 dark:bg-slate-900">
       {/* ===== HEADER ===== */}
-      <div className="bg-white border-b p-4 flex justify-between items-center">
+      <div className="bg-white dark:bg-slate-800 border-b p-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Link href={"/student/chat"}><ArrowRight className="w-5 h-5 md:hidden" /></Link>
           <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white">
@@ -210,7 +210,7 @@ export default function ChatPage() {
           </div>
           <div>
             <p className="font-bold">{otherUser?.name}</p>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {otherUser?.role === 'teacher' ? 'معلم' : 'طالب'}
             </span>
           </div>
@@ -253,7 +253,7 @@ export default function ChatPage() {
               return (
                 <div key={msg.id}>
                   {showDate && (
-                    <div className="text-center text-xs text-gray-500 my-2">
+                    <div className="text-center text-xs text-gray-500 dark:text-gray-400 my-2">
                       {formatDate(msg.created_at)}
                     </div>
                   )}
@@ -285,7 +285,7 @@ export default function ChatPage() {
       </div>
 
       {/* ===== INPUT ===== */}
-      <div className="bg-white border-t p-4 flex gap-2">
+      <div className="bg-white dark:bg-slate-800 border-t p-4 flex gap-2">
         <Paperclip className='hidden sm:block' />
         <ImagePlus className='hidden sm:block' />
         <textarea

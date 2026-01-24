@@ -227,12 +227,12 @@ export default function StudentsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-2 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-2 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
             <div className="flex justify-between items-start flex-col gap-2 md:flex-row mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">{t('studentsManagement')}</h1>
-                    <p className="text-gray-600 text-sm mt-1">{t('manageStudentsDesc')}</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('studentsManagement')}</h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{t('manageStudentsDesc')}</p>
                 </div>
                 <button
                     onClick={() => openModal('create')}
@@ -246,17 +246,17 @@ export default function StudentsPage() {
             {/* Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {stats.map((stat, idx) => (
-                    <div key={idx} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <div key={idx} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                         <div className={`w-12 h-12 rounded-lg ${stat.color} flex items-center justify-center mb-4`}>
                             <span className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</span>
                         </div>
-                        <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{stat.label}</p>
                     </div>
                 ))}
             </div>
 
             {/* Table Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8">
                 {/* Search */}
                 <div className="flex gap-4 mb-6">
                     <div className="flex-1 relative">
@@ -266,7 +266,7 @@ export default function StudentsPage() {
                             placeholder={t('searchPlaceholder')}
                             value={params.search}
                             onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
-                            className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
@@ -311,49 +311,49 @@ export default function StudentsPage() {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-gray-200">
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('student')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('email')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('phone')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{t('plan')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('country')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('status')}</th>
-                                <th className="text-center py-3 px-4 font-semibold text-gray-700">{tCommon('actions')}</th>
+                            <tr className="border-b border-gray-200 dark:border-gray-700">
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('student')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('email')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('phone')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{t('plan')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('country')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('status')}</th>
+                                <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {isLoading ? (
                                 <tr>
-                                    <td colSpan={7} className="py-8 text-center text-gray-500">
+                                    <td colSpan={7} className="py-8 text-center text-gray-500 dark:text-gray-400">
                                         {tCommon('loading')}
                                     </td>
                                 </tr>
                             ) : studentsData?.students.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="py-8 text-center text-gray-500">
+                                    <td colSpan={7} className="py-8 text-center text-gray-500 dark:text-gray-400">
                                         {tCommon('noData')}
                                     </td>
                                 </tr>
                             ) : (
                                 studentsData?.students.map((student) => (
-                                    <tr key={student.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <tr key={student.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                                         <td className="py-3 px-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
                                                     {student.image ? (
                                                         <img src={student.image} alt={student.name} className="w-full h-full rounded-full object-cover" />
                                                     ) : (
-                                                        <User size={20} className="text-gray-600" />
+                                                        <User size={20} className="text-gray-600 dark:text-gray-400" />
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-gray-900">{student.name}</p>
-                                                    <p className="text-xs text-gray-500">{student.gender === 'male' ? tCommon('male') : tCommon('female')}</p>
+                                                    <p className="font-medium text-gray-900 dark:text-gray-100">{student.name}</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{student.gender === 'male' ? tCommon('male') : tCommon('female')}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs text-start">{student.email}</td>
-                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs text-start">
+                                        <td className="py-3 px-4 text-gray-600 dark:text-gray-400 dir-ltr text-xs text-start">{student.email}</td>
+                                        <td className="py-3 px-4 text-gray-600 dark:text-gray-400 dir-ltr text-xs text-start">
                                             <button
                                                 onClick={() => window.open(`https://wa.me/${student.country_code || '+20'}${student.phone}`, '_blank')}
                                                 className="flex items-center gap-1 text-green-600 hover:text-green-700"
@@ -368,13 +368,13 @@ export default function StudentsPage() {
                                                     {student.plan.name}
                                                 </span>
                                             ) : (
-                                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">
                                                     {t('withoutPlan')}
                                                 </span>
                                             )}
                                         </td>
                                         {/* country */}
-                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs text-start">{student.country}</td>
+                                        <td className="py-3 px-4 text-gray-600 dark:text-gray-400 dir-ltr text-xs text-start">{student.country}</td>
                                         <td className="py-3 px-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit ${
                                                 student.status === 'active'
@@ -392,7 +392,7 @@ export default function StudentsPage() {
                                                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                                                     title={tCommon('view')}
                                                 >
-                                                    <Eye size={16} className="text-gray-600" />
+                                                    <Eye size={16} className="text-gray-600 dark:text-gray-400" />
                                                 </button>
                                                 <button
                                                     onClick={() => openModal('edit', student)}
@@ -435,13 +435,13 @@ export default function StudentsPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                            <h2 className="text-xl font-bold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? `🎓 ${t('addStudent')}` : modalMode === 'edit' ? `✏️ ${t('editStudent')}` : `👤 ${t('viewStudent')}`}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-xl">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 text-xl">
                                 ✕
                             </button>
                         </div>
@@ -451,28 +451,28 @@ export default function StudentsPage() {
                             {modalMode === 'view' && selectedStudent ? (
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{tCommon('name')}</p>
-                                            <p className="font-semibold text-gray-900">{selectedStudent.name}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{tCommon('name')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100">{selectedStudent.name}</p>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{tCommon('email')}</p>
-                                            <p className="font-semibold text-gray-900 dir-ltr text-sm">{selectedStudent.email}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{tCommon('email')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100 dir-ltr text-sm">{selectedStudent.email}</p>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{tCommon('phone')}</p>
-                                            <p className="font-semibold text-gray-900 dir-ltr">{selectedStudent.country_code || '+20'} {selectedStudent.phone}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{tCommon('phone')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100 dir-ltr">{selectedStudent.country_code || '+20'} {selectedStudent.phone}</p>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{tCommon('gender')}</p>
-                                            <p className="font-semibold text-gray-900">{selectedStudent.gender === 'male' ? tCommon('male') : tCommon('female')}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{tCommon('gender')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100">{selectedStudent.gender === 'male' ? tCommon('male') : tCommon('female')}</p>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{t('plan')}</p>
-                                            <p className="font-semibold text-gray-900">{selectedStudent.plan?.name || t('withoutPlan')}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{t('plan')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100">{selectedStudent.plan?.name || t('withoutPlan')}</p>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{tCommon('status')}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{tCommon('status')}</p>
                                             <span className={`px-2 py-1 rounded text-xs font-medium ${
                                                 selectedStudent.status === 'active'
                                                     ? 'bg-green-100 text-green-700'
@@ -481,9 +481,9 @@ export default function StudentsPage() {
                                                 {selectedStudent.status === 'active' ? tCommon('active') : tCommon('inactive')}
                                             </span>
                                         </div>
-                                        <div className="bg-gray-50 p-4 rounded-lg col-span-2">
-                                            <p className="text-xs text-gray-500 uppercase mb-1">{t('joinDate')}</p>
-                                            <p className="font-semibold text-gray-900">
+                                        <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-lg col-span-2">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">{t('joinDate')}</p>
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100">
                                                 {new Date(selectedStudent.created_at).toLocaleDateString('ar-EG')}
                                             </p>
                                         </div>
@@ -493,7 +493,7 @@ export default function StudentsPage() {
                                 <form className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('name')} *</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('name')} *</label>
                                             <input
                                                 type="text"
                                                 placeholder='ex :- Mohamed'
@@ -504,7 +504,7 @@ export default function StudentsPage() {
                                             <FieldError error={getError('name')} />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('email')} *</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('email')} *</label>
                                             <input
                                                 type="email"
                                                 placeholder='ex :- 6l6Tt@example.com'
@@ -515,17 +515,17 @@ export default function StudentsPage() {
                                             <FieldError error={getError('email')} />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('countryCode')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('countryCode')}</label>
                                             <input
                                                 type="text"
                                                 placeholder='+20'
                                                 value={formData.country_code}
                                                 onChange={(e) => setFormData({ ...formData, country_code: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('phone')} *</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('phone')} *</label>
                                             <input
                                                 type="tel"
                                                 placeholder='ex :- 01091536978'
@@ -536,12 +536,12 @@ export default function StudentsPage() {
                                             <FieldError error={getError('phone')} />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('gender')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('gender')}</label>
                                             <select
                                                 
                                                 value={formData.gender}
                                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
                                                 <option value="">{t('selectGender')}</option>
                                                 <option value="male">{tCommon('male')}</option>
@@ -549,21 +549,21 @@ export default function StudentsPage() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('birthDate')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('birthDate')}</label>
                                             <input
                                                 type="date"
                                                 value={formatDateForInput(formData.birth_date)}
                                                 onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('plan')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('plan')}</label>
                                             <select
                                                 value={formData.plan_id}
                                                 defaultValue={Number(formData.plan_id)}
                                                 onChange={(e) => setFormData({ ...formData, plan_id: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
                                                 <option value="">{t('withoutPlan')}</option>
                                                 {studentsData?.plans.map(plan => (
@@ -576,7 +576,7 @@ export default function StudentsPage() {
                                         </div>
                                         {/* country */}
                                         <div className='w-full'>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('country')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('country')}</label>
                                             <Select
                                                 showSearch
                                                 value={formData.country}
@@ -595,11 +595,11 @@ export default function StudentsPage() {
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('status')}</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('status')}</label>
                                             <select
                                                 value={formData.status}
                                                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             >
                                                 <option value="active">{tCommon('active')}</option>
                                                 <option value="inactive">{tCommon('inactive')}</option>
@@ -607,7 +607,7 @@ export default function StudentsPage() {
                                         </div>
                                         
                                         <div className="">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('password')} *</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('password')} *</label>
                                             <input
                                                 type="password"
                                                 value={formData.password}
@@ -624,12 +624,12 @@ export default function StudentsPage() {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             {modalMode !== 'view' && (
                                 <>
                                     <button
                                         onClick={closeModal}
-                                        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800 transition-colors"
                                     >
                                         {tCommon('cancel')}
                                     </button>
@@ -645,7 +645,7 @@ export default function StudentsPage() {
                             {modalMode === 'view' && (
                                 <button
                                     onClick={closeModal}
-                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                                    className="px-4 py-2 bg-gray-200 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors"
                                 >
                                     {tCommon('close')}
                                 </button>

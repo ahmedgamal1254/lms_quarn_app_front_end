@@ -91,9 +91,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 {/* Content */}
                 <Content
+                    className="dark:bg-slate-900 bg-white"
                     style={{
                         margin: isMobile ? '12px' : '16px',
-                        background: '#ffffff',
+                    
                         borderRadius: '8px',
                         minHeight: 'calc(100vh - 160px)',
                         overflowY: 'auto',
@@ -104,10 +105,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 {/* Footer */}
                 <Footer
-                    style={{
-                        textAlign: 'center',
-                        background: '#f9fafb'
-                    }}
+                    // style={{
+                    //     textAlign: 'center',
+                    //     background: '#f9fafb',
+                    //     // dark mode
+                    //     background: '#f9fafb',
+                    // }}
+                    className="dark:text-white text-center
+                     bg-white dark:bg-slate-900"
                 >
                     © {new Date().getFullYear()} {tCommon('schoolName')} — {tAuth('copyright')}
                 </Footer>

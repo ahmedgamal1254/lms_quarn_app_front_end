@@ -120,7 +120,7 @@ export default function TeacherDashboard() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ export default function TeacherDashboard() {
   if (error) {
     return (
       <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700">
           <p className="font-semibold">{tCommon('errorLoadingData')}</p>
           <p className="text-sm mt-1">{tCommon('tryAgainLater')}</p>
         </div>
@@ -201,56 +201,56 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div dir={locale === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
+    <div dir={locale === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 md:p-8">
       {/* Welcome Section */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           {t('welcome')}， {teacher.name || t('teacher')} 👋
         </h1>
-        <p className="text-gray-600">{t('welcomeSubtitle')}</p>
+        <p className="text-gray-600 dark:text-gray-400">{t('welcomeSubtitle')}</p>
       </div>
 
       {/* Statistics Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Students Count */}
-        <div className={`bg-white rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-blue-500 hover:shadow-md transition`}>
+        <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-blue-500 hover:shadow-md transition`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">{t('studentsCount')}</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.students_count || 0}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('studentsCount')}</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{stats.students_count || 0}</p>
             </div>
             <Users className="w-10 h-10 text-blue-500 opacity-20" />
           </div>
         </div>
 
         {/* Today's Sessions */}
-        <div className={`bg-white rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-green-500 hover:shadow-md transition`}>
+        <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-green-500 hover:shadow-md transition`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">{t('sessionsToday')}</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.sessions_today || 0}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('sessionsToday')}</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{stats.sessions_today || 0}</p>
             </div>
             <Clock className="w-10 h-10 text-green-500 opacity-20" />
           </div>
         </div>
 
         {/* Completed Sessions */}
-        <div className={`bg-white rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-emerald-500 hover:shadow-md transition`}>
+        <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-emerald-500 hover:shadow-md transition`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">{t('sessionsCompleted')}</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.sessions_completed || 0}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('sessionsCompleted')}</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{stats.sessions_completed || 0}</p>
             </div>
             <CheckCircle className="w-10 h-10 text-emerald-500 opacity-20" />
           </div>
         </div>
 
         {/* Upcoming Sessions */}
-        <div className={`bg-white rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-purple-500 hover:shadow-md transition`}>
+        <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 ${locale === 'ar' ? 'border-r-4' : 'border-l-4'} border-purple-500 hover:shadow-md transition`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">{t('sessionsUpcoming')}</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.sessions_upcoming || 0}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('sessionsUpcoming')}</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{stats.sessions_upcoming || 0}</p>
             </div>
             <Calendar className="w-10 h-10 text-purple-500 opacity-20" />
           </div>
@@ -258,15 +258,15 @@ export default function TeacherDashboard() {
       </div>
 
       {/* Salary Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
+            <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-lg">
               <DollarSign className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800">{t('financials')}</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t('financials')}</h2>
           </div>
         </div>
 
@@ -274,23 +274,23 @@ export default function TeacherDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
           {/* Total Hours */}
-          <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
-            <p className="text-sm text-gray-500 mb-1">{t('totalHours')}</p>
-            <p className="text-2xl font-semibold text-gray-800">
+          <div className="p-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('totalHours')}</p>
+            <p className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
               {salary.total_hours || 0}
             </p>
           </div>
 
           {/* Hourly Rate */}
-          <div className="p-4 rounded-lg border border-gray-100 bg-gray-50">
-            <p className="text-sm text-gray-500 mb-1">{t('hourlyRate')}</p>
-            <p className="text-2xl font-semibold text-gray-800">
+          <div className="p-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('hourlyRate')}</p>
+            <p className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
               {salary.hourly_rate || 0} {salary.currency || ''}
             </p>
           </div>
 
           {/* Total Earned */}
-          <div className="p-4 rounded-lg border border-emerald-100 bg-emerald-50">
+          <div className="p-4 rounded-lg border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20">
             <p className="text-sm text-emerald-700 mb-1">{t('totalEarned')}</p>
             <p className="text-2xl font-bold text-emerald-800">
               {(salary.total_earned || 0).toFixed(2)}
@@ -298,7 +298,7 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Paid Earnings */}
-          <div className="p-4 rounded-lg border border-blue-100 bg-blue-50">
+          <div className="p-4 rounded-lg border border-blue-100 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20">
             <p className="text-sm text-blue-700 mb-1">{t('paidAmount')}</p>
             <p className="text-2xl font-bold text-blue-800">
               {(salary.paid_amount || 0).toFixed(2)}
@@ -306,7 +306,7 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Pending Earnings */}
-          <div className="p-4 rounded-lg border border-yellow-100 bg-yellow-50">
+          <div className="p-4 rounded-lg border border-yellow-100 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20">
             <p className="text-sm text-yellow-700 mb-1">{t('pendingAmount')}</p>
             <p className="text-2xl font-bold text-yellow-800">
               {(salary.pending_amount || 0).toFixed(2)}
@@ -314,15 +314,15 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Available Balance */}
-          <div className="p-4 rounded-lg border border-emerald-200 bg-emerald-100">
+          <div className="p-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-100 dark:bg-emerald-900/30">
             <p className="text-sm text-emerald-700 mb-1">{t('availableBalance')}</p>
-            <p className="text-3xl font-extrabold text-emerald-900">
+            <p className="text-3xl font-extrabold text-emerald-900 dark:text-emerald-100">
               {((salary.available_balance || 0).toFixed(2) - (salary.pending_withdraw || 0).toFixed(2)).toFixed(2)}
             </p>
           </div>
 
           {/* Pending Withdraw */}
-          <div className="p-4 rounded-lg border border-red-100 bg-red-50">
+          <div className="p-4 rounded-lg border border-red-100 dark:border-red-700 bg-red-50 dark:bg-red-900/20">
             <p className="text-sm text-red-700 mb-1">{t('pendingWithdraw')}</p>
             <p className="text-2xl font-bold text-red-800">
               {(salary.pending_withdraw || 0).toFixed(2)}
@@ -346,11 +346,11 @@ export default function TeacherDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Upcoming Sessions */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <Calendar className={`w-6 h-6 text-purple-600 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`} />
-                <h2 className="text-xl font-bold text-gray-900">{t('upcomingSessions')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('upcomingSessions')}</h2>
               </div>
               <Link href="/teacher/sessions" className="text-blue-600 hover:text-blue-700 text-sm font-semibold">
                 {tCommon('viewAll')}
@@ -358,27 +358,27 @@ export default function TeacherDashboard() {
             </div>
 
             {upcomingSessions.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <Calendar className="w-12 h-12 mx-auto opacity-30 mb-2" />
                 <p>{t('noSessions')}</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {upcomingSessions.map((session: Session) => (
-                  <div key={session.id} className="border border-gray-200 rounded-lg p-4 hover:border-purple-300 transition">
+                  <div key={session.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-purple-300 transition">
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-gray-900">{session.title || tCommon('withoutTitle')}</h3>
-                      <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded">
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">{session.title || tCommon('withoutTitle')}</h3>
+                      <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded">
                         {session.status === 'scheduled' ? tCommon('scheduled') : session.status || tCommon('unknown')}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">{tCommon('student')}: {session.student_name || tCommon('unknown')}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                      <span>📅 {new Date(session.session_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</span>
-                      <span>🕐 {utcToLocalDate(session.start_time)} ·{" "}
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{tCommon('student')}: {session.student_name || tCommon('unknown')}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+                      <span className="dark:text-white">📅 {new Date(session.session_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</span>
+                      <span className="dark:text-white">🕐 {utcToLocalDate(session.start_time)} ·{" "}
                         {utcToLocalTime(session.start_time)} -{" "}
                         {utcToLocalTime(session.end_time)}</span>
-                      {session.subject_name && <span>📚 {session.subject_name}</span>}
+                      {session.subject_name && <span className="dark:text-white">📚 {session.subject_name}</span>}
                     </div>
                   </div>
                 ))}
@@ -389,11 +389,11 @@ export default function TeacherDashboard() {
 
         {/* Recent Homework */}
         <div>
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <BookOpen className={`w-6 h-6 text-blue-600 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`} />
-                <h2 className="text-lg font-bold text-gray-900">{tCommon('homework')}</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{tCommon('homework')}</h2>
               </div>
               <Link href="/teacher/homework" className="text-blue-600 hover:text-blue-700 text-xs font-semibold">
                 {tCommon('viewAll')}
@@ -401,22 +401,22 @@ export default function TeacherDashboard() {
             </div>
 
             {recentHomework.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <FileText className="w-10 h-10 mx-auto opacity-30 mb-2" />
                 <p className="text-sm">{t('noHomework')}</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {recentHomework.map((hw: Homework) => (
-                  <div key={hw.id} className="border border-gray-200 rounded p-3 hover:border-blue-300 transition">
+                  <div key={hw.id} className="border border-gray-200 dark:border-gray-700 rounded p-3 hover:border-blue-300 transition">
                     <div className="flex items-start justify-between mb-1">
-                      <h4 className="font-semibold text-sm text-gray-900">{hw.title || tCommon('withoutTitle')}</h4>
+                      <h4 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{hw.title || tCommon('withoutTitle')}</h4>
                       <span className={`text-xs px-2 py-1 rounded ${getHomeworkStatusColor(hw.status)}`}>
                         {getHomeworkStatusLabel(hw.status)}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mb-2">{hw?.student?.name || tCommon('unknown')}</p>
-                    <p className="text-xs text-gray-600">📅 {new Date(hw.due_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{hw?.student?.name || tCommon('unknown')}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">📅 {new Date(hw.due_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</p>
                     {hw.grade && <p className="text-xs text-green-600 mt-1 font-semibold">{tCommon('grade')}: {hw.grade}</p>}
                   </div>
                 ))}
@@ -427,30 +427,30 @@ export default function TeacherDashboard() {
       </div>
 
       {/* Upcoming Exams */}
-      <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
+      <div className="mt-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">{t('upcomingExams')}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('upcomingExams')}</h2>
           <Link href="/teacher/exams" className="text-blue-600 hover:text-blue-700 text-sm font-semibold">
             {tCommon('viewAll')}
           </Link>
         </div>
 
         {upcomingExams.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <FileText className="w-12 h-12 mx-auto opacity-30 mb-2" />
             <p>{t('noExams')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {upcomingExams.map((exam: Exam) => (
-              <div key={exam.id} className="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition">
-                <h3 className="font-semibold text-gray-900 mb-2">{exam.title || tCommon('withoutTitle')}</h3>
-                <p className="text-sm text-gray-600 mb-3">{exam.description || tCommon('withoutDesc')}</p>
-                <div className="space-y-1 text-sm text-gray-600">
-                  <p>📅 {new Date(exam.exam_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</p>
-                  {exam.start_time && <p>🕐 {exam.start_time}</p>}
+              <div key={exam.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-orange-300 transition">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">{exam.title || tCommon('withoutTitle')}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{exam.description || tCommon('withoutDesc')}</p>
+                <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                  <p className="dark:text-white">📅 {new Date(exam.exam_date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</p>
+                  {exam.start_time && <p className="dark:text-white">🕐 {exam.start_time}</p>}
                   <p className="font-semibold text-orange-600">{tCommon('totalGrade')}: {exam.total_marks || 0}</p>
-                  {exam.subject_name && <p>📚 {exam.subject_name}</p>}
+                  {exam.subject_name && <p className="dark:text-white">📚 {exam.subject_name}</p>}
                 </div>
               </div>
             ))}
@@ -460,20 +460,20 @@ export default function TeacherDashboard() {
 
       {/* Quick Actions */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link href="/teacher/students" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-blue-500">
+        <Link href="/teacher/students" className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-blue-500">
           <Users className="w-8 h-8 text-blue-600 mb-2" />
-          <h3 className="font-semibold text-gray-900">{t('quickActions.myStudents')}</h3>
-          <p className="text-sm text-gray-600 mt-1">{t('quickActions.myStudentsDesc')}</p>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('quickActions.myStudents')}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('quickActions.myStudentsDesc')}</p>
         </Link>
-        <Link href="/teacher/homework" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-green-500">
+        <Link href="/teacher/homework" className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-green-500">
           <BookOpen className="w-8 h-8 text-green-600 mb-2" />
-          <h3 className="font-semibold text-gray-900">{t('quickActions.homework')}</h3>
-          <p className="text-sm text-gray-600 mt-1">{t('quickActions.homeworkDesc')}</p>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('quickActions.homework')}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('quickActions.homeworkDesc')}</p>
         </Link>
-        <Link href="/teacher/exams" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-purple-500">
+        <Link href="/teacher/exams" className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 hover:shadow-md transition border-t-4 border-purple-500">
           <FileText className="w-8 h-8 text-purple-600 mb-2" />
-          <h3 className="font-semibold text-gray-900">{t('quickActions.exams')}</h3>
-          <p className="text-sm text-gray-600 mt-1">{t('quickActions.examsDesc')}</p>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('quickActions.exams')}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('quickActions.examsDesc')}</p>
         </Link>
       </div>
 

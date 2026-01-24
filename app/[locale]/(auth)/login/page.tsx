@@ -57,7 +57,7 @@ export default function LoginPage() {
     }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 p-4">
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
@@ -66,19 +66,19 @@ export default function LoginPage() {
         {/* Top Section */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center shadow">
+            <div className="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center shadow">
               <span className="text-3xl">🎓</span>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">{t('welcomeTitle')}</h1>
-              <p className="text-sm text-gray-500">{t('welcomeSubtitle')}</p>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{t('welcomeTitle')}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('welcomeSubtitle')}</p>
             </div>
           </div>
-          <p className="text-gray-600 text-sm">{t('platformDescription')}</p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">{t('platformDescription')}</p>
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 space-y-6">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-lg p-8 space-y-6">
 
           {/* Quick Register */}
           <Link href="/register/student">
@@ -91,9 +91,9 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="text-gray-400 text-xs font-semibold px-2">{t('orLogin')}</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+            <span className="text-gray-400 dark:text-gray-500 text-xs font-semibold px-2">{t('orLogin')}</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
           </div>
 
           {/* Error */}
@@ -108,20 +108,20 @@ export default function LoginPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">{t('email')}</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('email')}</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder={t('enterEmail')}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition-all placeholder:text-gray-400"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">{t('password')}</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('password')}</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -129,7 +129,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder={t('enterPassword')}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition-all placeholder:text-gray-400"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100"
                 />
                 <button
                   type="button"
@@ -148,7 +148,7 @@ export default function LoginPage() {
                   type="checkbox"
                   className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
-                <span className="text-gray-600 group-hover:text-gray-800 transition-colors">{t('rememberMe')}</span>
+                <span className="text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">{t('rememberMe')}</span>
               </label>
               <a href="#" className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors">
                 {t('forgotPassword')}
@@ -178,7 +178,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-6">
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 dark:text-gray-400 text-xs">
             © 2024 {t('welcomeTitle')} {t('welcomeSubtitle')}
             <span className="text-gray-400"> • </span>
             <a href="#" className="text-gray-500 hover:text-gray-700 transition-colors">{t('copyright')}</a>

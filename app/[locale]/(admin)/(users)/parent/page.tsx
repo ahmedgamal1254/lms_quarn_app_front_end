@@ -180,12 +180,12 @@ export default function ParentsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-2 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-2 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
             <div className="flex justify-between items-start flex-col gap-2 md:flex-row mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">{t('parentsManagement')}</h1>
-                    <p className="text-gray-600 text-sm mt-1">{t('manageParentsDesc')}</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('parentsManagement')}</h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{t('manageParentsDesc')}</p>
                 </div>
                 <button
                     onClick={() => openModal('create')}
@@ -197,7 +197,7 @@ export default function ParentsPage() {
             </div>
 
             {/* Table Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8">
                 {/* Search */}
                 <div className="flex gap-4 mb-6">
                     <div className="flex-1 relative">
@@ -207,7 +207,7 @@ export default function ParentsPage() {
                             placeholder={t('searchPlaceholder')}
                             value={params.search}
                             onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
-                            className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -216,40 +216,40 @@ export default function ParentsPage() {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-gray-200">
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{t('parent')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('email')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{tCommon('phone')}</th>
-                                <th className="text-start py-3 px-4 font-semibold text-gray-700">{t('childrenCount')}</th>
-                                <th className="text-center py-3 px-4 font-semibold text-gray-700">{tCommon('actions')}</th>
+                            <tr className="border-b border-gray-200 dark:border-gray-700">
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{t('parent')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('email')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('phone')}</th>
+                                <th className="text-start py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{t('childrenCount')}</th>
+                                <th className="text-center py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">{tCommon('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {isLoading ? (
                                 <tr>
-                                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                                    <td colSpan={5} className="py-8 text-center text-gray-500 dark:text-gray-400">
                                         {tCommon('loading')}
                                     </td>
                                 </tr>
                             ) : parentsData?.parents.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                                    <td colSpan={5} className="py-8 text-center text-gray-500 dark:text-gray-400">
                                         {tCommon('noData')}
                                     </td>
                                 </tr>
                             ) : (
                                 parentsData?.parents.map((parent) => (
-                                    <tr key={parent.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <tr key={parent.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                                         <td className="py-3 px-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
                                                     <User size={20} className="text-green-600" />
                                                 </div>
-                                                <p className="font-medium text-gray-900">{parent.name}</p>
+                                                <p className="font-medium text-gray-900 dark:text-gray-100">{parent.name}</p>
                                             </div>
                                         </td>
-                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs text-start">{parent.email}</td>
-                                        <td className="py-3 px-4 text-gray-600 dir-ltr text-xs text-start">
+                                        <td className="py-3 px-4 text-gray-600 dark:text-gray-600 dir-ltr text-xs text-start">{parent.email}</td>
+                                        <td className="py-3 px-4 text-gray-600 dark:text-gray-600 dir-ltr text-xs text-start">
                                             {parent.country_code} {parent.phone}
                                         </td>
                                         <td className="py-3 px-4">
@@ -271,7 +271,7 @@ export default function ParentsPage() {
                                                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                                                     title={tCommon('view')}
                                                 >
-                                                    <Eye size={16} className="text-gray-600" />
+                                                    <Eye size={16} className="text-gray-600 dark:text-gray-400" />
                                                 </button>
                                                 <button
                                                     onClick={() => openModal('edit', parent)}
@@ -312,13 +312,13 @@ export default function ParentsPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                            <h2 className="text-xl font-bold text-gray-900">{getModalTitle()}</h2>
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{getModalTitle()}</h2>
                             <button
                                 onClick={closeModal}
-                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="p-2 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors"
                             >
                                 <X size={20} />
                             </button>
@@ -329,36 +329,36 @@ export default function ParentsPage() {
                             {modalMode === 'view' ? (
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">{tCommon('name')}</label>
-                                        <p className="text-gray-900">{selectedParent?.name}</p>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{tCommon('name')}</label>
+                                        <p className="text-gray-900 dark:text-gray-100">{selectedParent?.name}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">{tCommon('email')}</label>
-                                        <p className="text-gray-900 dir-ltr text-start">{selectedParent?.email}</p>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{tCommon('email')}</label>
+                                        <p className="text-gray-900 dark:text-gray-100 dir-ltr text-start">{selectedParent?.email}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">{tCommon('phone')}</label>
-                                        <p className="text-gray-900 dir-ltr text-start">{selectedParent?.country_code} {selectedParent?.phone}</p>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{tCommon('phone')}</label>
+                                        <p className="text-gray-900 dark:text-gray-100 dir-ltr text-start">{selectedParent?.country_code} {selectedParent?.phone}</p>
                                     </div>
                                     {selectedParent?.whatsapp_number && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('whatsappNumber')}</label>
-                                            <p className="text-gray-900 dir-ltr text-start">{selectedParent.whatsapp_number}</p>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('whatsappNumber')}</label>
+                                            <p className="text-gray-900 dark:text-gray-100 dir-ltr text-start">{selectedParent.whatsapp_number}</p>
                                         </div>
                                     )}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('linkedStudents')}</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('linkedStudents')}</label>
                                         {selectedParent?.students && selectedParent.students.length > 0 ? (
                                             <div className="space-y-2">
                                                 {selectedParent.students.map((student: any) => (
-                                                    <div key={student.id} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                                                        <User size={16} className="text-gray-600" />
+                                                    <div key={student.id} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-slate-900 rounded">
+                                                        <User size={16} className="text-gray-600 dark:text-gray-400" />
                                                         <span>{student.name}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         ) : (
-                                            <p className="text-gray-500">{t('noLinkedStudents')}</p>
+                                            <p className="text-gray-500 dark:text-gray-400">{t('noLinkedStudents')}</p>
                                         )}
                                     </div>
                                 </div>
@@ -366,7 +366,7 @@ export default function ParentsPage() {
                                 <div className="space-y-4">
                                     {/* Name */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                             {tCommon('name')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
@@ -383,7 +383,7 @@ export default function ParentsPage() {
 
                                     {/* Email */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                             {tCommon('email')} <span className="text-red-500">*</span>
                                         </label>
                                         <input
@@ -400,7 +400,7 @@ export default function ParentsPage() {
 
                                     {/* Phone */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                             {tCommon('phone')} <span className="text-red-500">*</span>
                                         </label>
                                         <div className="flex gap-2">
@@ -408,7 +408,7 @@ export default function ParentsPage() {
                                                 type="text"
                                                 value={formData.country_code}
                                                 onChange={(e) => setFormData({ ...formData, country_code: e.target.value })}
-                                                className="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dir-ltr text-center"
+                                                className="w-24 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dir-ltr text-center"
                                                 placeholder="+20"
                                             />
                                             <input
@@ -426,7 +426,7 @@ export default function ParentsPage() {
 
                                     {/* WhatsApp */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                             {t('whatsappNumber')}
                                         </label>
                                         <WhatsAppInput
@@ -439,7 +439,7 @@ export default function ParentsPage() {
                                     {/* Password */}
                                     {modalMode === 'create' && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                                 {tCommon('password')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
@@ -457,7 +457,7 @@ export default function ParentsPage() {
 
                                     {modalMode === 'edit' && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                                 {t('newPassword')}
                                             </label>
                                             <input
@@ -475,7 +475,7 @@ export default function ParentsPage() {
 
                                     {/* Students Selection */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                             {t('linkedStudents')}
                                         </label>
                                         <Select
@@ -498,10 +498,10 @@ export default function ParentsPage() {
 
                         {/* Modal Footer */}
                         {modalMode !== 'view' && (
-                            <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                            <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                                 <button
                                     onClick={closeModal}
-                                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors"
                                 >
                                     {tCommon('cancel')}
                                 </button>

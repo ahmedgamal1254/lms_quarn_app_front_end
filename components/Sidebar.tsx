@@ -213,7 +213,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
           fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-screen
           z-50
           w-64 sm:w-72
-          bg-white ${isRTL ? 'border-l' : 'border-r'}
+          bg-white dark:bg-slate-900 ${isRTL ? 'border-l' : 'border-r'} dark:border-slate-800
           transition-transform duration-300 ease-in-out
           flex flex-col
 
@@ -227,8 +227,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
       >
 
         {/* Logo */}
-<div className="flex items-center gap-4 p-6 border-b">
-  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
+<div className="flex items-center gap-4 p-6 border-b dark:border-slate-800">
+  <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
     {settings?.logo ? (
       <img
         src={settings.logo}
@@ -243,10 +243,10 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   </div>
 
   <div className="flex flex-col">
-    <span className="text-lg font-bold text-gray-900">
+    <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
       {settings?.app_name || tCommon('schoolName')}
     </span>
-    <span className="text-sm text-gray-500">
+    <span className="text-sm text-gray-500 dark:text-gray-400">
       {tCommon('controlPanel')}
     </span>
   </div>
@@ -257,7 +257,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         <nav className="flex-1 overflow-y-auto p-4 space-y-2 scroll-smooth
           [&::-webkit-scrollbar]:w-1.5
           [&::-webkit-scrollbar-track]:bg-transparent
-          [&::-webkit-scrollbar-thumb]:bg-gray-300
+          [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-700
           [&::-webkit-scrollbar-thumb]:rounded-full
         ">
           {menu.map((group: any) => {
@@ -271,7 +271,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                   <button
                     onClick={() => toggle(group.title)}
                     className="w-full flex items-center justify-between px-3 py-2 rounded-lg
-                    hover:bg-gray-100 text-gray-700"
+                    hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={18} />
@@ -293,11 +293,11 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                             href={item.href}
                             className={`
                               flex items-center gap-3 px-3 py-2 rounded-lg text-sm
-                              hover:bg-emerald-50
+                              hover:bg-emerald-50 dark:hover:bg-emerald-900/30
                               ${
                                 isActive(item.href)
-                                  ? 'bg-emerald-100 text-emerald-700 font-medium'
-                                  : 'text-gray-600'
+                                  ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium'
+                                  : 'text-gray-600 dark:text-gray-400'
                               }
                             `}
                           >
@@ -318,11 +318,11 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                 href={group.href}
                 className={`
                   flex items-center gap-3 px-3 py-2 rounded-lg
-                  hover:bg-emerald-50
+                  hover:bg-emerald-50 dark:hover:bg-emerald-900/30
                   ${
                     isActive(group.href)
-                      ? 'bg-emerald-100 text-emerald-700 font-medium'
-                      : 'text-gray-700'
+                      ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium'
+                      : 'text-gray-700 dark:text-gray-200'
                   }
                 `}
               >
@@ -334,16 +334,16 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         </nav>
 
         {/* User */}
-        <div className="p-4 border-t">
+        <div className="p-4 border-t dark:border-slate-800">
           {user && (
             <Link href={url}>
-              <div className="flex items-center gap-3 p-3 mb-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-3 p-3 mb-3 bg-gray-50 dark:bg-slate-800 rounded-lg">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-500 text-white">
                   <User size={18} />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                  <p className="text-xs text-gray-500">{user.role}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
                 </div>
               </div>
             </Link>

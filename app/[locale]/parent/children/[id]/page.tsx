@@ -137,7 +137,7 @@ export default function ChildDetailsPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold mb-2">{childData.name}</h1>
-        <p className="text-gray-600">{childData.email}</p>
+        <p className="text-gray-600 dark:text-gray-400">{childData.email}</p>
       </div>
 
       {/* Statistics Cards */}
@@ -148,7 +148,7 @@ export default function ChildDetailsPage() {
               <BookOutlined style={{ fontSize: '32px', color: '#1890ff' }} />
               <div className="mt-2">
                 <div className="text-2xl font-bold">{childData.sessions_remaining || 0}</div>
-                <div className="text-gray-600 text-sm">الحصص المتبقية</div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm">الحصص المتبقية</div>
               </div>
             </div>
           </Card>
@@ -159,7 +159,7 @@ export default function ChildDetailsPage() {
               <CalendarOutlined style={{ fontSize: '32px', color: '#52c41a' }} />
               <div className="mt-2">
                 <div className="text-2xl font-bold">{childData.upcoming_sessions || 0}</div>
-                <div className="text-gray-600 text-sm">حصص قادمة</div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm">حصص قادمة</div>
               </div>
             </div>
           </Card>
@@ -170,7 +170,7 @@ export default function ChildDetailsPage() {
               <FileTextOutlined style={{ fontSize: '32px', color: '#faad14' }} />
               <div className="mt-2">
                 <div className="text-2xl font-bold">{childData.pending_homework || 0}</div>
-                <div className="text-gray-600 text-sm">واجبات معلقة</div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm">واجبات معلقة</div>
               </div>
             </div>
           </Card>
@@ -181,7 +181,7 @@ export default function ChildDetailsPage() {
               <FileDoneOutlined style={{ fontSize: '32px', color: '#722ed1' }} />
               <div className="mt-2">
                 <div className="text-2xl font-bold">{childData.upcoming_exams || 0}</div>
-                <div className="text-gray-600 text-sm">امتحانات قادمة</div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm">امتحانات قادمة</div>
               </div>
             </div>
           </Card>

@@ -184,10 +184,10 @@ export default function SettingsPage() {
 
   /* ================= UI ================= */
   return (
-    <div className="p-6 max-w-7xl mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="p-6 max-w-7xl mx-auto min-h-screen dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="mb-6 flex items-center gap-3">
         <SettingsIcon className="w-8 h-8 text-blue-600" />
-        <h1 className="text-3xl font-bold">{t('title')}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
       </div>
 
       {isLoading ? (
@@ -195,27 +195,27 @@ export default function SettingsPage() {
           <Loader className="w-8 h-8 animate-spin text-blue-600" />
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6 dark:bg-slate-900">
           {Object.entries(groupedSettings || {}).map(([group, items]) => (
-            <div key={group} className="bg-white rounded-lg shadow">
-              <div className="bg-gray-50 px-6 py-4 border-b">
-                <h2 className="text-xl font-semibold capitalize">
+            <div key={group} className="bg-slate-800 rounded-lg shadow border dark:border-gray-700">
+              <div className="dark:bg-slate-900 bg-white px-6 py-4 border-b border-gray-700">
+                <h2 className="text-xl font-semibold capitalize text-gray-500 dark:text-white">
                   {group === 'general' ? t('general') : group === 'contact' ? t('contact') : group}
                 </h2>
               </div>
-              <div className="divide-y">
+              <div className="divide-y divide-gray-700">
                 {items.map((setting) => (
-                  <div key={setting.id} className="p-6 hover:bg-gray-50 transition-colors">
+                  <div key={setting.id} className="p-6 dark:bg-slate-900 bg-white dark:hover:bg-slate-700 hover:bg-gray-100">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-semibold text-lg">{setting.label || setting.key}</h3>
+                          <h3 className="font-semibold text-lg text-gray-500 dark:text-white">{setting.label || setting.key}</h3>
                         </div>
                          {/* Display current locale description if available */}
                          {setting.description && (
-                             <p className="text-sm text-gray-500 mb-2">{setting.description}</p>
+                             <p className="text-sm text-gray-500 dark:text-white mb-2">{setting.description}</p>
                          )}
-                        <div className="text-gray-700">
+                        <div className="text-gray-500 dark:text-white">
                           {setting.type === 'image' ? (
                             setting.value ? (
                               <img 
@@ -227,11 +227,11 @@ export default function SettingsPage() {
                               <span className="text-gray-400">{t('noImage')}</span>
                             )
                           ) : typeof setting.value === 'object' ? (
-                            <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto">
+                            <pre className="bg-slate-700 p-2 rounded text-sm overflow-x-auto text-gray-50">
                               {JSON.stringify(setting.value, null, 2)}
                             </pre>
                           ) : (
-                            <span className="text-base">
+                            <span className="text-base text-gray-500 dark:text-white">
                               {String(setting.value) || <span className="text-gray-400">{tCommon('unknown')}</span>}
                             </span>
                           )}
@@ -256,10 +256,10 @@ export default function SettingsPage() {
       {/* ================= Modal ================= */}
       {isModalOpen && selected && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white z-10">
-              <h2 className="text-2xl font-bold">{t('editSetting')}: {selected.label || selected.key}</h2>
-              <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('editSetting')}: {selected.label || selected.key}</h2>
+              <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X size={24} />
               </button>
             </div>
@@ -283,9 +283,9 @@ export default function SettingsPage() {
                 />
 
               <div>
-                <label className="block mb-2 font-semibold">
+                <label className="block mb-2 font-semibold text-gray-900 dark:text-gray-100">
                     {t('settingValue')} 
-                    {selected.type === 'string' && <span className="text-sm font-normal text-gray-500 ml-2">({t('translatable')})</span>}
+                    {selected.type === 'string' && <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">({t('translatable')})</span>}
                 </label>
                 
                 {selected.type === 'image' ? (
@@ -301,27 +301,27 @@ export default function SettingsPage() {
                       type="file"
                       accept="image/*"
                       onChange={(e) => setForm({ ...form, selectedFile: e.target.files?.[0] || null })}
-                      className="w-full border p-2 rounded"
+                      className="w-full p-2 rounded bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                     />
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block mb-1 text-sm">{t('width')}</label>
+                        <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">{t('width')}</label>
                         <input
                           type="number"
                           placeholder="Auto"
                           value={form.width}
                           onChange={(e) => setForm({ ...form, width: e.target.value })}
-                          className="w-full border p-2 rounded"
+                          className="w-full p-2 rounded bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                         />
                       </div>
                       <div>
-                        <label className="block mb-1 text-sm">{t('height')}</label>
+                        <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">{t('height')}</label>
                         <input
                           type="number"
                           placeholder="Auto"
                           value={form.height}
                           onChange={(e) => setForm({ ...form, height: e.target.value })}
-                          className="w-full border p-2 rounded"
+                          className="w-full border dark:border-gray-600 p-2 rounded bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                         />
                       </div>
                     </div>
@@ -330,7 +330,7 @@ export default function SettingsPage() {
                   <select
                     value={form.singleValue}
                     onChange={(e) => setForm({ ...form, singleValue: e.target.value })}
-                    className="w-full border p-2 rounded"
+                    className="w-full border dark:border-gray-600 p-2 rounded bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                   >
                     <option value="1">True / Yes</option>
                     <option value="0">False / No</option>
@@ -340,7 +340,7 @@ export default function SettingsPage() {
                     value={form.singleValue}
                     onChange={(e) => setForm({ ...form, singleValue: e.target.value })}
                     rows={8}
-                    className="w-full border p-2 rounded font-mono"
+                    className="w-full border dark:border-gray-600 p-2 rounded font-mono bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                     placeholder={t('enterJSON')}
                     dir="ltr"
                   />
@@ -357,10 +357,10 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3 sticky bottom-0 bg-white">
+            <div className="p-6 border-t dark:border-gray-700 flex justify-end gap-3 sticky bottom-0 bg-white dark:bg-slate-800">
               <button
                 onClick={closeModal}
-                className="px-6 py-2 border rounded hover:bg-gray-100 transition-colors"
+                className="px-6 py-2 border dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-gray-900 dark:text-gray-100"
               >
                 {tCommon('cancel')}
               </button>

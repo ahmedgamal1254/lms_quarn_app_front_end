@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, Globe, Menu, Moon, User } from 'lucide-react';
+import { Bell, Globe, Menu, Moon, Sun, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getUser } from '@/lib/auth';
 import { useAppSettingsStore  } from '@/store/appSetting';
@@ -8,14 +8,18 @@ import toast from 'react-hot-toast';
 import Notifications from './Notifications';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations, useLocale } from 'next-intl';
+import { useTheme } from 'next-themes';
 import { Link } from '@/i18n/routing';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const [user, setUser] = useState<any>(null);
   const tHeader = useTranslations('Header');
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
     setUser(getUser());
+    setMounted(true);
   }, []);
 
   const settings = useAppSettingsStore((state) => state.app_settings);
@@ -34,7 +38,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   return (
     <header 
     dir={isRTL ? "rtl" : "ltr"}
-    className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
+    className="h-16 bg-white dark:bg-slate-900 border-b dark:border-slate-800 flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
   {/* Left */}
   <Link href={url}>
   <div className="flex items-center gap-3">
@@ -55,8 +59,11 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   {/* Right */}
   <div className="flex items-center gap-1 sm:gap-2">
     {/* Hide some icons on mobile */}
-    <button className="p-2 rounded-lg hover:bg-gray-100 hidden sm:block">
-      <Moon size={18} />
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hidden sm:block"
+    >
+      {mounted && theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
     </button>
 
     <Notifications />
@@ -68,7 +75,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     {/* Mobile Menu */}
     <button
       onClick={onMenuClick}
-      className="p-2 rounded-lg hover:bg-gray-100"
+      className="p-2 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
     >
       <Menu size={20} />
     </button>

@@ -107,10 +107,10 @@ export default function StudentPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-gray-700">جاري التحميل...</p>
+                    <p className="mt-4 text-gray-700 dark:text-gray-300">جاري التحميل...</p>
                 </div>
             </div>
         );
@@ -118,8 +118,8 @@ export default function StudentPage() {
 
     if (isError || !studentData) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-lg text-center border border-gray-200">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg text-center border border-gray-200 dark:border-gray-700">
                     <p className="text-red-600 text-lg mb-4">حدث خطأ في تحميل بيانات الطالب</p>
                     <button 
                         onClick={() => window.history.back()}
@@ -138,14 +138,14 @@ export default function StudentPage() {
     const totalSessions = subscription?.total_sessions || studentData.total_sessions || 0;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 py-8 px-4">
             <div className="max-w-7xl mx-auto">
                 
                 {/* Back Button */}
                 <div className="mb-6">
                     <button 
                         onClick={() => window.history.back()}
-                        className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg border border-gray-300 transition-colors shadow-sm"
+                        className="flex items-center gap-2 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors shadow-sm"
                     >
                         <ArrowRight size={20} className="text-green-600" />
                         <span>العودة لقائمة الطلاب</span>
@@ -153,7 +153,7 @@ export default function StudentPage() {
                 </div>
 
                 {/* Profile Card */}
-                <div className="bg-white rounded-xl shadow-lg border border-gray-200 mb-6">
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mb-6">
                     <div className="p-2 md:p-6">
                         {/* Header Section */}
                         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
@@ -163,8 +163,8 @@ export default function StudentPage() {
                                     <GraduationCap size={48} className="text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{studentData.name}</h1>
-                                    <div className="flex flex-wrap items-center gap-4 text-gray-600 text-sm">
+                                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{studentData.name}</h1>
+                                    <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 text-sm">
                                         <div className="flex items-center gap-2">
                                             <Mail size={16} />
                                             <span>{studentData.email}</span>
@@ -174,7 +174,7 @@ export default function StudentPage() {
                                             <span>{studentData.country_code} {studentData.phone}</span>
                                         </div>
                                     </div>
-                                    <div className="mt-2 text-gray-500 text-sm">
+                                    <div className="mt-2 text-gray-500 dark:text-gray-400 text-sm">
                                         تاريخ الانضمام: {new Date(studentData.created_at).toLocaleDateString('ar-EG')}
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@ export default function StudentPage() {
                         {/* Plan & Teacher Info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             {/* Plan Card */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4
+                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-lg p-4
                             flex flex-col md:flex-row items-start md:items-start gap-4
                             items-center justify-between">
                                 <div className="flex items-center gap-3">
@@ -214,12 +214,12 @@ export default function StudentPage() {
                                         <CreditCard size={24} className="text-blue-600" />
                                     </div>
                                     <div>
-                                        <p className="text-gray-600 text-sm">الباقة الحالية</p>
-                                        <p className="text-gray-900 font-bold text-lg">{studentData.plan_name || 'بدون باقة'}</p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">الباقة الحالية</p>
+                                        <p className="text-gray-900 dark:text-gray-100 font-bold text-lg">{studentData.plan_name || 'بدون باقة'}</p>
                                     </div>
                                 </div>
                                 <div className="text-right md:text-left">
-                                    <p className="text-gray-600 text-sm">السعر</p>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm">السعر</p>
                                     <p className="text-blue-600 font-bold text-xl">
                                         {studentData.plan_price} {getCurrencySymbol(studentData.plan_currency)}
                                     </p>
@@ -227,20 +227,20 @@ export default function StudentPage() {
                             </div>
 
                             {/* Status Card */}
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+                            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 rounded-lg p-4 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                                         <CheckCircle size={24} className="text-green-600" />
                                     </div>
                                     <div>
-                                        <p className="text-gray-600 text-sm">حالة الطالب</p>
-                                        <p className="text-gray-900 font-bold text-lg">
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">حالة الطالب</p>
+                                        <p className="text-gray-900 dark:text-gray-100 font-bold text-lg">
                                             {studentData.status === 'active' ? 'نشط' : 'غير نشط'}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-gray-600 text-sm">النوع</p>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm">النوع</p>
                                     <p className="text-green-600 font-bold text-xl">{studentData.gender}</p>
                                 </div>
                             </div>
@@ -248,55 +248,55 @@ export default function StudentPage() {
 
                         {/* Sessions Stats */}
                         <div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">إحصائيات الحصص</h3>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">إحصائيات الحصص</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {/* Total Sessions */}
-                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                <div className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                             <Clock size={20} className="text-blue-600" />
                                         </div>
                                         <div>
-                                            <p className="text-gray-600 text-sm">إجمالي الحصص</p>
-                                            <p className="text-gray-900 font-bold text-2xl">{totalSessions}</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm">إجمالي الحصص</p>
+                                            <p className="text-gray-900 dark:text-gray-100 font-bold text-2xl">{totalSessions}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Attended */}
-                                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 rounded-lg p-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                                             <CheckCircle size={20} className="text-green-600" />
                                         </div>
                                         <div>
-                                            <p className="text-gray-600 text-sm">محضورة</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm">محضورة</p>
                                             <p className="text-green-600 font-bold text-2xl">{attendedSessions}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Remaining */}
-                                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 rounded-lg p-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
                                             <Clock size={20} className="text-orange-600" />
                                         </div>
                                         <div>
-                                            <p className="text-gray-600 text-sm">المتبقية</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm">المتبقية</p>
                                             <p className="text-orange-600 font-bold text-2xl">{remainingSessions}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Homework */}
-                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 rounded-lg p-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                                             <BookOpen size={20} className="text-purple-600" />
                                         </div>
                                         <div>
-                                            <p className="text-gray-600 text-sm">الواجبات</p>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm">الواجبات</p>
                                             <p className="text-purple-600 font-bold text-2xl">{studentData.homework_count || 0}</p>
                                         </div>
                                     </div>
@@ -308,28 +308,28 @@ export default function StudentPage() {
 
                 {/* Teacher Info Card */}
                 <div className='p-2 md:p-6'>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">معلومات المعلم</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">معلومات المعلم</h2>
                     {studentData.teacher && (
-                    <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 hover:shadow-xl transition-shadow">
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 hover:shadow-xl transition-shadow">
                         <div className="flex items-start justify-between flex-wrap gap-4">
                             <div className="flex items-center gap-4">
                             <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
                                 <User className="w-8 h-8 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-900">{studentData.teacher?.name}</h2>
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{studentData.teacher?.name}</h2>
                                 <p className="text-indigo-600 font-semibold text-sm mt-1">{studentData.teacher?.subject_name}</p>
                             </div>
                             </div>
                             <div className="flex gap-6 flex-wrap">
                             {studentData.teacher?.email && (
-                                <div className="flex items-center gap-2 text-gray-700">
+                                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                                 <Mail className="w-5 h-5 text-indigo-600" />
                                 <span className="text-sm">{studentData.teacher.email}</span>
                                 </div>
                             )}
                             {studentData.teacher?.phone && (
-                                <div className="flex items-center gap-2 text-gray-700">
+                                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                                 <Phone className="w-5 h-5 text-indigo-600" />
                                 <span className="text-sm">{studentData.teacher.phone}</span>
                                 </div>
@@ -342,24 +342,24 @@ export default function StudentPage() {
 
                 {/* Parents Section */}
                 {studentData.parents && studentData.parents.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">أولياء الأمور</h2>
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">أولياء الأمور</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {studentData.parents.map(parent => (
                                 <div 
                                     key={parent.id} 
-                                    className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all"
+                                    className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all"
                                 >
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center shadow-md">
                                             <User size={24} className="text-white" />
                                         </div>
                                         <div className="flex-1">
-                                            <h4 className="text-gray-900 font-bold">{parent.name}</h4>
-                                            <p className="text-gray-600 text-sm">{parent.email}</p>
+                                            <h4 className="text-gray-900 dark:text-gray-100 font-bold">{parent.name}</h4>
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm">{parent.email}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 text-gray-600 text-sm" dir="ltr">
+                                    <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm" dir="ltr">
                                         <Phone size={16} />
                                         <span>{parent.country_code} {parent.phone}</span>
                                     </div>
@@ -371,23 +371,23 @@ export default function StudentPage() {
 
                 {/* Subscription Details */}
                 {subscription && (
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mt-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">تفاصيل الاشتراك</h2>
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">تفاصيل الاشتراك</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <p className="text-gray-600 text-sm mb-1">تاريخ البداية</p>
-                                <p className="text-gray-900 font-bold text-lg">
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">تاريخ البداية</p>
+                                <p className="text-gray-900 dark:text-gray-100 font-bold text-lg">
                                     {new Date(subscription.start_date).toLocaleDateString('ar-EG')}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-600 text-sm mb-1">تاريخ النهاية</p>
-                                <p className="text-gray-900 font-bold text-lg">
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">تاريخ النهاية</p>
+                                <p className="text-gray-900 dark:text-gray-100 font-bold text-lg">
                                     {new Date(subscription.end_date).toLocaleDateString('ar-EG')}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-600 text-sm mb-1">حالة الاشتراك</p>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">حالة الاشتراك</p>
                                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold ${
                                     subscription.status === 'active' 
                                         ? 'bg-green-100 text-green-700' 
@@ -397,8 +397,8 @@ export default function StudentPage() {
                                 </span>
                             </div>
                             <div>
-                                <p className="text-gray-600 text-sm mb-1">معرف الاشتراك</p>
-                                <p className="text-gray-900 font-bold text-lg">#{subscription.id}</p>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">معرف الاشتراك</p>
+                                <p className="text-gray-900 dark:text-gray-100 font-bold text-lg">#{subscription.id}</p>
                             </div>
                         </div>
                     </div>

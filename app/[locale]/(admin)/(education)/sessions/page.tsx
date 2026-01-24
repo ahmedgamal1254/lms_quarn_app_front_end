@@ -228,23 +228,23 @@ export default function SessionsPage() {
   };
 
   return (
-    <div className="flex bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
           <div className="px-6 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
             <div></div>
           </div>
 
           {/* Breadcrumbs */}
-          <div className="px-6 py-2 flex items-center gap-2 text-sm text-gray-600">
+          <div className="px-6 py-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <Home size={16} />
             <a href="#" className="hover:text-blue-600">{tCommon('dashboard')}</a>
             {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             <Video size={16} />
-            <span className="font-semibold text-gray-900">{t('title')}</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">{t('title')}</span>
           </div>
         </header>
 
@@ -252,7 +252,7 @@ export default function SessionsPage() {
         <div className="flex-1 overflow-auto">
           <div className="p-6 max-w-7xl mx-auto">
             {sessionsError && (
-              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
+              <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
                 <AlertCircle size={20} />
                 {t('errorLoading')}
               </div>
@@ -304,16 +304,16 @@ export default function SessionsPage() {
 
             {/* Filters Dropdown */}
             {showFilters && (
-              <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
+              <div className="mb-6 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('status')}
                     </label>
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     >
                       <option value="all">{t('all')}</option>
                       <option value="scheduled">{t('scheduled')}</option>
@@ -323,38 +323,38 @@ export default function SessionsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('fromDate')}
                     </label>
                     <input
                       type="date"
                       value={fromDate}
                       onChange={(e) => setFromDate(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('toDate')}
                     </label>
                     <input
                       type="date"
                       value={toDate}
                       onChange={(e) => setToDate(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     />
                   </div>
 
                   {/* filter viration */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('filterVariation')}
                     </label>
                     <select
                       value={filteredData.variation}
                       onChange={(e) => setFilteredData({ ...filteredData, variation: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     >
                       <option value="all">{t('all')}</option>
                       <option value="today">{t('today')}</option>
@@ -365,13 +365,13 @@ export default function SessionsPage() {
 
                   {/* filter teacher */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('filterTeacher')}
                     </label>
                     <select
                       value={filteredData.teacher}
                       onChange={(e) => setFilteredData({ ...filteredData, teacher: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     >
                       <option value="all">{t('all')}</option>
                       {teachers.map((teacher) => (
@@ -384,13 +384,13 @@ export default function SessionsPage() {
 
                   {/* filter student */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('filterStudent')}
                     </label>
                     <select
                       value={filteredData.student}
                       onChange={(e) => setFilteredData({ ...filteredData, student: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     >
                       <option value="all">{t('all')}</option>
                       {students.map((student) => (
@@ -403,13 +403,13 @@ export default function SessionsPage() {
 
                   {/* Filter subjects */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('filterSubject')}
                     </label>
                     <select
                       value={filteredData.subject}
                       onChange={(e) => setFilteredData({ ...filteredData, subject: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                     >
                       <option value="all">{t('all')}</option>
                       {subjects.map((subject) => (
@@ -427,13 +427,13 @@ export default function SessionsPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <Loader className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
-                <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-gray-700">
                       <tr>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('sessionTitle')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('student')}</th>
@@ -443,7 +443,7 @@ export default function SessionsPage() {
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('duration')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('status')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('attendanceData')}</th>
-                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">{tCommon('actions')}</th>
+                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -451,35 +451,35 @@ export default function SessionsPage() {
                         filteredSessions.map((session: SessionData) => {
                           const statusStyle = getStatusColor(session.status);
                           return (
-                            <tr key={session.id} className="hover:bg-gray-50 transition-colors">
-                              <td className="px-6 py-4 text-sm font-medium text-gray-900">{session.title}</td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{session.student_name}</td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{session.teacher_name}</td>
+                            <tr key={session.id} className="hover:bg-gray-50 dark:bg-slate-900 transition-colors">
+                              <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{session.title}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{session.student_name}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{session.teacher_name}</td>
                               <td className="px-6 py-4 text-sm">
-                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
+                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/20 text-purple-700">
                                   {session.subject_name}
                                 </span>
                               </td>
                               <td className="px-6 py-4 text-sm">
                                 <div className="flex flex-col gap-1">
-                                  <span className="text-gray-900 font-medium">{utcToLocalDate(session.session_date)}</span>
-                                  <span className="text-gray-500 text-xs flex items-center gap-1">
+                                  <span className="text-gray-900 dark:text-gray-100 font-medium">{utcToLocalDate(session.session_date)}</span>
+                                  <span className="text-gray-500 dark:text-gray-400 text-xs flex items-center gap-1">
                                     <Clock size={12} />
                                     {utcToLocalTime(session.start_time)} - {utcToLocalTime(session.end_time)}
                                   </span>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{t('minutes', { count: session.duration_minutes })}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{t('minutes', { count: session.duration_minutes })}</td>
                               <td className="px-6 py-4 text-sm">
                                 <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${statusStyle.bg} ${statusStyle.border} ${statusStyle.text}`}>
                                   {getStatusText(session.status)}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 <div className="flex items-center justify-center gap-2">
                                   <button
                                     onClick={() => handleViewAttendance(session)}
-                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors"
                                     title={t('viewAttendance')}
                                   >
                                     <Eye size={16} />
@@ -490,7 +490,7 @@ export default function SessionsPage() {
                                 <div className="flex items-center justify-center gap-2">
                                   <button
                                     onClick={() => setDeleteConfirmId(session.id)}
-                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                    className="p-2 text-red-600 hover:bg-red-50 dark:bg-red-900/20 rounded-lg transition-colors"
                                     title={tCommon('delete')}
                                   >
                                     <Trash2 size={16} />
@@ -502,7 +502,7 @@ export default function SessionsPage() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan={9} className="px-6 py-12 text-center text-gray-500 font-medium">
+                          <td colSpan={9} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400 font-medium">
                             {t('noSessions')}
                           </td>
                         </tr>
@@ -527,13 +527,13 @@ export default function SessionsPage() {
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{t('deleteSession')}</h2>
-            <p className="text-gray-600 mb-6">{t('deleteConfirm')}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t('deleteSession')}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('deleteConfirm')}</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors font-medium"
               >
                 {tCommon('cancel')}
               </button>

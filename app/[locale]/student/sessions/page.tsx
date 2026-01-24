@@ -161,27 +161,27 @@ export default function StudentSessionsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8 flex items-center justify-center">
-        <div className="max-w-md bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8 flex items-center justify-center">
+        <div className="max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{t('errorLoading')}</h2>
-          <p className="text-gray-600">{error.message}</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('errorLoading')}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{error.message}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-          <p className="text-gray-600">{t('description')}</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400">{t('description')}</p>
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Search */}
             <div className="relative">
@@ -191,7 +191,7 @@ export default function StudentSessionsPage() {
                 placeholder={t('searchPlaceholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
               />
             </div>
 
@@ -204,7 +204,7 @@ export default function StudentSessionsPage() {
                   setFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer`}
+                className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer`}
               >
                 <option value="all">{t('filterAll')}</option>
                 <option value="upcoming">{t('filterUpcoming')}</option>
@@ -220,15 +220,15 @@ export default function StudentSessionsPage() {
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
-              <p className="text-gray-600 font-semibold">{tCommon('loading')}</p>
+              <p className="text-gray-600 dark:text-gray-400 font-semibold">{tCommon('loading')}</p>
             </div>
           </div>
         )}
 
         { sessionsData?.sessions.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border border-gray-100 mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700 mb-8">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600 text-lg font-semibold">{tCommon('noData')}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">{tCommon('noData')}</p>
           </div>
         ) : (
           <>
@@ -240,33 +240,33 @@ export default function StudentSessionsPage() {
                 return (
                   <div
                     key={session.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100 overflow-hidden cursor-pointer group"
+                    className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700 overflow-hidden cursor-pointer group"
                     onClick={() => setSelectedSession(session)}
                   >
                     <div className="bg-gradient-to-r from-indigo-500 to-blue-500 h-2"></div>
                     <div className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                             {session.title}
                           </h3>
-                          <p className="text-sm text-gray-600 line-clamp-2">{session.description}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{session.description}</p>
                         </div>
-                        <span className={`text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap ${statusColor}`}>
+                        <span className={`text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap ${statusColor} dark:bg-opacity-30`}>
                           {statusText}
                         </span>
                       </div>
 
                       <div className="space-y-3 mb-6 text-sm">
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                           <Calendar className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                           {formatDate(session.session_date)}
                         </div>
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                           <Clock className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                           {formatTime(session.start_time)} - {formatTime(session.end_time)}
                         </div>
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                           <User className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                           {session.teacher?.name}
                         </div>
@@ -287,7 +287,7 @@ export default function StudentSessionsPage() {
                             rel="noopener noreferrer"
                             onClick={() => handleCheckIn(session.id)}
                             disabled={!session?.can_join}
-                            className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold text-sm flex items-center justify-center gap-2"
+                            className="flex-1 !bg-green-600 !text-white py-2 rounded-lg hover:!bg-green-700 transition-colors font-semibold text-sm flex items-center justify-center gap-2"
                           >
                             <Video className="w-4 h-4" />
                             {t('join')}
@@ -306,7 +306,7 @@ export default function StudentSessionsPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={pagination.currentPage === 1}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
                   {tCommon('previous')}
@@ -320,7 +320,7 @@ export default function StudentSessionsPage() {
                       className={`w-10 h-10 rounded-lg font-semibold transition-colors ${
                         pagination.currentPage === page
                           ? 'bg-indigo-600 text-white'
-                          : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
+                          : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-slate-700'
                       }`}
                     >
                       {page}
@@ -331,7 +331,7 @@ export default function StudentSessionsPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(pagination.lastPage, p + 1))}
                   disabled={pagination.currentPage === pagination.lastPage}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {tCommon('next')}
                   <ChevronLeft className="w-5 h-5" />
@@ -343,17 +343,17 @@ export default function StudentSessionsPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-            <p className="text-gray-600 text-sm mb-2">{t('title')}</p> 
-            <p className="text-3xl font-bold text-gray-900">{statistics.total || 0}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{t('title')}</p> 
+            <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{statistics.total || 0}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-            <p className="text-gray-600 text-sm mb-2">{t('filterUpcoming')}</p>
-            <p className="text-3xl font-bold text-blue-600">{statistics.upcoming || 0}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{t('filterUpcoming')}</p>
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{statistics.upcoming || 0}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-            <p className="text-gray-600 text-sm mb-2">{t('filterCompleted')}</p>
-            <p className="text-3xl font-bold text-green-600">{statistics.completed || 0}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{t('filterCompleted')}</p>
+            <p className="text-3xl font-bold text-green-600 dark:text-green-400">{statistics.completed || 0}</p>
           </div>
         </div>
       </div>
@@ -361,9 +361,9 @@ export default function StudentSessionsPage() {
       {/* Session Details Modal */}
       {selectedSession && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" dir={isRTL ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-indigo-500 to-blue-500 p-6 flex items-start justify-between border-b border-gray-200">
+            <div className="sticky top-0 bg-gradient-to-r from-indigo-500 to-blue-500 p-6 flex items-start justify-between border-b border-gray-200 dark:border-gray-700">
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-white mb-1">
                   {selectedSession.title}
@@ -372,7 +372,7 @@ export default function StudentSessionsPage() {
               </div>
               <button
                 onClick={() => setSelectedSession(null)}
-                className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors flex-shrink-0 ml-4"
+                className="text-white hover:bg-white/20 dark:hover:bg-slate-700/50 p-2 rounded-lg transition-colors flex-shrink-0 ml-4"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -386,7 +386,7 @@ export default function StudentSessionsPage() {
                   {(() => {
                     const { statusColor, statusText } = getStatusInfo(selectedSession);
                     return (
-                      <span className={`text-sm font-semibold px-4 py-2 rounded-full inline-block ${statusColor}`}>
+                      <span className={`text-sm font-semibold px-4 py-2 rounded-full inline-block ${statusColor} dark:bg-opacity-30`}>
                         {statusText}
                       </span>
                     );
@@ -413,54 +413,54 @@ export default function StudentSessionsPage() {
 
               {/* Details Grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+                <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-4 border border-indigo-100 dark:border-indigo-700">
                   <p className="text-indigo-600 text-sm font-semibold mb-1">{tCommon('date')}</p>
-                  <p className="text-gray-900 font-bold text-sm">
+                  <p className="text-gray-900 dark:text-gray-100 font-bold text-sm">
                     {formatDate(selectedSession.session_date as string)}
                   </p>
                 </div>
 
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-700">
                   <p className="text-blue-600 text-sm font-semibold mb-1">{tCommon('time')}</p>
-                  <p className="text-gray-900 font-bold">
+                  <p className="text-gray-900 dark:text-gray-100 font-bold">
                     {formatTime(selectedSession.start_time)} - {formatTime(selectedSession.end_time)}
                   </p>
                 </div>
 
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-700">
                   <p className="text-purple-600 text-sm font-semibold mb-1">{tCommon('duration')}</p>
-                  <p className="text-gray-900 font-bold">
+                  <p className="text-gray-900 dark:text-gray-100 font-bold">
                     {selectedSession.duration_minutes} {tCommon('minutes')}
                   </p>
                 </div>
 
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-100 dark:border-amber-700">
                   <p className="text-amber-600 text-sm font-semibold mb-1">{tCommon('subject')}</p>
-                  <p className="text-gray-900 font-bold">{selectedSession.subject?.name}</p>
+                  <p className="text-gray-900 dark:text-gray-100 font-bold">{selectedSession.subject?.name}</p>
                 </div>
               </div>
 
               {/* Teacher Info */}
               {selectedSession.teacher && (
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                     <User className="w-5 h-5 text-indigo-600" />
                     {t('teacherInfo')}
                   </h3>
                   <div className="space-y-3">
-                    <p className="text-gray-900">
-                      <span className="font-semibold">{tCommon('name')}: </span>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      <span className="font-semibold dark:text-white">{tCommon('name')}: </span>
                       {selectedSession.teacher.name}
                     </p>
                     {selectedSession.teacher.email && (
-                      <p className="text-gray-700">
-                        <span className="font-semibold">{tCommon('email')}: </span>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <span className="font-semibold dark:text-white">{tCommon('email')}: </span>
                         {selectedSession.teacher.email}
                       </p>
                     )}
                     {selectedSession.teacher.phone && (
-                      <p className="text-gray-700">
-                        <span className="font-semibold">{tCommon('phone')}: </span>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <span className="font-semibold dark:text-white">{tCommon('phone')}: </span>
                         {selectedSession.teacher.phone}
                       </p>
                     )}
@@ -470,18 +470,18 @@ export default function StudentSessionsPage() {
 
               {/* Notes */}
               {selectedSession.notes && (
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-700">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-blue-600" />
                     {tCommon('notes')}
                   </h4>
-                  <p className="text-gray-700">{selectedSession.notes}</p>
+                  <p className="text-gray-700 dark:text-gray-300">{selectedSession.notes}</p>
                 </div>
               )}
 
               {selectedSession.meeting_link && (
-                <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
-                  <h4 className="font-semibold text-gray-900 mb-2">{t('meetingLink')}</h4>
+                <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-4 border border-indigo-200 dark:border-indigo-700">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">{t('meetingLink')}</h4>
                   <Button
                     onClick={() => handleCheckIn(selectedSession?.id as number)}
                     target="_blank"
@@ -495,10 +495,10 @@ export default function StudentSessionsPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="border-t border-gray-200 p-6 flex gap-3 sticky bottom-0 bg-white">
+            <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex gap-3 sticky bottom-0 bg-white dark:bg-slate-800">
               <button
                 onClick={() => setSelectedSession(null)}
-                className="flex-1 px-4 py-3 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
+                className="flex-1 px-4 py-3 bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors font-semibold"
               >
                 {tCommon('close')}
               </button>

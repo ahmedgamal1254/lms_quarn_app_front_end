@@ -273,16 +273,16 @@ export default function SubscriptionsPage() {
   };
 
   return (
-    <div className="flex bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+        <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 shadow-sm">
           <div className="px-6 py-4 flex items-center justify-between">
             
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{t('allSubscriptions')}</h1>
-              <p className="text-sm text-gray-500 mt-0.5">{t('subscriptionsSubtitle')}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('allSubscriptions')}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t('subscriptionsSubtitle')}</p>
             </div>
             <div></div>
           </div>
@@ -292,7 +292,7 @@ export default function SubscriptionsPage() {
         <div className="flex-1 overflow-auto">
           <div className="p-6 max-w-7xl mx-auto space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
                 <AlertCircle size={20} />
                 {t('loadingDataError')}
               </div>
@@ -314,7 +314,7 @@ export default function SubscriptionsPage() {
                   placeholder={t('searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
               </div>
@@ -334,13 +334,13 @@ export default function SubscriptionsPage() {
 
             {/* Filters */}
             {showFilters && (
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="max-w-xs">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('statusFilter')}</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('statusFilter')}</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                   >
                     <option value="all">{t('allStatuses')}</option>
                     <option value="active">{t('active')}</option>
@@ -355,22 +355,22 @@ export default function SubscriptionsPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <Loader className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
-                <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-gray-700">
                       <tr>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('studentName')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('planName')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('startDate')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('endDate')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('sessions')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{t('price')}</th>
-                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">{tCommon('status')}</th>
-                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">{tCommon('actions')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('studentName')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('planName')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('startDate')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('endDate')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('sessions')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{t('price')}</th>
+                        <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{tCommon('status')}</th>
+                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -379,27 +379,27 @@ export default function SubscriptionsPage() {
                           const statusStyle = getStatusColor(sub.status);
                           const progress = ((sub.sessions_used / sub.total_sessions) * 100) || 0;
                           return (
-                            <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
+                            <tr key={sub.id} className="hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                               <td className="px-6 py-4">
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900">{sub.student_name}</p>
-                                  <p className="text-xs text-gray-500">{sub.student_email}</p>
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{sub.student_name}</p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">{sub.student_email}</p>
                                 </div>
                               </td>
                               <td className="px-6 py-4 text-sm">
-                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
+                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/20 text-purple-700">
                                   {sub.plan_name}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 {new Date(sub.start_date).toLocaleDateString(routeParams.locale as string)}
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                                 {new Date(sub.end_date).toLocaleDateString(routeParams.locale as string)}
                               </td>
                               <td className="px-6 py-4">
                                 <div className="space-y-1">
-                                  <div className="text-sm font-medium text-gray-900">
+                                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                     {sub.sessions_used} / {sub.total_sessions}
                                   </div>
                                   <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -422,14 +422,14 @@ export default function SubscriptionsPage() {
                                 <div className="flex items-center justify-center gap-2">
                                   <button
                                     onClick={() => openEditModal(sub)}
-                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors"
                                     title="تعديل"
                                   >
                                     <Edit size={16} />
                                   </button>
                                   <button
                                     onClick={() => handleDelete(sub.id)}
-                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                    className="p-2 text-red-600 hover:bg-red-50 dark:bg-red-900/20 rounded-lg transition-colors"
                                     title="حذف"
                                   >
                                     <Trash2 size={16} />
@@ -441,7 +441,7 @@ export default function SubscriptionsPage() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 font-medium">
+                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400 font-medium">
                             {t('noSubscriptions')}
                           </td>
                         </tr>
@@ -467,13 +467,13 @@ export default function SubscriptionsPage() {
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{t('deleteConfirmTitle')}</h2>
-            <p className="text-gray-600 mb-6">{t('deleteConfirmMessage')}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t('deleteConfirmTitle')}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('deleteConfirmMessage')}</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors font-medium"
               >
                 {tCommon('cancel')}
               </button>
@@ -492,14 +492,14 @@ export default function SubscriptionsPage() {
       {/* Create/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
-              <h2 className="text-xl font-bold text-gray-900">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-slate-800">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 {modalMode === 'create' ? t('addSubscription') : t('editSubscription')}
               </h2>
               <button
                 onClick={closeModal}
-                className="p-1 hover:bg-gray-100 rounded-lg"
+                className="p-1 hover:bg-gray-100 dark:bg-slate-800 rounded-lg"
               >
                 <X size={20} />
               </button>
@@ -507,11 +507,11 @@ export default function SubscriptionsPage() {
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('student')} *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('student')} *</label>
                 <select
                   value={form.student_id}
                   onChange={(e) => setForm({ ...form, student_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">{t('selectStudent')}</option>
                   {students.map((student: Student) => (
@@ -521,11 +521,11 @@ export default function SubscriptionsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('plan')} *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('plan')} *</label>
                 <select
                   value={form.plan_id}
                   onChange={(e) => setForm({ ...form, plan_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">{t('selectPlan')}</option>
                   {plans.map((  plan: Plan) => (
@@ -537,29 +537,29 @@ export default function SubscriptionsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('startDateLabel')} *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('startDateLabel')} *</label>
                 <input
                   type="date"
                   value={form.start_date}
                   onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('endDateLabel')} *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('endDateLabel')} *</label>
                 <input
                   type="date"
                   value={form.end_date}
                   onChange={(e) => setForm({ ...form, end_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={closeModal}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors font-medium"
                 >
                   {tCommon('cancel')}
                 </button>

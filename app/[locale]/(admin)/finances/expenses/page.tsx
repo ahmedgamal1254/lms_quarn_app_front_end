@@ -232,14 +232,14 @@ export default function ExpensesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="sticky top-0 z-40 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-                            <div className="flex items-center gap-2 mt-2 text-gray-600">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+                            <div className="flex items-center gap-2 mt-2 text-gray-600 dark:text-gray-400">
                                 <Home size={16} />
                                 <Link href="/dashboard" className="hover:text-blue-600">{tCommon('dashboard')}</Link>
                                 <ChevronRight size={16} />
@@ -265,11 +265,11 @@ export default function ExpensesPage() {
                     <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg shadow-sm p-6 border border-red-200 mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium">{t('totalExpenses')}</p>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('totalExpenses')}</p>
                                 <p className="text-3xl font-bold text-red-600 mt-2">
                                     {totalAmount.toLocaleString(routeParams.locale as string, { maximumFractionDigits: 2 })}
                                 </p>
-                                <p className="text-sm text-gray-500 mt-1">{filteredExpenses.length} {t('expense')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{filteredExpenses.length} {t('expense')}</p>
                             </div>
                             <div className="p-4 bg-red-100 rounded-lg">
                                 <DollarSign size={32} className="text-red-600" />
@@ -279,7 +279,7 @@ export default function ExpensesPage() {
                 )}
 
                 {/* Filters */}
-                <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="relative">
                             <Search size={18} className="absolute left-3 top-3 text-gray-400" />
@@ -288,14 +288,14 @@ export default function ExpensesPage() {
                                 placeholder={t('searchPlaceholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
                         <select
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800"
                         >
                             <option value="all">{tCommon('allCategories')}</option>
                             {categories.map(cat => (
@@ -308,7 +308,7 @@ export default function ExpensesPage() {
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800"
                         >
                             <option value="all">{tCommon('allStatuses')}</option>
                             <option value="pending">{tCommon('status_pending')}</option>
@@ -324,9 +324,9 @@ export default function ExpensesPage() {
                         <Loader className="animate-spin text-blue-600" size={40} />
                     </div>
                 ) : filteredExpenses.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-lg border border-gray-200">
+                    <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700">
                         <AlertCircle size={48} className="mx-auto text-gray-300 mb-4" />
-                        <p className="text-gray-500 text-lg">{tCommon('noData')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-lg">{tCommon('noData')}</p>
                     </div>
                 ) : (
                     <>
@@ -335,12 +335,12 @@ export default function ExpensesPage() {
                             {filteredExpenses.map((expense) => (
                                 <div
                                     key={expense.id}
-                                    className="bg-white rounded-lg shadow-sm p-4 border border-gray-200"
+                                    className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700"
                                 >
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <p className="font-semibold text-gray-900">{expense.description}</p>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="font-semibold text-gray-900 dark:text-gray-100">{expense.description}</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
                                             {new Date(expense.expense_date).toLocaleDateString(routeParams.locale as string)}
                                             </p>
                                         </div>
@@ -354,7 +354,7 @@ export default function ExpensesPage() {
                                             <p className="text-2xl font-bold text-red-600">
                                                 {parseFloat(expense.amount).toLocaleString()}
                                             </p>
-                                            <p className="text-sm text-gray-600">{getCurrencyLabel(expense.currency)}</p>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">{getCurrencyLabel(expense.currency)}</p>
                                         </div>
                                         <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">
                                             {getCategoryLabel(expense.category)}
@@ -385,25 +385,25 @@ export default function ExpensesPage() {
                         </div>
 
                         {/* Table View - Desktop */}
-                        <div className="hidden md:block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div className="hidden md:block bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-50">
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('description')}</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('category')}</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('amount')}</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('date')}</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('paymentMethod')}</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('status')}</th>
-                                            <th className="px-6 py-3 text-center font-semibold text-gray-900">{tCommon('actions')}</th>
+                                        <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('description')}</th>
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('category')}</th>
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('amount')}</th>
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('date')}</th>
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('paymentMethod')}</th>
+                                            <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('status')}</th>
+                                            <th className="px-6 py-3 text-center font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredExpenses.map((expense) => (
-                                            <tr key={expense.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                                <td className="px-6 py-3 font-medium text-gray-900">{expense.description}</td>
-                                                <td className="px-6 py-3 text-gray-600">
+                                            <tr key={expense.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900 transition-colors">
+                                                <td className="px-6 py-3 font-medium text-gray-900 dark:text-gray-100">{expense.description}</td>
+                                                <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
                                                     <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">
                                                         {getCategoryLabel(expense.category)}
                                                     </span>
@@ -411,10 +411,10 @@ export default function ExpensesPage() {
                                                 <td className="px-6 py-3 text-red-600 font-semibold">
                                                     {parseFloat(expense.amount).toLocaleString(routeParams.locale as string)} {getCurrencyLabel(expense.currency)}
                                                 </td>
-                                                <td className="px-6 py-3 text-gray-600 text-xs">
+                                                <td className="px-6 py-3 text-gray-600 dark:text-gray-400 text-xs">
                                                     {new Date(expense.expense_date).toLocaleDateString(routeParams.locale as string)}
                                                 </td>
-                                                <td className="px-6 py-3 text-gray-600 text-sm">{expense.payment_method || '-'}</td>
+                                                <td className="px-6 py-3 text-gray-600 dark:text-gray-400 text-sm">{expense.payment_method || '-'}</td>
                                                 <td className="px-6 py-3">
                                                     <span className={`px-3 py-1 rounded text-xs font-medium ${getStatusColor(expense.status)}`}>
                                                         {getStatusLabel(expense.status)}
@@ -467,13 +467,13 @@ export default function ExpensesPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
-                            <h2 className="text-xl font-bold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? t('addExpense') : t('editExpense')}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">
                                 <X size={24} />
                             </button>
                         </div>
@@ -482,22 +482,22 @@ export default function ExpensesPage() {
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('description')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('description')} *</label>
                                     <input
                                         type="text"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder={t('enterDescription')}
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('category')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('category')} *</label>
                                     <select
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         {categories.map(cat => (
                                             <option key={cat.value} value={cat.value}>
@@ -508,23 +508,23 @@ export default function ExpensesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('amount')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('amount')} *</label>
                                     <input
                                         type="number"
                                         step="0.01"
                                         value={formData.amount}
                                         onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder="0.00"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('currency')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('currency')}</label>
                                     <select
                                         value={formData.currency}
                                         onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="SAR">{tCommon('currency_sar')}</option>
                                         <option value="EGP">{tCommon('currency_egp')}</option>
@@ -535,32 +535,32 @@ export default function ExpensesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('date')} *</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('date')} *</label>
                                     <input
                                         type="date"
                                         value={formData.expense_date}
                                         onChange={(e) => setFormData({ ...formData, expense_date: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('paymentMethod')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('paymentMethod')}</label>
                                     <input
                                         type="text"
                                         value={formData.payment_method}
                                         onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder={t('paymentMethodPlaceholder')}
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('status')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('status')}</label>
                                     <select
                                         value={formData.status}
                                         onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="pending">{tCommon('status_pending')}</option>
                                         <option value="approved">{tCommon('status_approved')}</option>
@@ -571,10 +571,10 @@ export default function ExpensesPage() {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={closeModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800 transition-colors"
                             >
                                 {tCommon('cancel')}
                             </button>

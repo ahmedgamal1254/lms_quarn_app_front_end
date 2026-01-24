@@ -171,10 +171,10 @@ export default function StudentHomeworkPage() {
     new Date(date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const statusConfigs = {
-    pending: { color: 'bg-amber-100 text-amber-700', text: t('pending') },
-    submitted: { color: 'bg-blue-100 text-blue-700', text: t('submitted') },
-    graded: { color: 'bg-green-100 text-green-700', text: t('graded') },
-    late: { color: 'bg-red-100 text-red-700', text: t('late') },
+    pending: { color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300', text: t('pending') },
+    submitted: { color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300', text: t('submitted') },
+    graded: { color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300', text: t('graded') },
+    late: { color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300', text: t('late') },
   };
 
   const openSubmitModal = (id: number) => {
@@ -207,36 +207,36 @@ export default function StudentHomeworkPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-6">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 text-center max-w-md">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">{tCommon('error')}</h2>
-          <p className="text-gray-600">{t('errorLoading')}</p>
+          <p className="text-gray-600 dark:text-gray-400">{t('errorLoading')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
-          <h1 className="text-2xl md:text-2xl font-bold text-gray-900 mb-3">{t('title')}</h1>
-          <p className="text-gray-600 text-lg">{t('description')}</p>
+          <h1 className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">{t('description')}</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
           {statsBadges.map((stat, idx) => (
             <div
               key={idx}
-              className={`bg-white rounded-lg shadow-sm p-4 border-l-4 ${stat.color} hover:shadow-md transition`}
+              className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border-l-4 ${stat.color} hover:shadow-md transition`}
               dir={locale === 'ar' ? 'rtl' : 'ltr'}
             >
-              <p className="text-gray-600 text-xs md:text-sm font-medium mb-2 flex items-center gap-2">
-                <span>{stat.icon}</span>
+              <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm font-medium mb-2 flex items-center gap-2">
+                <span className="dark:text-white">{stat.icon}</span>
                 {stat.label}
               </p>
-              <p className="text-2xl md:text-3xl font-bold text-gray-900">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {stat.value}
               </p>
             </div>
@@ -249,9 +249,9 @@ export default function StudentHomeworkPage() {
             <Loader2 className="w-12 h-12 animate-spin text-indigo-600" />
           </div>
         ) : filteredHomework.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-12 text-center">
             <FileText className="w-20 h-20 text-gray-300 mx-auto mb-6" />
-            <h3 className="text-xl font-bold text-gray-700 mb-2">{t('noHomework')}</h3>
+            <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">{t('noHomework')}</h3>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -260,29 +260,29 @@ export default function StudentHomeworkPage() {
               const overdue = isOverdue(hw.due_date) && hw.status === 'pending';
 
               return (
-                <div key={hw.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100">
+                <div key={hw.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700">
                   <div className="h-2 bg-gradient-to-r from-indigo-500 to-blue-500" />
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-xl font-bold text-gray-900">{hw.title}</h3>
-                      <span className={`px-4 py-1 rounded-full text-sm font-medium ${config.color}`}>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{hw.title}</h3>
+                      <span className={`px-4 py-1 rounded-full text-sm font-medium ${config.color} dark:bg-opacity-30`}>
                         {config.text}
                       </span>
                     </div>
 
-                    <p className="text-gray-600 mb-6 line-clamp-3">{hw.description || t('noDescription')}</p>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">{hw.description || t('noDescription')}</p>
 
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center gap-3">
                         <Calendar className="w-5 h-5 text-indigo-600" />
-                        <span className="text-sm">{t('dueDate')}: {formatDate(hw.due_date)}</span>
-                        {overdue && <span className="text-red-600 font-bold text-sm">• {t('overdue')}</span>}
+                        <span className="text-sm dark:text-white">{t('dueDate')}: {formatDate(hw.due_date)}</span>
+                        {overdue && <span className="text-red-600 dark:text-red-400 font-bold text-sm">• {t('overdue')}</span>}
                       </div>
 
                       {hw.obtained_marks !== null && (
                         <div className="flex items-center gap-3">
                           <Award className="w-5 h-5 text-green-600" />
-                          <span className="font-bold text-green-600">
+                          <span className="font-bold text-green-600 dark:text-green-400">
                             {t('mark')}: {hw.obtained_marks} / {hw.total_marks}
                           </span>
                         </div>
@@ -313,7 +313,7 @@ export default function StudentHomeworkPage() {
                       {hw.file_name && (
                         <button
                           onClick={() => openHomeworkFileModal(hw.id)}
-                          className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition flex items-center justify-center gap-2"
+                          className="w-full bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-slate-600 transition flex items-center justify-center gap-2"
                         >
                           <File className="w-5 h-5" />
                           {t('homeworkFile')}
@@ -323,7 +323,7 @@ export default function StudentHomeworkPage() {
                       {hw.student_file_name && (
                         <button
                           onClick={() => openSubmissionModal(hw.id)}
-                          className="w-full bg-purple-100 text-purple-700 py-3 rounded-xl font-semibold hover:bg-purple-200 transition flex items-center justify-center gap-2"
+                          className="w-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 py-3 rounded-xl font-semibold hover:bg-purple-200 dark:hover:bg-purple-900/50 transition flex items-center justify-center gap-2"
                         >
                           <FileText className="w-5 h-5" />
                           {t('mySubmission')}
@@ -349,22 +349,22 @@ export default function StudentHomeworkPage() {
       {/* مودال تسليم الواجب */}
       {submitModalOpen && selectedHomework && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{t('submitHomework')}</h2>
-              <button onClick={() => setSubmitModalOpen(false)}>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-lg w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('submitHomework')}</h2>
+              <button onClick={() => setSubmitModalOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-7 h-7" />
               </button>
             </div>
             <div className="p-6 space-y-6">
               <div>
-                <h3 className="text-xl font-semibold mb-2">{selectedHomework.title}</h3>
-                <p className="text-gray-600 text-sm">{selectedHomework.description || t('noDescription')}</p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{selectedHomework.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">{selectedHomework.description || t('noDescription')}</p>
               </div>
 
               <div>
-                <label className="block text-lg font-semibold mb-3">{t('yourFile')}</label>
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-indigo-500 transition">
+                <label className="block text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">{t('yourFile')}</label>
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center hover:border-indigo-500 transition">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -375,22 +375,22 @@ export default function StudentHomeworkPage() {
                   />
                   <label htmlFor="submit-file" className="cursor-pointer block">
                     <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-700 font-medium">
+                    <p className="text-gray-700 dark:text-gray-300 font-medium">
                       {selectedFile ? selectedFile.name : t('clickToSelect')}
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">{t('fileTypes')}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{t('fileTypes')}</p>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-lg font-semibold mb-3">{t('notesOptional')}</label>
+                <label className="block text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">{t('notesOptional')}</label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={4}
                   placeholder={t('notesPlaceholder')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 resize-none"
                 />
               </div>
 
@@ -406,7 +406,7 @@ export default function StudentHomeworkPage() {
                   {submitMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
                   {submitMutation.isPending ? t('sending') : t('send')}
                 </button>
-                <button onClick={() => setSubmitModalOpen(false)} className="flex-1 bg-gray-200 hover:bg-gray-300 py-4 rounded-xl font-bold">
+                <button onClick={() => setSubmitModalOpen(false)} className="flex-1 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-900 dark:text-gray-100 py-4 rounded-xl font-bold">
                   {t('cancel')}
                 </button>
               </div>
@@ -418,29 +418,29 @@ export default function StudentHomeworkPage() {
       {/* مودال عرض التقييم */}
       {resultModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{t('resultTitle')}</h2>
-              <button onClick={() => setResultModalOpen(false)}><X className="w-7 h-7" /></button>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b dark:border-gray-700 p-6 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('resultTitle')}</h2>
+              <button onClick={() => setResultModalOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"><X className="w-7 h-7" /></button>
             </div>
             <div className="p-6 space-y-6">
               {resultLoading ? (
                 <div className="text-center py-8"><Loader2 className="w-10 h-10 animate-spin mx-auto text-indigo-600" /></div>
               ) : resultData ? (
                 <>
-                  <div className="text-center py-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-200">
-                    <p className="text-2xl font-bold text-green-700">{resultData.result.obtained_marks} / {resultData.result.total_marks}</p>
-                    <p className="text-xl text-green-600 mt-2">{t('percentage')}: {resultData.result.percentage.toFixed(1)}%</p>
+                  <div className="text-center py-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-700">
+                    <p className="text-2xl font-bold text-green-700 dark:text-green-400">{resultData.result.obtained_marks} / {resultData.result.total_marks}</p>
+                    <p className="text-xl text-green-600 dark:text-green-400 mt-2">{t('percentage')}: {resultData.result.percentage.toFixed(1)}%</p>
                   </div>
                   {resultData.result.teacher_feedback && (
-                    <div className="bg-gray-50 rounded-xl p-5 border">
-                      <div className="flex items-center gap-3 mb-3"><MessageCircle className="w-6 h-6 text-indigo-600" /><p className="font-semibold text-lg">{t('teacherFeedback')}</p></div>
-                      <p className="text-gray-700 leading-relaxed">{resultData.result.teacher_feedback}</p>
+                    <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-5 border dark:border-gray-700">
+                      <div className="flex items-center gap-3 mb-3"><MessageCircle className="w-6 h-6 text-indigo-600" /><p className="font-semibold text-lg text-gray-900 dark:text-gray-100">{t('teacherFeedback')}</p></div>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{resultData.result.teacher_feedback}</p>
                     </div>
                   )}
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-gray-50 p-4 rounded-xl"><p className="text-gray-600">{t('submittedAt')}</p><p className="font-bold">{formatDate(resultData.result.submitted_at)}</p></div>
-                    <div className="bg-gray-50 p-4 rounded-xl"><p className="text-gray-600">{t('status')}</p><p className="font-bold text-green-600">{t('graded')}</p></div>
+                    <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-xl"><p className="text-gray-600 dark:text-gray-400">{t('submittedAt')}</p><p className="font-bold text-gray-900 dark:text-gray-100">{formatDate(resultData.result.submitted_at)}</p></div>
+                    <div className="bg-gray-50 dark:bg-slate-900 p-4 rounded-xl"><p className="text-gray-600 dark:text-gray-400">{t('status')}</p><p className="font-bold text-green-600 dark:text-green-400">{t('graded')}</p></div>
                   </div>
                 </>
               ) : null}
@@ -452,23 +452,23 @@ export default function StudentHomeworkPage() {
       {/* مودال ملف الواجب */}
       {homeworkFileModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{t('homeworkFileTitle')}</h2>
-              <button onClick={() => setHomeworkFileModalOpen(false)}><X className="w-7 h-7" /></button>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('homeworkFileTitle')}</h2>
+              <button onClick={() => setHomeworkFileModalOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"><X className="w-7 h-7" /></button>
             </div>
             <div className="p-6">
               {detailsLoading ? (
                 <div className="text-center py-8"><Loader2 className="w-10 h-10 animate-spin mx-auto" /></div>
               ) : detailsData ? (
                 <div className="space-y-5">
-                  <h3 className="text-xl font-bold">{detailsData.title}</h3>
-                  <p className="text-gray-600">{detailsData.description || t('noDescription')}</p>
-                  <div className="bg-gray-50 rounded-xl p-5 border">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{detailsData.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{detailsData.description || t('noDescription')}</p>
+                  <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-5 border dark:border-gray-700">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <File className="w-8 h-8 text-indigo-600" />
-                        <div><p className="font-semibold">{detailsData.file_name}</p><p className="text-sm text-gray-500">{t('originalFile')}</p></div>
+                        <div><p className="font-semibold text-gray-900 dark:text-gray-100">{detailsData.file_name}</p><p className="text-sm text-gray-500 dark:text-gray-400">{t('originalFile')}</p></div>
                       </div>
                       <a 
                       href={`${detailsData.file_url}`}
@@ -489,22 +489,22 @@ export default function StudentHomeworkPage() {
       {/* مودال تسليمي */}
       {submissionModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{t('submissionTitle')}</h2>
-              <button onClick={() => setSubmissionModalOpen(false)}><X className="w-7 h-7" /></button>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('submissionTitle')}</h2>
+              <button onClick={() => setSubmissionModalOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"><X className="w-7 h-7" /></button>
             </div>
             <div className="p-6">
               {detailsLoading ? (
                 <div className="text-center py-8"><Loader2 className="w-10 h-10 animate-spin mx-auto" /></div>
               ) : detailsData ? (
                 <div className="space-y-5">
-                  <h3 className="text-xl font-bold">{detailsData.title}</h3>
-                  <div className="bg-purple-50 rounded-xl p-5 border border-purple-200">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{detailsData.title}</h3>
+                  <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-700">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <FileText className="w-8 h-8 text-purple-600" />
-                        <div><p className="font-semibold">{detailsData.student_file_name}</p><p className="text-sm text-gray-600">{t('yourFile')}</p></div>
+                        <div><p className="font-semibold text-gray-900 dark:text-gray-100">{detailsData.student_file_name}</p><p className="text-sm text-gray-600 dark:text-gray-400">{t('yourFile')}</p></div>
                       </div>
                       <a href={`${detailsData.student_file_url}`}
                       download target="_blank"
@@ -514,7 +514,7 @@ export default function StudentHomeworkPage() {
                     </div>
                   </div>
                   {detailsData.submitted_at && (
-                    <p className="text-center text-sm text-gray-600">
+                    <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                       {t('submittedAt')}: {formatDate(detailsData.submitted_at)}
                     </p>
                   )}

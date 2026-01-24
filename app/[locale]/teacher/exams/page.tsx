@@ -229,19 +229,19 @@ export default function TeacherExamsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="mb-8 flex md:flex-raw gap-3 items-center md:items-start justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-2">{t('description')}</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{t('description')}</p>
         </div>
         <button
           onClick={() => { setEditingId(null); reset(); setIsModalOpen(true); }}
@@ -253,7 +253,7 @@ export default function TeacherExamsPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-6">
         <div className="flex gap-3">
           <div className="relative flex-1">
             <input
@@ -261,14 +261,14 @@ export default function TeacherExamsPage() {
               placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full ${locale === 'ar' ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border rounded-lg focus:ring-2 focus:ring-blue-500`}
+              className={`w-full ${locale === 'ar' ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500`}
             />
             <Search className={`absolute ${locale === 'ar' ? 'right-3' : 'left-3'} top-2.5 text-gray-400 w-5 h-5`} />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border rounded-lg"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
           >
             <option value="all">{t('all')}</option>
             <option value="upcoming">{t('upcomingLabel')}</option>
@@ -281,18 +281,18 @@ export default function TeacherExamsPage() {
       {/* Exams List */}
       <div className="space-y-4">
         {filteredExams.map((exam: Exam) => (
-          <div key={exam.id} className="bg-white rounded-lg shadow-sm p-6 border-r-4 border-blue-500">
+          <div key={exam.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border-r-4 border-blue-500">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{exam.title}</h3>
-                <p className="text-gray-600 mb-3">{exam.description}</p>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{exam.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">{exam.description}</p>
                 
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
-                  <span>📚 {exam.subject_name}</span>
-                  <span>📅 {exam.exam_date}</span>
-                  <span>🕐 {exam.start_time}</span>
-                  <span>⏱️ {exam.duration_minutes} {t('minutes')}</span>
-                  <span>📝 {exam.total_marks} {t('marks')}</span>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <span className="dark:text-white">📚 {exam.subject_name}</span>
+                  <span className="dark:text-white">📅 {exam.exam_date}</span>
+                  <span className="dark:text-white">🕐 {exam.start_time}</span>
+                  <span className="dark:text-white">⏱️ {exam.duration_minutes} {t('minutes')}</span>
+                  <span className="dark:text-white">📝 {exam.total_marks} {t('marks')}</span>
                 </div>
 
                 {exam.file_url && (
@@ -307,13 +307,13 @@ export default function TeacherExamsPage() {
                 )}
 
                 <div className="flex items-center gap-4">
-                  <div className="bg-purple-50 px-4 py-2 rounded-lg border border-purple-200">
-                    <span className="text-purple-700 font-semibold">
+                  <div className="bg-purple-50 dark:bg-purple-900/20 px-4 py-2 rounded-lg border border-purple-200 dark:border-purple-700">
+                    <span className="text-purple-700 dark:text-purple-300 font-semibold">
                       📥 {t('submissions')}: {exam.submissions_count}
                     </span>
                   </div>
-                  <div className="bg-green-50 px-4 py-2 rounded-lg border border-green-200">
-                    <span className="text-green-700 font-semibold">
+                  <div className="bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-lg border border-green-200 dark:border-green-700">
+                    <span className="text-green-700 dark:text-green-300 font-semibold">
                       ✅ {t('gradedCount')}: {exam.graded_count}
                     </span>
                   </div>
@@ -327,7 +327,7 @@ export default function TeacherExamsPage() {
                 
                 <button
                   onClick={() => { setSelectedExamId(exam.id); setShowSubmissions(true); }}
-                  className="bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
+                  className="bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
                 >
                   <Users className="w-4 h-4" />
                   {t('submissions')}
@@ -335,7 +335,7 @@ export default function TeacherExamsPage() {
 
                 <button
                   onClick={() => handleEdit(exam)}
-                  className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
+                  className="bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
                 >
                   <Edit className="w-4 h-4" />
                   {t('edit')}
@@ -343,7 +343,7 @@ export default function TeacherExamsPage() {
 
                 <button
                   onClick={() => deleteMutation.mutate(exam.id)}
-                  className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
+                  className="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
                 >
                   <Trash2 className="w-4 h-4" />
                   {t('delete')}
@@ -369,37 +369,37 @@ export default function TeacherExamsPage() {
       {/* Exam Create/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
-              <h2 className="text-2xl font-bold" dir={locale === 'ar' ? 'rtl' : 'ltr'}>{editingId ? t('edit') : t('newExam')}</h2>
-              <button onClick={() => setIsModalOpen(false)}>
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100" dir={locale === 'ar' ? 'rtl' : 'ltr'}>{editingId ? t('edit') : t('newExam')}</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{tCommon('title')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{tCommon('title')}</label>
                 <input 
                   {...register('title', { required: true })} 
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500" 
                   placeholder={tCommon('title')}
                 />
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{tCommon('description')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{tCommon('description')}</label>
                 <textarea 
                   {...register('description')} 
                   rows={3} 
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500"
                   placeholder={tCommon('description')}
                 />
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{t('subject')}</label>
-                <select {...register('subject_id', { required: true })} className="w-full px-4 py-2 border rounded-lg">
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('subject')}</label>
+                <select {...register('subject_id', { required: true })} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100">
                   <option value="">{t('subject')}</option>
                   {subjects.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
@@ -407,49 +407,49 @@ export default function TeacherExamsPage() {
 
               <div className="grid grid-cols-2 gap-4" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
                 <div>
-                  <label className="block font-semibold mb-2">{t('date')}</label>
+                  <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('date')}</label>
                   <input 
                     type="date" 
                     {...register('exam_date', { required: true })} 
-                    className="w-full px-4 py-2 border rounded-lg" 
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100" 
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold mb-2">{t('time')}</label>
+                  <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('time')}</label>
                   <input 
                     type="time" 
                     {...register('start_time')} 
-                    className="w-full px-4 py-2 border rounded-lg" 
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100" 
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
                 <div>
-                  <label className="block font-semibold mb-2">{t('duration')}</label>
+                  <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('duration')}</label>
                   <input 
                     type="number" 
                     {...register('duration_minutes')} 
-                    className="w-full px-4 py-2 border rounded-lg" 
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100" 
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold mb-2">{tCommon('totalGrade')}</label>
+                  <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{tCommon('totalGrade')}</label>
                   <input 
                     type="number" 
                     {...register('total_marks', { required: true })} 
-                    className="w-full px-4 py-2 border rounded-lg" 
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100" 
                   />
                 </div>
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{t('examFile')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('examFile')}</label>
                 <input
                   type="file"
                   {...register('file')}
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                 />
                 {watchFile?.[0] && (
                   <p className="text-sm text-green-600 mt-2">✓ {tCommon('fileSelected')}: {watchFile[0].name}</p>
@@ -457,8 +457,8 @@ export default function TeacherExamsPage() {
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{tCommon('status')}</label>
-                <select {...register('status')} className="w-full px-4 py-2 border rounded-lg">
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{tCommon('status')}</label>
+                <select {...register('status')} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100">
                   <option value="upcoming">{t('upcomingLabel')}</option>
                   <option value="ongoing">{t('ongoingLabel')}</option>
                   <option value="finished">{t('finishedLabel')}</option>
@@ -475,7 +475,7 @@ export default function TeacherExamsPage() {
                 </button>
                 <button 
                   onClick={() => setIsModalOpen(false)} 
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-semibold"
+                  className="flex-1 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-semibold"
                 >
                   {tCommon('cancel')}
                 </button>
@@ -488,25 +488,25 @@ export default function TeacherExamsPage() {
       {/* Submissions Modal */}
       {showSubmissions && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-              <h2 className="text-2xl font-bold">{t('submissions')}</h2>
-              <button onClick={() => { setShowSubmissions(false); setSelectedExamId(null); }}>
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('submissions')}</h2>
+              <button onClick={() => { setShowSubmissions(false); setSelectedExamId(null); }} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="p-6">
               {submissions.length === 0 ? (
-                <p className="text-center text-gray-600 py-8">{t('noExams')}</p>
+                <p className="text-center text-gray-600 dark:text-gray-400 py-8">{t('noExams')}</p>
               ) : (
                 <div className="space-y-4">
                   {submissions.map((sub: Submission) => (
-                    <div key={sub.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                    <div key={sub.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-900">
                       <div className="flex justify-between items-start">
                         <div className="flex-1" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                          <h3 className="font-bold text-lg mb-1">{sub.student_name}</h3>
-                          <p className="text-sm text-gray-600 mb-2">{t('submittedAt')}: {sub.submitted_at}</p>
+                          <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-gray-100">{sub.student_name}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('submittedAt')}: {sub.submitted_at}</p>
                           
                           {sub.student_file_url && (
                             <a 
@@ -520,8 +520,8 @@ export default function TeacherExamsPage() {
                           )}
 
                           {sub.marks_obtained !== null && sub.marks_obtained !== undefined && (
-                            <div className="mt-2 bg-green-50 px-3 py-1 rounded inline-block">
-                              <span className="text-green-700 font-semibold">{t('mark')}: {sub.marks_obtained}</span>
+                            <div className="mt-2 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded inline-block">
+                              <span className="text-green-700 dark:text-green-300 font-semibold">{t('mark')}: {sub.marks_obtained}</span>
                             </div>
                           )}
                         </div>
@@ -536,7 +536,7 @@ export default function TeacherExamsPage() {
                               {t('gradeExam')}
                             </button>
                           ) : (
-                             <span className="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold inline-block">
+                             <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg font-semibold inline-block">
                                ✓ {t('gradedStatus')}
                              </span>
                           )}
@@ -554,43 +554,43 @@ export default function TeacherExamsPage() {
       {/* Grading Modal */}
       {gradingModal.open && gradingModal.submission && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full">
-            <div className="p-6 border-b flex justify-between items-center" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-              <h2 className="text-xl font-bold">{t('gradeExam')}</h2>
-              <button onClick={() => setGradingModal({ open: false, submission: null })}>
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-md w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('gradeExam')}</h2>
+              <button onClick={() => setGradingModal({ open: false, submission: null })} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{tCommon('student')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{tCommon('student')}</label>
                 <input 
                   value={gradingModal.submission.student_name} 
                   disabled 
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-50" 
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100" 
                 />
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{t('obtainedMarks')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('obtainedMarks')}</label>
                 <input
                   type="number"
                   value={gradingForm.marks}
                   onChange={(e) => setGradingForm(prev => ({ ...prev, marks: e.target.value }))}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500"
                   placeholder="0"
                   min="0"
                 />
               </div>
 
               <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                <label className="block font-semibold mb-2">{t('teacherFeedback')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('teacherFeedback')}</label>
                 <textarea
                   value={gradingForm.feedback}
                   onChange={(e) => setGradingForm(prev => ({ ...prev, feedback: e.target.value }))}
                   rows={3}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500"
                   placeholder="..."
                 />
               </div>
@@ -605,7 +605,7 @@ export default function TeacherExamsPage() {
                 </button>
                 <button 
                   onClick={() => setGradingModal({ open: false, submission: null })} 
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-semibold"
+                  className="flex-1 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-semibold"
                 >
                   {tCommon('cancel')}
                 </button>

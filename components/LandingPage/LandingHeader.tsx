@@ -87,7 +87,7 @@ export default function LandingHeader() {
               }`}
             >
               <Globe className="w-4 h-4" />
-              <span className="text-sm font-medium">{locale === 'en' ? 'العربية' : 'English'}</span>
+              <span className="text-sm font-medium text-white">{locale === 'en' ? 'العربية' : 'English'}</span>
             </button>
             
             <Link 

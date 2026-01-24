@@ -49,10 +49,10 @@ export default function Dashboard() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-white">
+            <div className="flex items-center justify-center min-h-screen bg-white dark:bg-slate-900">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600 text-lg">{tCommon('loading')}</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg">{tCommon('loading')}</p>
                 </div>
             </div>
         );
@@ -60,7 +60,7 @@ export default function Dashboard() {
 
     if (error || !stats) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-white">
+            <div className="flex items-center justify-center min-h-screen bg-white dark:bg-slate-900">
                 <div className="text-center">
                     <p className="text-red-600 text-lg">{tCommon('errorLoadingData')}</p>
                 </div>
@@ -69,32 +69,32 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-8" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Welcome Section */}
             <div className="mb-8">
-                <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('welcomeAdmin')}</h1>
-                <p className="text-gray-600 text-lg">{t('welcomeAdminSubtitle')}</p>
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('welcomeAdmin')}</h1>
+                <p className="text-gray-600 dark:text-gray-400 text-lg">{t('welcomeAdminSubtitle')}</p>
             </div>
 
             {/* Main Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {/* Students Card */}
                 <Link href="/students" className="no-underline group">
-                    <div className="bg-white border-l-4 border-pink-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border-l-4 border-pink-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-gray-500 text-sm mb-2 font-medium">{tSidebar('students')}</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 font-medium">{tSidebar('students')}</p>
                                 <h2 className="text-pink-600 text-4xl font-bold">
                                     {stats.students.total}
                                 </h2>
                             </div>
-                            <div className="w-14 h-14 rounded-lg bg-pink-50 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-lg bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center">
                                 <GraduationCap size={28} className="text-pink-600" />
                             </div>
                         </div>
-                        <div className="flex gap-4 text-xs pt-2 border-t border-gray-100">
+                        <div className="flex gap-4 text-xs pt-2 border-t border-gray-100 dark:border-gray-700">
                             <span className="text-gray-600">
-                                {tCommon('active')}: <strong className="text-gray-900">{stats.students.active}</strong>
+                                {tCommon('active')}: <strong className="text-gray-900 dark:text-gray-100">{stats.students.active}</strong>
                             </span>
                             <span className="text-gray-600">
                                 {tCommon('new')}: <strong className="text-emerald-600">{stats.students.new}</strong>
@@ -105,15 +105,15 @@ export default function Dashboard() {
 
                 {/* Teachers Card */}
                 <Link href="/teachers" className="no-underline group">
-                    <div className="bg-white border-l-4 border-orange-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border-l-4 border-orange-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-gray-500 text-sm mb-2 font-medium">{tSidebar('teachers')}</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 font-medium">{tSidebar('teachers')}</p>
                                 <h2 className="text-orange-600 text-4xl font-bold">
                                     {stats.teachers.total}
                                 </h2>
                             </div>
-                            <div className="w-14 h-14 rounded-lg bg-orange-50 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
                                 <UserCog size={28} className="text-orange-600" />
                             </div>
                         </div>
@@ -130,15 +130,15 @@ export default function Dashboard() {
 
                 {/* Sessions Card */}
                 <Link href="/sessions" className="no-underline group">
-                    <div className="bg-white border-l-4 border-blue-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border-l-4 border-blue-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-gray-500 text-sm mb-2 font-medium">{tSidebar('sessions')}</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 font-medium">{tSidebar('sessions')}</p>
                                 <h2 className="text-blue-600 text-4xl font-bold">
                                     {stats.sessions.thisMonth}
                                 </h2>
                             </div>
-                            <div className="w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
                                 <Calendar size={28} className="text-blue-600" />
                             </div>
                         </div>
@@ -155,15 +155,15 @@ export default function Dashboard() {
 
                 {/* Revenue Card */}
                 <Link href="/finances/transactions" className="no-underline group">
-                    <div className="bg-white border-l-4 border-emerald-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border-l-4 border-emerald-500 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-gray-500 text-sm mb-2 font-medium">{tSidebar('expenses')}</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 font-medium">{tSidebar('expenses')}</p>
                                 <h2 className="text-emerald-600 text-3xl font-bold">
                                     {stats.revenue.thisMonth.toLocaleString()} {t('currency') || 'ر.س'}
                                 </h2>
                             </div>
-                            <div className="w-14 h-14 rounded-lg bg-emerald-50 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center">
                                 <DollarSign size={32} className="text-emerald-600" />
                             </div>
                         </div>
@@ -178,14 +178,14 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Homework */}
                 <Link href="/homework" className="no-underline group">
-                    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
                                 <FileText size={24} className="text-emerald-600" />
                             </div>
                             <div>
-                                <p className="text-gray-500 text-xs font-medium uppercase">{tSidebar('homework')}</p>
-                                <h3 className="text-gray-900 text-2xl font-bold">
+                                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase">{tSidebar('homework')}</p>
+                                <h3 className="text-gray-900 dark:text-gray-100 text-2xl font-bold">
                                     {stats.homework.total}
                                 </h3>
                             </div>
@@ -199,14 +199,14 @@ export default function Dashboard() {
 
                 {/* Exams */}
                 <Link href="/exams" className="no-underline group">
-                    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-red-300 transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-red-300 transition-all duration-300 hover:-translate-y-1">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center flex-shrink-0">
                                 <ClipboardList size={24} className="text-red-600" />
                             </div>
                             <div>
-                                <p className="text-gray-500 text-xs font-medium uppercase">{tSidebar('exams')}</p>
-                                <h3 className="text-gray-900 text-2xl font-bold">
+                                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase">{tSidebar('exams')}</p>
+                                <h3 className="text-gray-900 dark:text-gray-100 text-2xl font-bold">
                                     {stats.exams.total}
                                 </h3>
                             </div>
@@ -220,14 +220,14 @@ export default function Dashboard() {
 
                 {/* Subscriptions */}
                 <Link href="/active-subscriptions" className="no-underline group">
-                    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 hover:-translate-y-1">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center flex-shrink-0">
                                 <Clock size={24} className="text-indigo-600" />
                             </div>
                             <div>
-                                <p className="text-gray-500 text-xs font-medium uppercase">{tSidebar('subscriptions')}</p>
-                                <h3 className="text-gray-900 text-2xl font-bold">
+                                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase">{tSidebar('subscriptions')}</p>
+                                <h3 className="text-gray-900 dark:text-gray-100 text-2xl font-bold">
                                     {stats.subscriptions.total}
                                 </h3>
                             </div>
@@ -240,14 +240,14 @@ export default function Dashboard() {
                 </Link>
 
                 {/* Users Stats Card */}
-                <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm">
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center flex-shrink-0">
                             <Users size={24} className="text-purple-600" />
                         </div>
                         <div>
-                            <p className="text-gray-500 text-xs font-medium uppercase">{t('summary')}</p>
-                            <h3 className="text-gray-900 text-sm">
+                            <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase">{t('summary')}</p>
+                            <h3 className="text-gray-900 dark:text-gray-100 text-sm">
                                 <span className="font-bold">{stats.homework.total + stats.exams.total}</span> {t('tasks')}
                             </h3>
                         </div>
@@ -255,7 +255,7 @@ export default function Dashboard() {
                     <div className="space-y-2 text-xs">
                         <div className="flex justify-between text-gray-600">
                             <span>{tSidebar('homework')} + {tSidebar('exams')}</span>
-                            <strong className="text-gray-900">{stats.homework.total + stats.exams.total}</strong>
+                                <strong className="text-gray-900 dark:text-gray-100">{stats.homework.total + stats.exams.total}</strong>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>{t('completionRate')}</span>
@@ -271,17 +271,17 @@ export default function Dashboard() {
 
             {/* Info Section */}
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                    <h4 className="text-blue-900 font-semibold mb-2">📊 {t('statsUpdate')}</h4>
-                    <p className="text-blue-700 text-sm">{t('statsUpdateDesc')}</p>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                    <h4 className="text-blue-900 dark:text-blue-300 font-semibold mb-2">📊 {t('statsUpdate')}</h4>
+                    <p className="text-blue-700 dark:text-blue-400 text-sm">{t('statsUpdateDesc')}</p>
                 </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                    <h4 className="text-green-900 font-semibold mb-2">✅ {t('systemStatus')}</h4>
-                    <p className="text-green-700 text-sm">{t('systemStatusDesc')}</p>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+                    <h4 className="text-green-900 dark:text-green-300 font-semibold mb-2">✅ {t('systemStatus')}</h4>
+                    <p className="text-green-700 dark:text-green-400 text-sm">{t('systemStatusDesc')}</p>
                 </div>
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-                    <h4 className="text-amber-900 font-semibold mb-2">🔔 {t('alerts')}</h4>
-                    <p className="text-amber-700 text-sm">{t('noAlerts')}</p>
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6">
+                    <h4 className="text-amber-900 dark:text-amber-300 font-semibold mb-2">🔔 {t('alerts')}</h4>
+                    <p className="text-amber-700 dark:text-amber-400 text-sm">{t('noAlerts')}</p>
                 </div>
             </div>
         </div>

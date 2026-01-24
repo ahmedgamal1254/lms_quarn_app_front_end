@@ -114,16 +114,16 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex flex-col md:flex-row bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+        <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 shadow-sm">
           <div className="px-4 md:px-6 py-4 flex items-center justify-between">
 
             <div className={`flex-1 text-center ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
-              <h1 className="text-2xl md:text-2xl font-bold text-gray-900">{t('title')}</h1>
-              <p className="text-sm text-gray-500 mt-1">{t('description')}</p>
+              <h1 className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
             </div>
             <div className="hidden md:flex items-center space-x-4"></div>
           </div>
@@ -135,58 +135,58 @@ export default function CalendarPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin">
-                  <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full"></div>
+                  <div className="w-8 h-8 border-4 border-gray-300 dark:border-gray-600 border-t-blue-600 rounded-full"></div>
                 </div>
-                <p className="mt-4 text-gray-600">{t('loading') ?? 'Loading...'}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{t('loading') ?? 'Loading...'}</p>
               </div>
             ) : (
               <>
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   {/** Card Template **/}
-                  <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">{t('totalSessions')}</p>
-                        <p className="text-2xl font-bold text-gray-900 mt-1">{totalSessions}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">{t('totalSessions')}</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">{totalSessions}</p>
                       </div>
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
                         <Calendar className="text-blue-600" size={24} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">{t('upcoming')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">{t('upcoming')}</p>
                         <p className="text-2xl font-bold text-blue-600 mt-1">{upcomingSessions}</p>
                       </div>
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
                         <Clock className="text-blue-600" size={24} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">{t('completed')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">{t('completed')}</p>
                         <p className="text-2xl font-bold text-emerald-600 mt-1">{completedSessions}</p>
                       </div>
-                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
                         <Calendar className="text-emerald-600" size={24} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">{t('cancelled')}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">{t('cancelled')}</p>
                         <p className="text-2xl font-bold text-red-600 mt-1">{cancelledSessions}</p>
                       </div>
-                      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
                         <AlertCircle className="text-red-600" size={24} />
                       </div>
                     </div>
@@ -197,13 +197,13 @@ export default function CalendarPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {/* Calendar Section */}
                   <div className="lg:col-span-2">
-                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                       {/* Calendar Header */}
                       <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 md:px-6 py-4 md:py-6">
                         <div className="flex items-center justify-between mb-4 md:mb-6">
                           <button
                             onClick={() => setCurrentMonth(currentMonth.subtract(1, 'month'))}
-                            className="p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
+                            className="p-2 hover:bg-white dark:bg-slate-800/20 rounded-lg transition-colors text-white"
                           >
                             <ChevronLeft size={24} />
                           </button>
@@ -212,7 +212,7 @@ export default function CalendarPage() {
                           </h2>
                           <button
                             onClick={() => setCurrentMonth(currentMonth.add(1, 'month'))}
-                            className="p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
+                            className="p-2 hover:bg-white dark:bg-slate-800/20 rounded-lg transition-colors text-white"
                           >
                             <ChevronRight size={24} />
                           </button>
@@ -229,7 +229,7 @@ export default function CalendarPage() {
                       </div>
 
                       {/* Calendar Grid */}
-                      <div className="p-2 md:p-4 bg-gray-50">
+                      <div className="p-2 md:p-4 bg-gray-50 dark:bg-slate-900">
                         <div className="grid grid-cols-7 gap-2">
                           {calendarDays.map((day, idx) => {
                             if (!day) {
@@ -249,10 +249,10 @@ export default function CalendarPage() {
                                   isSelected
                                     ? 'bg-blue-600 border-blue-700 text-white shadow-lg'
                                     : isToday
-                                    ? 'bg-white border-2 border-blue-500 text-gray-900 shadow-md'
+                                    ? 'bg-white dark:bg-slate-700 border-2 border-blue-500 text-gray-900 dark:text-gray-100 shadow-md'
                                     : daySessionCount > 0
-                                    ? 'bg-green-50 border-green-300 text-gray-900 hover:border-green-400'
-                                    : 'bg-white border-gray-200 text-gray-900 hover:border-gray-300'
+                                    ? 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 text-gray-900 dark:text-gray-100 hover:border-green-400'
+                                    : 'bg-white dark:bg-slate-700 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:border-gray-300 dark:hover:border-gray-500'
                                 }`}
                               >
                                 <div className={`text-xs md:text-sm font-bold ${isToday && !isSelected ? 'text-blue-600' : ''}`}>
@@ -279,14 +279,14 @@ export default function CalendarPage() {
                   {/* Side Panel */}
                   <div className="lg:col-span-1 space-y-6">
                     {/* Selected Date Sessions */}
-                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                       <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-4 md:px-6 py-3 md:py-4">
                         <h3 className="text-sm md:text-lg font-bold text-white">{selectedDate.format('dddd')}</h3>
                         <p className="text-indigo-100 text-xs md:text-sm mt-1">{selectedDate.format('DD MMMM YYYY')}</p>
                       </div>
 
                       <div className="px-4 md:px-6 py-4">
-                        <p className="text-sm text-gray-600 font-medium mb-4">{t('sessionsCount', {count: sessionsForSelectedDate.length})}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-4">{t('sessionsCount', {count: sessionsForSelectedDate.length})}</p>
                         <div className="max-h-72 md:max-h-96 overflow-y-auto space-y-3">
                           {sessionsForSelectedDate.length > 0 ? (
                             sessionsForSelectedDate.map((session) => {
@@ -341,7 +341,7 @@ export default function CalendarPage() {
                               );
                             })
                           ) : (
-                            <div className="text-center py-8 text-gray-400">
+                            <div className="text-center py-8 text-gray-400 dark:text-gray-500">
                               <Calendar size={32} className="mx-auto mb-3 opacity-30" />
                               <p className="text-sm md:text-base">{t('noSessionsDay')}</p>
                             </div>
@@ -352,7 +352,7 @@ export default function CalendarPage() {
 
                     {/* Today's Sessions */}
                     {todaySessions.length > 0 && !selectedDate.isSame(dayjs(), 'day') && (
-                      <div className="bg-white rounded-xl border border-amber-200 bg-amber-50 shadow-sm overflow-hidden">
+                      <div className="bg-white dark:bg-slate-800 rounded-xl border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 shadow-sm overflow-hidden">
                         <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-4 md:px-6 py-2 md:py-4">
                           <h3 className="text-sm md:text-base font-bold text-white">{t('today')}</h3>
                           <p className="text-amber-100 text-xs md:text-sm mt-1">{dayjs().format('DD MMMM YYYY')}</p>

@@ -63,9 +63,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 {/* Content */}
                 <Content
+                    className="bg-white dark:bg-slate-700"
                     style={{
                         margin: '1rem',
-                        background: '#ffffff',
                         borderRadius: '8px',
                         minHeight: 'calc(100vh - 180px)'
                     }}
@@ -75,9 +75,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 {/* Footer */}
                 <Footer
+                    className='text-gray-500 dark:text-white dark:bg-slate-900'
                     style={{
-                        textAlign: 'center',
-                        background: '#f9fafb'
+                        textAlign: 'center'
                     }}
                 >
                     © {new Date().getFullYear()} {tCommon('schoolName')} — {tAuth('copyright')}

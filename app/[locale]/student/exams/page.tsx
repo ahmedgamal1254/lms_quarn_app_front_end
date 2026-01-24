@@ -143,7 +143,7 @@ export default function StudentExamsPage() {
 
     if (hasSubmitted) {
       return {
-        color: 'bg-green-100 text-green-700',
+        color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
         text: t('submitted'),
         icon: '✓',
       };
@@ -151,7 +151,7 @@ export default function StudentExamsPage() {
 
     if (isUpcoming && status === 'ongoing') {
       return {
-        color: 'bg-amber-100 text-amber-700',
+        color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
         text: t('now'),
         icon: '⏳',
       };
@@ -159,14 +159,14 @@ export default function StudentExamsPage() {
 
     if (isUpcoming) {
       return {
-        color: 'bg-blue-100 text-blue-700',
+        color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
         text: t('upcoming'),
         icon: '📅',
       };
     }
 
     return {
-      color: 'bg-gray-100 text-gray-700',
+      color: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
       text: t('finished'),
       icon: '⏹️',
     };
@@ -188,62 +188,62 @@ export default function StudentExamsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8 flex items-center justify-center">
-        <div className="max-w-md bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8 flex items-center justify-center">
+        <div className="max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{t('errorLoading')}</h2>
-          <p className="text-gray-600">{error.message}</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('errorLoading')}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{error.message}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-          <p className="text-gray-600">{t('description')}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400">{t('description')}</p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm mb-1">{t('totalExams')}</p>
-                <p className="text-3xl font-bold text-gray-900">{statistics.total || 0}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('totalExams')}</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{statistics.total || 0}</p>
               </div>
               <BookOpen className="w-12 h-12 text-indigo-100 rounded-full p-2" />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm mb-1">{t('upcoming')}</p>
-                <p className="text-3xl font-bold text-blue-600">{statistics.upcoming || 0}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('upcoming')}</p>
+                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{statistics.upcoming || 0}</p>
               </div>
               <Calendar className="w-12 h-12 text-blue-100 rounded-full p-2" />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm mb-1">{t('submitted')}</p>
-                <p className="text-3xl font-bold text-green-600">{statistics.submitted || 0}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('submitted')}</p>
+                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{statistics.submitted || 0}</p>
               </div>
               <CheckCircle className="w-12 h-12 text-green-100 rounded-full p-2" />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm mb-1">{t('graded')}</p>
-                <p className="text-3xl font-bold text-purple-600">{statistics.graded || 0}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">{t('graded')}</p>
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{statistics.graded || 0}</p>
               </div>
               <Award className="w-12 h-12 text-purple-100 rounded-full p-2" />
             </div>
@@ -251,7 +251,7 @@ export default function StudentExamsPage() {
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
               <Search className={`absolute ${locale === 'ar' ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5`} />
@@ -260,7 +260,7 @@ export default function StudentExamsPage() {
                 placeholder={t('searchPlaceholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
             </div>
 
@@ -269,7 +269,7 @@ export default function StudentExamsPage() {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer`}
+                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer`}
               >
                 <option value="all">{t('allExams')}</option>
                 <option value="upcoming">{t('upcoming')}</option>
@@ -285,13 +285,13 @@ export default function StudentExamsPage() {
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
-              <p className="text-gray-600 font-semibold">{tCommon('loading')}</p>
+              <p className="text-gray-600 dark:text-gray-400 font-semibold">{tCommon('loading')}</p>
             </div>
           </div>
         ) : filteredExams.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border border-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-12 text-center border border-gray-100 dark:border-gray-700">
             <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600 text-lg font-semibold">{tCommon('noData')}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">{tCommon('noData')}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -301,32 +301,32 @@ export default function StudentExamsPage() {
               const canSubmit = true;
 
               return (
-                <div key={exam.id} className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+                <div key={exam.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow">
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">
                         <FileText className="w-6 h-6 text-indigo-600 flex-shrink-0 mt-1" />
                         <div>
-                          <h3 className="text-xl font-bold text-gray-900">{exam.title}</h3>
-                          <p className="text-gray-600 text-sm mt-1">{exam.description}</p>
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{exam.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{exam.description}</p>
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
-                        <span className="flex items-center gap-1">
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        <span className="flex items-center gap-1 dark:text-white">
                           <BookOpen className="w-4 h-4 text-indigo-600" />
                           {exam.subject_name}
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 dark:text-white">
                           <Calendar className="w-4 h-4 text-indigo-600" />
                           {formatDate(exam.exam_date)}
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 dark:text-white">
                           <Clock className="w-4 h-4 text-indigo-600" />
                           {formatTime(exam.start_time)}
                         </span>
-                        <span>⏱️ {exam.duration_minutes} {t('minutes')}</span>
-                        <span className="font-bold text-purple-600">📝 {exam.total_marks} {t('marks')}</span>
+                        <span className="dark:text-white">⏱️ {exam.duration_minutes} {t('minutes')}</span>
+                        <span className="font-bold text-purple-600 dark:text-purple-400">📝 {exam.total_marks} {t('marks')}</span>
                       </div>
 
                       {exam.file_url && (
@@ -342,14 +342,14 @@ export default function StudentExamsPage() {
 
                       {exam.submission && exam.submission.marks_obtained !== null && (
                         <div className="mt-3 flex items-center gap-3">
-                          <div className="bg-green-50 px-4 py-2 rounded-lg border border-green-200">
-                            <span className="text-green-700 font-bold">
+                          <div className="bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-lg border border-green-200 dark:border-green-700">
+                            <span className="text-green-700 dark:text-green-400 font-bold">
                               {t('mark')}: {exam.submission.marks_obtained} / {exam.total_marks}
                             </span>
                           </div>
                           {exam.submission.percentage && (
-                            <div className="bg-purple-50 px-4 py-2 rounded-lg border border-purple-200">
-                              <span className="text-purple-700 font-bold">
+                            <div className="bg-purple-50 dark:bg-purple-900/20 px-4 py-2 rounded-lg border border-purple-200 dark:border-purple-700">
+                              <span className="text-purple-700 dark:text-purple-400 font-bold">
                                 {t('percentage')}: {exam.submission.percentage}%
                               </span>
                             </div>
@@ -401,44 +401,44 @@ export default function StudentExamsPage() {
       {/* Submit Modal */}
       {submitModal.open && submitModal.exam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-lg max-w-md w-full">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-xl font-bold">{t('submitExam')}</h2>
-              <button onClick={() => { setSubmitModal({ open: false, exam: null }); setSelectedFile(null); setNotes(''); }}>
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-md w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('submitExam')}</h2>
+              <button onClick={() => { setSubmitModal({ open: false, exam: null }); setSelectedFile(null); setNotes(''); }} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block font-semibold mb-2">{t('examLabel')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('examLabel')}</label>
                 <input 
                   value={submitModal.exam.title} 
                   disabled 
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-50" 
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100" 
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-2">{t('answerFileLabel')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('answerFileLabel')}</label>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                   onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
                 />
                 {selectedFile && (
-                  <p className="text-sm text-green-600 mt-2">✓ {t('fileSelected')}: {selectedFile.name}</p>
+                  <p className="text-sm text-green-600 dark:text-green-400 mt-2">✓ {t('fileSelected')}: {selectedFile.name}</p>
                 )}
               </div>
 
               <div>
-                <label className="block font-semibold mb-2">{t('notesLabel')}</label>
+                <label className="block font-semibold mb-2 text-gray-900 dark:text-gray-100">{t('notesLabel')}</label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500"
                   placeholder={t('notesPlaceholder')}
                 />
               </div>
@@ -453,7 +453,7 @@ export default function StudentExamsPage() {
                 </button>
                 <button
                   onClick={() => { setSubmitModal({ open: false, exam: null }); setSelectedFile(null); setNotes(''); }}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-semibold"
+                  className="flex-1 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-semibold"
                 >
                   {t('cancel')}
                 </button>
@@ -466,22 +466,22 @@ export default function StudentExamsPage() {
       {/* Result Modal */}
       {resultModal.open && resultModal.exam?.submission && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="bg-white rounded-lg max-w-lg w-full">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-xl font-bold">{t('resultTitle')}</h2>
-              <button onClick={() => setResultModal({ open: false, exam: null })}>
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-lg w-full">
+            <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('resultTitle')}</h2>
+              <button onClick={() => setResultModal({ open: false, exam: null })} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-6 text-center border border-indigo-200">
-                <p className="text-sm text-gray-600 mb-2">{t('obtainedMark')}</p>
-                <p className="text-5xl font-bold text-indigo-700 mb-2">
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg p-6 text-center border border-indigo-200 dark:border-indigo-700">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('obtainedMark')}</p>
+                <p className="text-5xl font-bold text-indigo-700 dark:text-indigo-400 mb-2">
                   {resultModal.exam.submission.marks_obtained}
                 </p>
-                <p className="text-gray-600">
-                  {t('outOf')} <span className="font-bold">{resultModal.exam.total_marks}</span>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {t('outOf')} <span className="font-bold dark:text-white">{resultModal.exam.total_marks}</span>
                 </p>
                 {resultModal.exam.submission.percentage && (
                   <div className="mt-4">
@@ -500,13 +500,13 @@ export default function StudentExamsPage() {
               </div>
 
               {resultModal.exam.submission.teacher_feedback && (
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <p className="font-semibold text-blue-900 mb-2">📝 {t('teacherFeedback')}:</p>
-                  <p className="text-gray-700">{resultModal.exam.submission.teacher_feedback}</p>
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+                  <p className="font-semibold text-blue-900 dark:text-blue-300 mb-2">📝 {t('teacherFeedback')}:</p>
+                  <p className="text-gray-700 dark:text-gray-300">{resultModal.exam.submission.teacher_feedback}</p>
                 </div>
               )}
 
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
                 <p>{t('submittedAt')}: {resultModal.exam.submission.submitted_at}</p>
               </div>
 

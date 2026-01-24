@@ -82,7 +82,7 @@ export default function SessionsPage() {
   if (error) {
     return (
       <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700">
           <p className="font-semibold">{t('errorLoading')}</p>
           <p className="text-sm mt-1">{tCommon('tryAgainLater')}</p>
         </div>
@@ -142,29 +142,29 @@ export default function SessionsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 md:p-8">
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         {statsBadges.map((stat, idx) => (
           <div
             key={idx}
-            className={`bg-white rounded-lg shadow-sm p-4 border-l-4 ${stat.color} hover:shadow-md transition`}
+            className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border-l-4 ${stat.color} hover:shadow-md transition`}
           >
-            <p className="text-gray-600 text-xs md:text-sm font-medium mb-2">{stat.label}</p>
-            <p className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm font-medium mb-2">{stat.label}</p>
+            <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Search and Filter Section */}
-      <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 md:p-6 mb-6">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
           {/* Dropdown */}
           <div className="relative">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="appearance-none w-full md:w-48 px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-right"
+              className="appearance-none w-full md:w-48 px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 text-right"
             >
               <option value="all">{t('filterAll')}</option>
               <option value="scheduled">{t('scheduled')}</option>
@@ -181,7 +181,7 @@ export default function SessionsPage() {
               placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pr-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pr-4 pl-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
             />
             <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
           </div>
@@ -192,7 +192,7 @@ export default function SessionsPage() {
               type="date"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="w-full pr-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pr-4 pl-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100"
             />
             <Calendar className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
           </div>
@@ -202,10 +202,10 @@ export default function SessionsPage() {
       {/* Sessions List */}
       <div className="space-y-4">
         {filteredSessions.length === 0 && !isLoading ? (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-12 text-center">
             <Calendar className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-600 text-lg font-semibold">{t('noSessions')}</p>
-            <p className="text-gray-500 text-sm mt-1">{t('noSessionsMessage')}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">{t('noSessions')}</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{t('noSessionsMessage')}</p>
           </div>
         ) : (
           filteredSessions.map((session) => {
@@ -214,7 +214,7 @@ export default function SessionsPage() {
             return (
               <div
                 key={session.id}
-                className={`bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden ${colors.border}`}
+                className={`bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden ${colors.border}`}
               >
                 <div className="p-4 md:p-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
@@ -222,8 +222,8 @@ export default function SessionsPage() {
                     <div className="md:col-span-2">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="text-lg md:text-xl font-bold text-gray-900">{session.title || t('unknownTitle')}</h3>
-                          <p className="text-sm text-gray-500 mt-1">{session.subject_name || t('unknownSubject')}</p>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">{session.title || t('unknownTitle')}</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{session.subject_name || t('unknownSubject')}</p>
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap ml-3 ${colors.badge}`}>
                           {getStatusLabel(session.status)}
@@ -235,26 +235,26 @@ export default function SessionsPage() {
                         {/* Student */}
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{session.student_name || t('unknownStudent')}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{session.student_name || t('unknownStudent')}</span>
                         </div>
 
                         {/* Date */}
                         {/* <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-green-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{new Date(session.session_date).toDateString()}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{new Date(session.session_date).toDateString()}</span>
                         </div> */}
 
                         {/* Date */}
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-purple-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {utcToLocalDate(session.start_time, locale)}
                           </span>
                         </div>
                         {/* Time */}
                         <div className="flex items-center gap-2">
                           <Clock className="w-4 h-4 text-purple-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {t('from')} {utcToLocalTime(session.start_time, locale)} {t('to')} {utcToLocalTime(session.end_time, locale)}
                           </span>
                         </div>
@@ -262,7 +262,7 @@ export default function SessionsPage() {
                         {/* Duration */}
                         <div className="flex items-center gap-2">
                           <BookOpen className="w-4 h-4 text-orange-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{session.duration_minutes || 0} {t('minutes')}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{session.duration_minutes || 0} {t('minutes')}</span>
                         </div>
                       </div>
                     </div>
@@ -275,25 +275,25 @@ export default function SessionsPage() {
                           type='primary'
                           rel="noopener noreferrer"
                           disabled={!session?.can_join}
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center transition text-sm"
+                          className="!bg-blue-600 hover:!bg-blue-700 !text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center transition text-sm"
                         >
                           <Video className="w-4 h-4 ml-2" />
                           {t('joinSession')}
                         </Button>
                       )}
                       {session.status === 'completed' && (
-                        <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-center font-semibold text-sm">
+                        <div className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg text-center font-semibold text-sm">
                           ✓ {t('sessionEnded')}
                         </div>
                       )}
                       {session.status === 'cancelled' && (
-                        <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-center font-semibold text-sm">
+                        <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2 rounded-lg text-center font-semibold text-sm">
                           ✕ {t('cancelled')}
                         </div>
                       )}
                       <Link
                         href={`/teacher/sessions/${session.id}`}
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-lg font-semibold transition text-sm text-center"
+                        className="bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-semibold transition text-sm text-center"
                       >
                         {t('details')}
                       </Link>
@@ -308,10 +308,10 @@ export default function SessionsPage() {
 
       {
         isLoading && (
-          <div className="flex items-center justify-center bg-white">
+          <div className="flex items-center justify-center bg-white dark:bg-slate-800">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600 text-lg">{tCommon('loading')}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-lg">{tCommon('loading')}</p>
             </div>
           </div>
         )
@@ -319,7 +319,7 @@ export default function SessionsPage() {
 
       {/* Results Count */}
       {sessions.length > 0 && (
-        <div className="mt-8 text-center text-gray-600 text-sm">
+        <div className="mt-8 text-center text-gray-600 dark:text-gray-400 text-sm">
           <p>
             {t('showing')} <span className="font-semibold">{filteredSessions.length}</span> {t('of')}{' '}
             <span className="font-semibold">{sessions.length}</span> {t('sessionCount')}

@@ -117,10 +117,10 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800">
         <div className="text-center">
           <Loader2 className="animate-spin text-indigo-600 mx-auto mb-4" size={48} />
-          <p className="text-gray-600 font-semibold">{tCommon('loading')}</p>
+          <p className="text-gray-600 dark:text-gray-400 font-semibold">{tCommon('loading')}</p>
         </div>
       </div>
     );
@@ -128,8 +128,8 @@ export default function StudentDashboard() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <p className="text-red-600 font-semibold">{error}</p>
         </div>
@@ -139,10 +139,10 @@ export default function StudentDashboard() {
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 font-semibold">{tCommon('noData')}</p>
+          <p className="text-gray-600 dark:text-gray-400 font-semibold">{tCommon('noData')}</p>
         </div>
       </div>
     );
@@ -157,43 +157,43 @@ export default function StudentDashboard() {
   const { student, teacher, subscription, statistics, upcoming_sessions, pending_homework } = data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 md:p-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <Link href={"/student/profile"}>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             {t('welcome')} {student?.name} 👋
           </h1>
           </Link>
-          <p className="text-gray-600">{t('studentWelcomeSubtitle')}</p>
+          <p className="text-gray-600 dark:text-gray-400">{t('studentWelcomeSubtitle')}</p>
         </div>
 
         {/* Teacher Info Card */}
         {data.teacher && (
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 hover:shadow-xl transition-shadow">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow">
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
                 <User className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{data.teacher?.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{data.teacher?.name}</h2>
                 <p className="text-indigo-600 font-semibold text-sm mt-1">{data.teacher?.subject_name}</p>
               </div>
             </div>
             <div className='flex flex-col items-end gap-2'>
               <div className="flex gap-6 flex-wrap">
               {data.teacher?.email && (
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                   <Mail className="w-5 h-5 text-indigo-600" />
-                  <span className="text-sm">{data.teacher.email}</span>
+                  <span className="text-sm dark:text-white">{data.teacher.email}</span>
                 </div>
               )}
               {data.teacher?.phone && (
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                   <Phone className="w-5 h-5 text-indigo-600" />
-                  <span className="text-sm">{data.teacher.phone}</span>
+                  <span className="text-sm dark:text-white">{data.teacher.phone}</span>
                 </div>
               )}
             </div>
@@ -210,25 +210,25 @@ export default function StudentDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Subscription Card */}
           {data.subscription && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">{t('currentSubscription')}</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('currentSubscription')}</h3>
               <Award className="w-6 h-6 text-amber-500" />
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">{t('planName')}</span>
-                <span className="font-bold text-gray-900">{data.subscription?.plan_name}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t('planName')}</span>
+                <span className="font-bold text-gray-900 dark:text-white">{data.subscription?.plan_name}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">{t('price')}</span>
-                <span className="font-bold text-indigo-600">
+                <span className="text-gray-600 dark:text-gray-400">{t('price')}</span>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400">
                   {data.subscription?.price} {data.subscription?.currency}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">{t('sessionsRemaining')}</span>
-                <span className="font-bold text-green-600">{data.subscription?.sessions_remaining}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t('sessionsRemaining')}</span>
+                <span className="font-bold text-green-600 dark:text-green-400">{data.subscription?.sessions_remaining}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
                 <div
@@ -238,7 +238,7 @@ export default function StudentDashboard() {
                   }}
                 ></div>
               </div>
-              <p className="text-sm text-gray-500 pt-2">
+              <p className="text-sm text-gray-500 dark:text-gray-400 pt-2">
                 {data.subscription?.sessions_used} / {data.subscription?.sessions_total} 
               </p>
             </div>
@@ -283,25 +283,25 @@ export default function StudentDashboard() {
               {data.upcoming_sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100"
+                  className="bg-white dark:bg-slate-800 rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100 dark:border-gray-700"
                 >
                   <div className="flex items-start justify-between flex-wrap gap-4">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Calendar className="w-6 h-6 text-blue-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-gray-900 text-lg">{session.title}</h4>
-                        <p className="text-sm text-gray-600 mt-1">{session.subject_name}</p>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-700 flex-wrap">
-                          <span className="flex items-center gap-1">
+                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-lg">{session.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{session.subject_name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-700 dark:text-gray-300 flex-wrap">
+                          <span className="flex items-center gap-1 dark:text-white">
                             <Clock className="w-4 h-4" />
                             {utcToLocalDate(session.start_time)} ·{" "}
                             {utcToLocalTime(session.start_time)} -{" "}
                             {utcToLocalTime(session.end_time)}
                           </span>
-                          <span>{session.session_date}</span>
-                          <span className="text-gray-500">({session.duration_minutes} {tCommon('minutes')})</span>
+                          <span className="dark:text-white">{session.session_date}</span>
+                          <span className="text-gray-500 dark:text-gray-400">({session.duration_minutes} {tCommon('minutes')})</span>
                         </div>
                       </div>
                     </div>
@@ -331,21 +331,21 @@ export default function StudentDashboard() {
               {data.pending_homework.map((hw) => (
                 <div
                   key={hw.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100"
+                  className="bg-white dark:bg-slate-800 rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100 dark:border-gray-700"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                       <BookOpen className="w-6 h-6 text-orange-600" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-gray-900">{hw.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1">{hw.description}</p>
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100">{hw.title}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{hw.description}</p>
                       <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
-                        <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-semibold">
+                        <span className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full font-semibold">
                           {t('dueDate')}: {hw.due_date}
                         </span>
                         {hw.grade && (
-                          <span className="text-sm font-bold text-green-600">{tCommon('grade')}: {hw.grade}</span>
+                          <span className="text-sm font-bold text-green-600 dark:text-green-400">{tCommon('grade')}: {hw.grade}</span>
                         )}
                       </div>
                     </div>
@@ -366,12 +366,12 @@ export default function StudentDashboard() {
 
 function StatCard({ title, value, icon, color }: any) {
   return (
-    <div className={`${color} rounded-xl shadow-md p-5 border border-gray-100 hover:shadow-lg transition-shadow`}>
+    <div className={`${color} dark:bg-opacity-20 rounded-xl shadow-md p-5 border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow`}>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
+        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{title}</h3>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
     </div>
   );
 }
@@ -379,7 +379,7 @@ function StatCard({ title, value, icon, color }: any) {
 function Section({ title, children }: any) {
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-5 flex items-center gap-2">
         {title}
       </h2>
       <div>{children}</div>
@@ -389,9 +389,9 @@ function Section({ title, children }: any) {
 
 function Empty({ text }: any) {
   return (
-    <div className="bg-white rounded-xl shadow-md p-8 text-center border border-gray-100">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-8 text-center border border-gray-100 dark:border-gray-700">
       <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-      <p className="text-gray-600 font-semibold">{text}</p>
+      <p className="text-gray-600 dark:text-gray-400 font-semibold">{text}</p>
     </div>
   );
 }

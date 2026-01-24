@@ -211,13 +211,13 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="h-screen hidden sm:flex">
         {/* Sidebar - Conversations List */}
-        <div className={`w-full md:w-96 bg-white ${locale === 'ar' ? 'border-l' : 'border-r'} border-gray-200 flex flex-col`}>
+        <div className={`w-full md:w-96 bg-white dark:bg-slate-800 ${locale === 'ar' ? 'border-l' : 'border-r'} border-gray-200 dark:border-gray-700 flex flex-col`}>
           {/* Header */}
-          <div className="p-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">{tChat('messages')}</h1>
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">{tChat('messages')}</h1>
             
             {/* Search */}
             <div className="relative">
@@ -227,7 +227,7 @@ export default function ChatPage() {
                 placeholder={tChat('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className={`w-full ${locale === 'ar' ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function ChatPage() {
             ) : conversations.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 px-4">
                 <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                <p className="text-gray-600 text-center">{tChat('noConversations')}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-center">{tChat('noConversations')}</p>
               </div>
             ) : (
               conversations.map((conversation: Conversation) => {
@@ -255,10 +255,10 @@ export default function ChatPage() {
                       setSelectedConversation(conversation);
                       setMessagePage(1);
                     }}
-                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${
+                    className={`p-4 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors ${
                       isSelected
-                        ? `bg-indigo-50 ${locale === 'ar' ? 'border-r-4 border-r-indigo-600' : 'border-l-4 border-l-indigo-600'}`
-                        : 'hover:bg-gray-50'
+                        ? `bg-indigo-50 dark:bg-indigo-900/20 ${locale === 'ar' ? 'border-r-4 border-r-indigo-600' : 'border-l-4 border-l-indigo-600'}`
+                        : 'hover:bg-gray-50 dark:hover:bg-slate-700'
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -278,17 +278,17 @@ export default function ChatPage() {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
-                          <h3 className="font-semibold text-gray-900 truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                             {otherUser?.name}
                           </h3>
                           {conversation.last_message && (
-                            <span className={`text-xs text-gray-500 flex-shrink-0 ${locale === 'ar' ? 'mr-2' : 'ml-2'}`}>
+                            <span className={`text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 ${locale === 'ar' ? 'mr-2' : 'ml-2'}`}>
                               {formatDate(conversation.last_message.created_at)}
                             </span>
                           )}
                         </div>
                         {conversation.last_message && (
-                          <p className="text-sm text-gray-600 truncate">
+                          <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
                             {conversation.last_message.message}
                           </p>
                         )}
@@ -309,16 +309,16 @@ export default function ChatPage() {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex-col bg-gray-50 hidden sm:flex">
+        <div className="flex-1 flex-col bg-gray-50 dark:bg-slate-900 hidden sm:flex">
           {selectedConversation ? (
             <>
               {/* Chat Header */}
-              <div className="bg-white border-b border-gray-200 p-4">
+              <div className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setSelectedConversation(null)}
-                      className="md:hidden text-gray-600 hover:text-gray-900"
+                      className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-gray-100"
                     >
                       <ArrowRight className="w-6 h-6" />
                     </button>
@@ -337,10 +337,10 @@ export default function ChatPage() {
                     </div>
 
                     <div>
-                      <h2 className="font-bold text-gray-900">
+                      <h2 className="font-bold text-gray-900 dark:text-gray-100">
                         {getOtherUser(selectedConversation)?.name}
                       </h2>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {getOtherUser(selectedConversation)?.role === 'teacher'
                           ? tChat('teacher')
                           : tChat('student')}
@@ -349,13 +349,13 @@ export default function ChatPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
                       <Phone className="w-5 h-5" />
                     </button>
-                    <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
                       <Video className="w-5 h-5" />
                     </button>
-                    <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
                       <MoreVertical className="w-5 h-5" />
                     </button>
                   </div>
@@ -381,7 +381,7 @@ export default function ChatPage() {
                 ) : messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full">
                     <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                    <p className="text-gray-600">{tChat('startConversation')}</p>
+                    <p className="text-gray-600 dark:text-gray-400">{tChat('startConversation')}</p>
                   </div>
                 ) : (
                   <>
@@ -397,7 +397,7 @@ export default function ChatPage() {
                           {/* Date Separator */}
                           {showDate && (
                             <div className="flex justify-center my-4">
-                              <span className="bg-white px-4 py-1 rounded-full text-xs text-gray-600 shadow-sm">
+                              <span className="bg-white dark:bg-slate-800 px-4 py-1 rounded-full text-xs text-gray-600 dark:text-gray-400 shadow-sm">
                                 {formatDate(message.created_at)}
                               </span>
                             </div>
@@ -434,13 +434,13 @@ export default function ChatPage() {
                                 className={`px-4 py-2 rounded-2xl ${
                                   isOwn
                                     ? 'bg-indigo-600 text-white rounded-br-none'
-                                    : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
+                                    : 'bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 rounded-bl-none shadow-sm'
                                 }`}
                               >
                                 <p className="text-sm break-words">{message.message}</p>
                               </div>
                               <span
-                                className={`text-xs text-gray-500 mt-1 block ${
+                                className={`text-xs text-gray-500 dark:text-gray-400 mt-1 block ${
                                   isOwn 
                                     ? (locale === 'ar' ? 'text-right' : 'text-left') 
                                     : (locale === 'ar' ? 'text-left' : 'text-right')
@@ -459,17 +459,17 @@ export default function ChatPage() {
               </div>
 
               {/* Message Input */}
-              <div className="bg-white border-t border-gray-200 p-4">
+              <div className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-end gap-2">
                   <button
                     type="button"
-                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                   >
                     <Paperclip className="w-5 h-5" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                   >
                     <ImagePlus className="w-5 h-5" />
                   </button>
@@ -486,7 +486,7 @@ export default function ChatPage() {
                       }}
                       placeholder={tChat('typeMessage')}
                       rows={1}
-                      className={`w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${locale === 'ar' ? 'text-right' : 'text-left'}`}
+                      className={`w-full px-4 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${locale === 'ar' ? 'text-right' : 'text-left'}`}
                     />
                   </div>
 
@@ -509,10 +509,10 @@ export default function ChatPage() {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <MessageCircle className="w-24 h-24 text-gray-300 mx-auto mb-4" />
-                <h2 className="text-xl font-bold text-gray-900 mb-2">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                   {tChat('selectConversation')}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   {tChat('selectConversationDesc')}
                 </p>
               </div>
@@ -521,10 +521,10 @@ export default function ChatPage() {
         </div>
       </div>
 
-      <div className="w-full md:w-96 h-screen bg-white border-l border-gray-200 flex flex-col sm:hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="w-full md:w-96 h-screen bg-white dark:bg-slate-800 border-l border-gray-200 dark:border-gray-700 flex flex-col sm:hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
           {/* Header */}
-          <div className="p-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">{tChat('messages')}</h1>
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">{tChat('messages')}</h1>
             
             {/* Search */}
             <div className="relative">
@@ -534,7 +534,7 @@ export default function ChatPage() {
                 placeholder={tChat('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right"
+                className="w-full pl-4 pr-10 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right"
               />
             </div>
           </div>
@@ -548,7 +548,7 @@ export default function ChatPage() {
             ) : conversations.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 px-4">
                 <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                <p className="text-gray-600 text-center">{tChat('noConversations')}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-center">{tChat('noConversations')}</p>
               </div>
             ) : (
               conversations.map((conversation: Conversation) => {
@@ -583,17 +583,17 @@ export default function ChatPage() {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
-                          <h3 className="font-semibold text-gray-900 truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                             {otherUser?.name}
                           </h3>
                           {conversation.last_message && (
-                            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
+                            <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 mr-2">
                               {formatDate(conversation.last_message.created_at)}
                             </span>
                           )}
                         </div>
                         {conversation.last_message && (
-                          <p className="text-sm text-gray-600 truncate">
+                          <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
                             {conversation.last_message.message}
                           </p>
                         )}

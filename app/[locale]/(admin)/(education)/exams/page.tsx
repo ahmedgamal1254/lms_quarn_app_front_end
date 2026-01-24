@@ -260,24 +260,24 @@ export default function ExamsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex h-screen bg-gray-50 dark:bg-slate-900" dir={isRTL ? 'rtl' : 'ltr'}>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
           <div className="px-6 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
             <div></div>
           </div>
 
           {/* Breadcrumbs */}
-          <div className="px-6 py-2 flex items-center gap-2 text-sm text-gray-600">
+          <div className="px-6 py-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <Home size={16} />
             <a href="#" className="hover:text-blue-600">{tCommon('dashboard')}</a>
             {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             <ClipboardCheck size={16} />
-            <span className="font-semibold text-gray-900">{t('title')}</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">{t('title')}</span>
           </div>
         </header>
 
@@ -285,7 +285,7 @@ export default function ExamsPage() {
         <div className="flex-1 overflow-auto">
           <div className="p-6 max-w-7xl mx-auto">
             {examsError && (
-              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
+              <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-4 text-red-700 flex items-center gap-3">
                 {tCommon('errorLoadingData')}
               </div>
             )}
@@ -318,13 +318,13 @@ export default function ExamsPage() {
 
             {/* Filters Dropdown */}
             {showFilters && (
-              <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
+              <div className="mb-6 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="max-w-xs">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('status')}</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('status')}</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
                   >
                     <option value="all">{t('all')}</option>
                     <option value="upcoming">{t('upcoming')}</option>
@@ -340,15 +340,15 @@ export default function ExamsPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin">
-                  <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full"></div>
+                  <div className="w-8 h-8 border-4 border-gray-300 dark:border-gray-600 border-t-blue-600 rounded-full"></div>
                 </div>
-                <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{tCommon('loading')}</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-gray-50 dark:bg-slate-900 border-b border-gray-200 dark:border-gray-700">
                       <tr>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('examTitle')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('subject')}</th>
@@ -357,7 +357,7 @@ export default function ExamsPage() {
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('duration')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('marks')}</th>
                         <th className={`px-6 py-3 ${isRTL ? 'text-right' : 'text-left'} text-sm font-semibold text-gray-900`}>{t('status')}</th>
-                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">{t('action')}</th>
+                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">{t('action')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -365,17 +365,17 @@ export default function ExamsPage() {
                         filteredExams.map((exam: ExamData) => {
                           const statusStyle = getStatusColor(exam.status);
                           return (
-                            <tr key={exam.id} className="hover:bg-gray-50 transition-colors">
-                              <td className="px-6 py-4 text-sm font-medium text-gray-900">{exam.title}</td>
+                            <tr key={exam.id} className="hover:bg-gray-50 dark:bg-slate-900 transition-colors">
+                              <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{exam.title}</td>
                               <td className="px-6 py-4 text-sm">
-                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                                <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/20 text-blue-700">
                                   {exam.subject?.name || t('notSpecified')}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{exam.teacher?.name || t('notSpecified')}</td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{exam.exam_date}</td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{t('minutes', { count: exam.duration_minutes || 60 })}</td>
-                              <td className="px-6 py-4 text-sm font-bold text-gray-900">{exam.total_marks || 100}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{exam.teacher?.name || t('notSpecified')}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{exam.exam_date}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{t('minutes', { count: exam.duration_minutes || 60 })}</td>
+                              <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-gray-100">{exam.total_marks || 100}</td>
                               <td className="px-6 py-4 text-sm">
                                 <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${statusStyle.bg} ${statusStyle.border} ${statusStyle.text}`}>
                                   {getStatusText(exam.status)}
@@ -385,14 +385,14 @@ export default function ExamsPage() {
                                 <div className="flex items-center justify-center gap-2">
                                   <button
                                     onClick={() => openDeleteModal(exam.id)}
-                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                    className="p-2 text-red-600 hover:bg-red-50 dark:bg-red-900/20 rounded-lg transition-colors"
                                     title={tCommon('delete')}
                                   >
                                     <Trash2 size={16} />
                                   </button>
                                   <button 
                                     onClick={() => openEditModal(exam)}
-                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors"
                                     title={tCommon('edit')}
                                   >
                                     <Edit size={16} />
@@ -404,7 +404,7 @@ export default function ExamsPage() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 font-medium">
+                          <td colSpan={8} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400 font-medium">
                             {t('noExams')}
                           </td>
                         </tr>
@@ -434,16 +434,16 @@ export default function ExamsPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full max-h-screen overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full max-h-screen overflow-y-auto">
             <div className={`flex items-center justify-between p-6 border-b border-gray-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <h2 className="text-xl font-bold text-gray-900">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 {modalMode === 'create' && t('addExam')}
                 {modalMode === 'edit' && t('editExam')}
                 {modalMode === 'delete' && t('deleteExam')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-1 hover:bg-gray-100 rounded-lg"
+                className="p-1 hover:bg-gray-100 dark:bg-slate-800 rounded-lg"
               >
                 <X size={20} />
               </button>
@@ -452,11 +452,11 @@ export default function ExamsPage() {
             <div className="p-6">
               {modalMode === 'delete' ? (
                 <div>
-                  <p className="text-gray-600 mb-6">{t('deleteConfirm')}</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">{t('deleteConfirm')}</p>
                   <div className="flex gap-3">
                     <button
                       onClick={() => setShowModal(false)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors font-medium"
                     >
                       {tCommon('cancel')}
                     </button>
@@ -472,32 +472,32 @@ export default function ExamsPage() {
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('examTitle')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('examTitle')}</label>
                     <input
                       type="text"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('description')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('description')}</label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                       rows={3}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('subject')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('subject')}</label>
                     <select
                       value={formData.subject_id}
                       onChange={(e) => setFormData({ ...formData, subject_id: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     >
                       <option value="">{t('selectSubject')}</option>
@@ -508,11 +508,11 @@ export default function ExamsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('teacher')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('teacher')}</label>
                     <select
                       value={formData.teacher_id}
                       onChange={(e) => setFormData({ ...formData, teacher_id: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     >
                       <option value="">{t('selectTeacher')}</option>
@@ -523,47 +523,47 @@ export default function ExamsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('examDate')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('examDate')}</label>
                     <input
                       type="date"
                       value={formData.exam_date}
                       onChange={(e) => setFormData({ ...formData, exam_date: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('startTime')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('startTime')}</label>
                     <input
                       type="time"
                       value={formData.start_time}
                       onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">{t('duration')}</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('duration')}</label>
                       <input
                         type="number"
                         value={formData.duration_minutes}
                         onChange={(e) => setFormData({ ...formData, duration_minutes: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         min="1"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">{t('marks')}</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('marks')}</label>
                       <input
                         type="number"
                         value={formData.total_marks}
                         onChange={(e) => setFormData({ ...formData, total_marks: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         min="1"
                         required
                       />
@@ -571,11 +571,11 @@ export default function ExamsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('status')}</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('status')}</label>
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="upcoming">{t('upcoming')}</option>
                       <option value="ongoing">{t('ongoing')}</option>
@@ -587,7 +587,7 @@ export default function ExamsPage() {
                   <div className="flex gap-3 pt-4">
                     <button
                       onClick={() => setShowModal(false)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-900 transition-colors font-medium"
                     >
                       {tCommon('cancel')}
                     </button>

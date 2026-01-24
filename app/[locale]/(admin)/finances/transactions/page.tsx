@@ -96,9 +96,9 @@ function CurrencySwitcher({
 
     if (isLoading) {
         return (
-            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
+            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-slate-800 rounded-lg">
                 <DollarSign size={18} className="text-gray-400" />
-                <span className="text-gray-500 text-sm">{tCommon('loading')}</span>
+                <span className="text-gray-500 dark:text-gray-400 text-sm">{tCommon('loading')}</span>
             </div>
         );
     }
@@ -107,14 +107,14 @@ function CurrencySwitcher({
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-between gap-3 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:border-blue-400 transition-colors min-w-[200px]"
+                className="flex items-center justify-between gap-3 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 transition-colors min-w-[200px]"
             >
                 <div className="flex items-center gap-2">
                     <DollarSign size={18} className="text-blue-600" />
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
                         {selectedCurrencyData?.symbol || selectedCurrency}
                     </span>
-                    <span className="text-gray-600 text-sm">
+                    <span className="text-gray-600 dark:text-gray-400 text-sm">
                         {selectedCurrencyData?.name || ''}
                     </span>
                 </div>
@@ -130,7 +130,7 @@ function CurrencySwitcher({
                         className="fixed inset-0 z-10"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-20 overflow-hidden">
                         {activeCurrencies.map((currency: Currency) => (
                             <button
                                 key={currency.id}
@@ -361,14 +361,14 @@ export default function TransactionsPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 p-2 md:p-6" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-2 md:p-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="bg-white rounded-lg shadow-sm p-2 md:p-6 mb-6 border border-gray-200">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-2 md:p-6 mb-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start mb-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-                            <div className="flex items-center gap-2 mt-2 text-gray-600">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+                            <div className="flex items-center gap-2 mt-2 text-gray-600 dark:text-gray-400">
                                 <Home size={16} />
                                 <span className="text-sm">{tCommon('dashboard')}</span>
                                 <ChevronRight size={16} />
@@ -395,11 +395,11 @@ export default function TransactionsPage() {
                 {/* Summary Cards */}
                 {summaryData && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-                        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-gray-600 text-sm font-medium">{t('totalRevenue')}</p>
-                                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('totalRevenue')}</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                         {summaryData.total_revenue.toLocaleString(routeParams.locale as string)}
                                     </p>
                                 </div>
@@ -409,11 +409,11 @@ export default function TransactionsPage() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-gray-600 text-sm font-medium">{t('totalExpenses')}</p>
-                                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('totalExpenses')}</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                         {summaryData.total_all_expenses.toLocaleString(routeParams.locale as string)}
                                     </p>
                                 </div>
@@ -423,10 +423,10 @@ export default function TransactionsPage() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-gray-600 text-sm font-medium">{t('netProfit')}</p>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('netProfit')}</p>
                                     <p className="text-2xl font-bold text-blue-600 mt-1">
                                         {summaryData.net_profit.toLocaleString(routeParams.locale as string)}
                                     </p>
@@ -437,11 +437,11 @@ export default function TransactionsPage() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-gray-600 text-sm font-medium">{t('completedTransactions')}</p>
-                                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('completedTransactions')}</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                         {summaryData.completed_transactions.toLocaleString(routeParams.locale as string)}
                                     </p>
                                 </div>
@@ -451,10 +451,10 @@ export default function TransactionsPage() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-gray-600 text-sm font-medium">{t('pendingTransactions')}</p>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{t('pendingTransactions')}</p>
                                     <p className="text-2xl font-bold text-amber-600 mt-1">
                                         {summaryData.pending_transactions.toLocaleString(routeParams.locale as string)}
                                     </p>
@@ -468,7 +468,7 @@ export default function TransactionsPage() {
                 )}
 
                 {/* Search */}
-                <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-6">
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700 mb-6">
                     <div className="relative">
                         <Search size={18} className="absolute left-3 top-3 text-gray-400" />
                         <input
@@ -476,7 +476,7 @@ export default function TransactionsPage() {
                             placeholder={t('searchPlaceholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -487,34 +487,34 @@ export default function TransactionsPage() {
                         <Loader className="animate-spin text-blue-600" size={40} />
                     </div>
                 ) : (
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-gray-200 bg-gray-50">
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('type')}</th>
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('student')}</th>
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('amount')}</th>
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('paymentMethod')}</th>
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('date')}</th>
-                                        <th className="px-6 py-3 text-right font-semibold text-gray-900">{tCommon('status')}</th>
-                                        <th className="px-6 py-3 text-center font-semibold text-gray-900">{tCommon('actions')}</th>
+                                    <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('type')}</th>
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('student')}</th>
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('amount')}</th>
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('paymentMethod')}</th>
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('date')}</th>
+                                        <th className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">{tCommon('status')}</th>
+                                        <th className="px-6 py-3 text-center font-semibold text-gray-900 dark:text-gray-100">{tCommon('actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredTransactions.map((transaction: Transaction) => (
-                                        <tr key={transaction.id} className="border-b border-gray-100 hover:bg-gray-50">
+                                        <tr key={transaction.id} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-slate-900">
                                             <td className="px-6 py-3">
                                                 <span className="text-2xl">{getTypeIcon(transaction.type)}</span>
                                             </td>
-                                            <td className="px-6 py-3 font-medium text-gray-900">{transaction.student_name}</td>
-                                            <td className="px-6 py-3 text-gray-600">
+                                            <td className="px-6 py-3 font-medium text-gray-900 dark:text-gray-100">{transaction.student_name}</td>
+                                            <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
                                                 {transaction.amount.toLocaleString(routeParams.locale as string)} {transaction.currency}
                                             </td>
-                                            <td className="px-6 py-3 text-gray-600">
+                                            <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
                                                 {getPaymentMethodLabel(transaction.payment_method)}
                                             </td>
-                                            <td className="px-6 py-3 text-gray-600">
+                                            <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
                                                 {new Date(transaction.transaction_date).toLocaleDateString(routeParams.locale as string)}
                                             </td>
                                             <td className="px-6 py-3">
@@ -550,12 +550,12 @@ export default function TransactionsPage() {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
-                            <h2 className="text-xl font-bold text-gray-900">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                 {modalMode === 'create' ? t('addTransaction') : t('editTransaction')}
                             </h2>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">
                                 <X size={24} />
                             </button>
                         </div>
@@ -563,11 +563,11 @@ export default function TransactionsPage() {
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('type')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('type')}</label>
                                     <select
                                         value={formData.type}
                                         onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="payment">{t('type_payment')}</option>
                                         <option value="refund">{t('type_refund')}</option>
@@ -576,17 +576,17 @@ export default function TransactionsPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('amount')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('amount')}</label>
                                     <input
                                         type="number"
                                         value={formData.amount}
                                         onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('currency')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('currency')}</label>
                                     <CurrencySwitcher
                                         selectedCurrency={formData.currency}
                                         onCurrencyChange={(code) => setFormData({ ...formData, currency: code })}
@@ -594,21 +594,21 @@ export default function TransactionsPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('paymentMethod')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('paymentMethod')}</label>
                                     <input
                                         type="text"
                                         value={formData.payment_method}
                                         onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('student')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('student')}</label>
                                     <select
                                         value={formData.student_id}
                                         onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="">{t('selectStudent')}</option>
                                         {studentsData?.map((student: Student) => (
@@ -620,31 +620,31 @@ export default function TransactionsPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('referenceNumber')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('referenceNumber')}</label>
                                     <input
                                         type="text"
                                         value={formData.reference_number}
                                         onChange={(e) => setFormData({ ...formData, reference_number: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">{tCommon('notes')}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{tCommon('notes')}</label>
                                     <textarea
                                         value={formData.notes}
                                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         rows={3}
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={closeModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-slate-800"
                             >
                                 {tCommon('cancel')}
                             </button>

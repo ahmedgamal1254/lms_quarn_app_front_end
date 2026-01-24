@@ -76,8 +76,8 @@ export default function TeacherStudentsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-red-700 text-center max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 p-4" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-lg p-6 text-red-700 text-center max-w-md">
           <p className="font-semibold mb-2">{tCommon('errorLoadingData') || 'Error loading students'}</p>
           <p className="text-sm">{tCommon('tryAgainLater') || 'Please try again later'}</p>
         </div>
@@ -135,17 +135,17 @@ export default function TeacherStudentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 md:p-8" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-        <p className="text-gray-600">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('title')}</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           {t('count', { count: total })}
         </p>
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-8">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-8">
         <div className="relative">
           <input
             type="text"
@@ -155,7 +155,7 @@ export default function TeacherStudentsPage() {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className={`w-full ${locale === 'ar' ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            className={`w-full ${locale === 'ar' ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           <Search className={`absolute ${locale === 'ar' ? 'right-3' : 'left-3'} top-2.5 text-gray-400 w-5 h-5`} />
         </div>
@@ -163,12 +163,12 @@ export default function TeacherStudentsPage() {
 
       {/* Students List */}
       {students.length === 0 && !isLoading ? (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-12 text-center">
           <Users className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
             {t('noStudents')}
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             {searchTerm ? t('noResults') : t('notAssigned')}
           </p>
         </div>
@@ -177,7 +177,7 @@ export default function TeacherStudentsPage() {
           {students.map((student) => (
             <div
               key={student.id}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
+              className="bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
             >
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 {/* Right Side - Avatar & Name */}
@@ -190,13 +190,13 @@ export default function TeacherStudentsPage() {
                     {getInitials(student.name)}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                       {student.name}
                     </h3>
-                    <div className="flex flex-col gap-1 text-sm text-gray-600 mt-2">
+                    <div className="flex flex-col gap-1 text-sm text-gray-600 dark:text-gray-400 mt-2">
                       <div className="flex items-center gap-2 break-words">
                         <Mail className="w-4 h-4" />
-                        <span className="break-all">
+                        <span className="break-all dark:text-white">
                           {student.email}
                         </span>
                       </div>
@@ -213,13 +213,13 @@ export default function TeacherStudentsPage() {
 
                 {/* Center - Plan Details */}
                 <div className="flex-1 order-3 md:order-2 w-full md:w-auto">
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4 space-y-2">
-                    <p className="text-sm text-gray-600 text-center">{t('totalSessions')}</p>
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4 space-y-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-center">{t('totalSessions')}</p>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-purple-600">
+                      <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                         {student.plan?.total_sessions || 0}
                       </p>
-                      <p className="text-xs text-gray-600 mt-2">{t('sessions')}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{t('sessions')}</p>
                     </div>
                     
                     {/* Progress Bar */}
@@ -236,9 +236,9 @@ export default function TeacherStudentsPage() {
                       ></div>
                     </div>
                     
-                    <p className="text-xs text-gray-600 text-center mt-2">
-                      {t('from')} {new Date(student.plan?.start_date || '').toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')} {t('to')}{' '}
-                      {new Date(student.plan?.end_date || '').toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
+                    <p className="text-xs text-gray-600 dark:text-gray-400 text-center mt-2">
+                      {t('from')} <span className="dark:text-white">{new Date(student.plan?.start_date || '').toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</span> {t('to')}{' '}
+                      <span className="dark:text-white">{new Date(student.plan?.end_date || '').toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}</span>
                     </p>
                   </div>
                 </div>
@@ -247,20 +247,20 @@ export default function TeacherStudentsPage() {
                 <div className="grid grid-cols-2 gap-3 order-1 md:order-3 w-full md:w-auto">
                   {/* Plan Name */}
                   <div className="text-center">
-                    <p className="text-xs text-gray-600 mb-2">{tCommon('plans') || 'Plan'}</p>
-                    <p className="font-bold text-gray-900 text-sm">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{tCommon('plans') || 'Plan'}</p>
+                    <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
                       {student.plan?.name || tCommon('none') || 'None'}
                     </p>
                   </div>
 
                   {/* Status */}
                   <div className="text-center">
-                    <p className="text-xs text-gray-600 mb-2">{tCommon('status') || 'Status'}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{tCommon('status') || 'Status'}</p>
                     <span
                       className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded ${
                         student.status === 'active'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-700'
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {student.status === 'active' ? (
@@ -278,17 +278,17 @@ export default function TeacherStudentsPage() {
                   </div>
 
                   {/* Remaining */}
-                  <div className="text-center bg-blue-50 rounded-lg p-2">
-                    <p className="text-xs text-blue-600 mb-1">{t('remaining')}</p>
-                    <p className="font-bold text-blue-700 text-lg">
+                  <div className="text-center bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2 border border-blue-100 dark:border-blue-700">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('remaining')}</p>
+                    <p className="font-bold text-blue-700 dark:text-blue-300 text-lg">
                       {student.plan?.sessions_remaining || 0}
                     </p>
                   </div>
 
                   {/* Used */}
-                  <div className="text-center bg-orange-50 rounded-lg p-2">
-                    <p className="text-xs text-orange-600 mb-1">{t('used')}</p>
-                    <p className="font-bold text-orange-700 text-lg">
+                  <div className="text-center bg-orange-50 dark:bg-orange-900/20 rounded-lg p-2 border border-orange-100 dark:border-orange-700">
+                    <p className="text-xs text-orange-600 dark:text-orange-400 mb-1">{t('used')}</p>
+                    <p className="font-bold text-orange-700 dark:text-orange-300 text-lg">
                       {student.plan?.sessions_used || 0}
                     </p>
                   </div>
@@ -302,10 +302,10 @@ export default function TeacherStudentsPage() {
 
       {/* overlay spinnner */}
       {isLoading && (
-        <div className="flex items-center justify-center bg-gray-50">
+        <div className="flex items-center justify-center bg-gray-50 dark:bg-slate-900">
           <div className="text-center" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600 text-lg">{tCommon('loading') || 'Loading...'}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">{tCommon('loading') || 'Loading...'}</p>
           </div>
         </div>
       )}

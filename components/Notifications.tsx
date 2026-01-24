@@ -77,13 +77,13 @@ export default function Notifications() {
     {/* notifications menu  */}
     {
         menuNotifications && (
-        <div className="absolute top-16 left-4 w-96 bg-white rounded-lg shadow-lg p-4" dir={isRTL ? "rtl" : "ltr"}>
-            <div className="w-full max-w-md rounded-2xl bg-white shadow-md">
+        <div className={`absolute top-16 ${isRTL ? "left-4" : "right-4"} w-96 bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4 transition-colors`} dir={isRTL ? "rtl" : "ltr"}>
+            <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-800 shadow-md border dark:border-slate-700 overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between border-b px-4 py-3">
+                <div className="flex items-center justify-between border-b dark:border-slate-700 px-4 py-3 bg-gray-50 dark:bg-slate-900/50">
                     <div className="flex items-center gap-2">
                     <Bell className="h-5 w-5 text-purple-600" />
-                    <h3 className="text-lg font-semibold">{t("title")}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{t("title")}</h3>
                     </div>
 
                     <button
@@ -96,21 +96,21 @@ export default function Notifications() {
                 </div>
 
                 {/* List */}
-                <div className="max-h-[400px] divide-y overflow-y-auto">
+                <div className="max-h-[400px] divide-y divide-gray-200 dark:divide-slate-700 overflow-y-auto">
                     {notifications.length === 0 && (
-                    <p className="p-4 text-center text-sm text-gray-500">{t("noNotifications")}</p>
+                    <p className="p-4 text-center text-sm text-gray-500 dark:text-gray-400">{t("noNotifications")}</p>
                     )}
 
                     {notifications.map((n: any) => (
                         
                     <div
                         key={n.id}
-                        className={`flex cursor-pointer items-start gap-3 px-4 py-3 transition hover:bg-gray-50 ${
-                        !n.read_at ? "bg-purple-50" : ""
+                        className={`flex cursor-pointer items-start gap-3 px-4 py-3 transition hover:bg-gray-50 dark:hover:bg-slate-700/50 ${
+                        !n.read_at ? "bg-purple-50 dark:bg-purple-900/10" : ""
                         }`}
                         onClick={() => !n.read_at && readMutation.mutate(n.id)}
                     >
-                        <Link href={"/" + notificationRoute(n)}>
+                        <Link href={"/" + notificationRoute(n)} className="flex items-start gap-3 w-full">
                         <span
                         className={`mt-2 h-2 w-2 rounded-full ${
                             !n.read_at ? "bg-purple-600" : "bg-transparent"
@@ -118,13 +118,22 @@ export default function Notifications() {
                         />
 
                         <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-800">{n?.data?.title}</p>
-                        <p className="text-xs text-gray-500">{n?.data?.body}</p>
-                        <p className="mt-1 text-[11px] text-gray-400">{utcToLocalDateTime(n.created_at)}</p>
+                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{n?.data?.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{n?.data?.body}</p>
+                        <p className="mt-1 text-[11px] text-gray-400 dark:text-gray-500">{utcToLocalDateTime(n.created_at)}</p>
                         </div>
                         </Link>
                     </div>
                     ))}
+                </div>
+                {/* Footer */}
+                <div className="border-t dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 px-4 py-2 text-center">
+                    <button
+                        onClick={() => readAllMutation.mutate()}
+                        className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                        {t("markAllRead")}
+                    </button>
                 </div>
                 </div>
         </div>
