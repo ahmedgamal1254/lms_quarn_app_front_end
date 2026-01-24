@@ -19,7 +19,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
     useEffect(() => {
         // Public routes that don't require authentication
-        const publicRoutes = ['/login', '/register/student'];
+        const publicRoutes = ['/login', '/register/student', '/'];
         // Remove locale prefix (e.g. /ar/login -> /login)
         const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, '') || '/';
         const isPublicRoute = publicRoutes.some(route => pathnameWithoutLocale.startsWith(route));

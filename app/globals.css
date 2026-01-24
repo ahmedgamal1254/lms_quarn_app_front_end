@@ -6,7 +6,7 @@
 
 html,
 body {
-   font-family: "Almarai", sans-serif;
+  font-family: "Almarai", sans-serif;
 }
 
 h1,
@@ -25,7 +25,6 @@ span {
   display: flex;
   min-height: 100vh;
 }
-
 
 /* ===== Mobile (Overlay) ===== */
 @media (max-width: 992px) {
@@ -933,7 +932,7 @@ span {
   font-size: 0.9rem;
 }
 
-.radio-input:checked+.radio-text {
+.radio-input:checked + .radio-text {
   color: var(--text-primary);
 }
 
@@ -1154,66 +1153,66 @@ span {
     transform: translateX(100%);
     z-index: 1000;
   }
-  
+
   .sidebar.open {
     transform: translateX(0);
   }
-  
+
   /* Main Content - No Margin */
   .main-content {
     margin-inline-start: 0 !important;
     width: 100%;
   }
-  
+
   /* Page Header */
   .page-header {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 1rem;
   }
-  
+
   .page-title {
     font-size: 1.5rem !important;
   }
-  
+
   .breadcrumbs {
     font-size: 0.75rem !important;
     flex-wrap: wrap;
   }
-  
+
   /* Toolbar */
   .toolbar {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 0.75rem;
   }
-  
+
   .toolbar .btn {
     width: 100%;
     justify-content: center;
   }
-  
+
   .search-input-wrapper {
     width: 100% !important;
   }
-  
+
   /* Tables - Horizontal Scroll */
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .data-table {
     min-width: 800px;
     font-size: 0.875rem;
   }
-  
+
   .data-table th,
   .data-table td {
     padding: 0.5rem !important;
     font-size: 0.75rem !important;
   }
-  
+
   /* Cards & Grids */
   .dashboard-grid,
   .plans-grid,
@@ -1221,26 +1220,26 @@ span {
   div[style*="grid-template-columns"] {
     grid-template-columns: 1fr !important;
   }
-  
+
   .card {
     padding: 1rem !important;
   }
-  
+
   /* Forms */
   .form-container {
     padding: 1rem !important;
   }
-  
+
   .form-group {
     margin-bottom: 1rem;
   }
-  
+
   .form-input,
   .form-select,
   .form-textarea {
     font-size: 16px !important; /* Prevent zoom on iOS */
   }
-  
+
   /* Modals */
   .modal-content {
     width: 95% !important;
@@ -1248,20 +1247,20 @@ span {
     margin: 1rem !important;
     padding: 1rem !important;
   }
-  
+
   /* Action Buttons */
   .action-btn {
     padding: 0.4rem !important;
   }
-  
+
   .form-actions {
     flex-direction: column !important;
   }
-  
+
   .form-actions .btn {
     width: 100% !important;
   }
-  
+
   /* Filter Dropdown */
   .filter-dropdown {
     position: fixed !important;
@@ -1284,51 +1283,51 @@ span {
     transform: translateX(100%);
     z-index: 1000;
   }
-  
+
   .sidebar.open {
     transform: translateX(0);
   }
-  
+
   /* Main Content */
   .main-content {
     margin-inline-start: 0 !important;
   }
-  
+
   /* Tables */
   .table-container {
     overflow-x: auto;
   }
-  
+
   .data-table {
     min-width: 700px;
   }
-  
+
   .data-table th,
   .data-table td {
     padding: 0.65rem !important;
     font-size: 0.85rem !important;
   }
-  
+
   /* Grid - 2 Columns */
   .dashboard-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
-  
+
   .plans-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
-  
+
   /* Toolbar */
   .toolbar {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
-  
+
   .search-input-wrapper {
     flex: 1;
     min-width: 200px;
   }
-  
+
   /* Forms */
   .form-grid {
     grid-template-columns: 1fr !important;
@@ -1341,17 +1340,17 @@ span {
   .sidebar {
     transform: translateX(0);
   }
-  
+
   /* Main Content - With Sidebar Margin */
   .main-content {
     margin-inline-start: 280px;
   }
-  
+
   /* Grid - 2-3 Columns */
   .dashboard-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
   }
-  
+
   .plans-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
@@ -1363,17 +1362,17 @@ span {
   .sidebar {
     transform: translateX(0);
   }
-  
+
   /* Main Content - With Sidebar Margin */
   .main-content {
     margin-inline-start: 280px;
   }
-  
+
   /* Grid - Full Flexibility */
   .dashboard-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
   }
-  
+
   .plans-grid {
     grid-template-columns: repeat(3, 1fr) !important;
   }
@@ -1471,20 +1470,20 @@ span {
   .breadcrumbs {
     display: none !important;
   }
-  
+
   .main-content {
     margin-inline-start: 0 !important;
   }
-  
+
   .table-container {
     overflow: visible !important;
   }
-  
+
   .data-table {
     min-width: 100% !important;
     font-size: 10pt;
   }
-  
+
   .page-title {
     font-size: 18pt !important;
     margin-bottom: 1rem;
@@ -1499,13 +1498,12 @@ span {
   .sidebar {
     width: 250px !important;
   }
-  
+
   .modal-content {
     max-height: 80vh;
     overflow-y: auto;
   }
 }
-
 
 /* ============================================
    THEME VARIABLES (LIGHT = DEFAULT)
@@ -1560,15 +1558,17 @@ body {
   color: var(--text-primary);
   background: transparent;
   min-height: 100vh;
-  transition: background 0.25s, color 0.25s;
+  transition:
+    background 0.25s,
+    color 0.25s;
 }
 
-.ant-layout-sider{
+.ant-layout-sider {
   flex: 0 0 260px;
-    max-width: 260px;
-    min-width: 300px !important;
-    width: 260px !important;
-    background: transparent!important;
+  max-width: 260px;
+  min-width: 300px !important;
+  width: 260px !important;
+  background: transparent !important;
 }
 
 /* ============================================
@@ -1595,7 +1595,9 @@ body {
   bottom: 0;
   z-index: 50;
   overflow-y: auto;
-  transition: transform 0.3s ease, background 0.25s;
+  transition:
+    transform 0.3s ease,
+    background 0.25s;
 }
 
 .logo {
@@ -1618,7 +1620,9 @@ body {
   color: var(--text-secondary);
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .nav-item:hover,
@@ -1718,7 +1722,9 @@ body {
   padding: 2rem;
   border: 1px solid var(--border-color);
   text-align: center;
-  transition: transform 0.2s, background 0.25s;
+  transition:
+    transform 0.2s,
+    background 0.25s;
 }
 
 .card:hover {
@@ -1805,22 +1811,78 @@ body {
   }
 }
 
-.flex{
+.flex {
   display: flex;
 }
 
-.flex-col{
+.flex-col {
   flex-direction: column;
 }
 
-.gap{
+.gap {
   gap: 1rem;
 }
 
-.justify-between{
+.justify-between {
   justify-content: space-between;
 }
 
-.items-center{
+.items-center {
   align-items: center;
+}
+
+/* Landing Page Animations */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
 }

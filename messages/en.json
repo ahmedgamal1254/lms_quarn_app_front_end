@@ -840,6 +840,152 @@
     "errorLoading": "Error loading data",
     "saving": "Saving..."
   },
+  "LandingPage": {
+    "Header": {
+      "home": "Home",
+      "about": "About Us",
+      "plans": "Plans",
+      "tutors": "Tutors",
+      "contact": "Contact",
+      "login": "Login / Register"
+    },
+    "About": {
+      "subtitle": "Discover Our Mission",
+      "title": "We Are Dedicated to",
+      "titleHighlight": "Excellence in Quran Education",
+      "description": "Our mission is to make Quran learning accessible to everyone, everywhere. We combine traditional teaching methods with modern technology to provide an engaging and effective learning experience.",
+      "cta": "Learn More About Us",
+      "stats": {
+        "years": "Years Experience",
+        "students": "Students Worldwide",
+        "courses": "Courses Available",
+        "certified": "Certified Tutors"
+      }
+    },
+    "Pricing": {
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Choose the plan that best fits your learning goals. No hidden fees.",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "save20": "Save 20%",
+      "mostPopular": "Most Popular",
+      "mo": "mo",
+      "yr": "yr",
+      "choosePlan": "Choose Plan",
+      "basic": {
+        "name": "Basic",
+        "description": "Perfect for beginners starting their journey."
+      },
+      "standard": {
+        "name": "Standard",
+        "description": "Ideal for regular learners needing consistency."
+      },
+      "premium": {
+        "name": "Elite",
+        "description": "Intensive learning with maximum flexibility."
+      },
+      "features": {
+        "sessions": "{count} Sessions / Month",
+        "duration": "{min} Mins / Session",
+        "recording": "Session Recordings",
+        "report": "Progress Report",
+        "certificate": "Completion Certificate"
+      }
+    },
+    "Teachers": {
+      "title": "Meet Our Expert Tutors",
+      "subtitle": "Learn from Al-Azhar certified tutors who are passionate about teaching Quran and Tajweed.",
+      "badge": "Elite Teachers",
+      "students": "Students",
+      "book": "Book Session",
+      "profile": "View Profile",
+      "roles": {
+        "quran": "Quran Recitation",
+        "tajweed": "Tajweed Rules",
+        "arabic": "Arabic Language",
+        "kids": "Quran for Kids"
+      }
+    },
+    "Contact": {
+      "title": "Get In Touch",
+      "subtitle": "Have questions? We would love to hear from you. Send us a message and we will get back to you shortly.",
+      "email": "Email Us",
+      "phone": "Call Us",
+      "address": "Visit Us",
+      "addressDetails": "123 Quran St, Cairo, Egypt",
+      "formTitle": "Send Message",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "emailAddress": "Email Address",
+      "message": "Message",
+      "messagePlaceholder": "How can we help you?",
+      "sendMessage": "Send Message"
+    },
+    "Footer": {
+      "description": "The best platform to learn Quran online with expert tutors worldwide.",
+      "quickLinks": "Quick Links",
+      "support": "Support",
+      "newsletter": "Newsletter",
+      "newsletterDesc": "Subscribe to get updates and special offers.",
+      "emailPlaceholder": "Enter your email",
+      "subscribe": "Subscribe",
+      "rights": "All rights reserved.",
+      "madeWith": "Made with",
+      "byTeam": "by QuranLMS Team",
+      "about": "About Us",
+      "courses": "Courses",
+      "tutors": "Tutors",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "help": "Help Center",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "faq": "FAQ",
+      "sitemap": "Sitemap"
+    },
+    "Hero": {
+      "badge": "New: Interactive Quran Classes",
+      "title": {
+        "part1": "Master the",
+        "highlight": "Holy Quran",
+        "part2": "with Experts"
+      },
+      "description": "Join thousands of students worldwide in learning Quran, Tajweed, and Arabic from certified tutors. Experience a spiritual journey with modern technology.",
+      "cta": {
+        "primary": "Start Free Trial",
+        "secondary": "Watch Video"
+      },
+      "stats": {
+        "students": "Active Students",
+        "tutors": "Expert Tutors",
+        "rating": "Average Rating"
+      },
+      "card": {
+        "title": "Interactive Learning",
+        "desc": "Join live sessions with one-click access."
+      }
+    },
+    "Features": {
+      "title": "Why Choose Us",
+      "subtitle": "We provide the best environment for learning the Holy Quran with advanced tools and expert guidance.",
+      "certifiedTutors": {
+        "title": "Certified Tutors",
+        "desc": "Learn from Al-Azhar certified tutors with Ijazah."
+      },
+      "interactive": {
+        "title": "Interactive Classroom",
+        "desc": "Live video and audio sessions with whiteboard."
+      },
+      "flexible": {
+        "title": "Flexible Scheduling",
+        "desc": "Book classes at times that suit your lifestyle."
+      },
+      "reports": {
+        "title": "Progress Reports",
+        "desc": "Track your progress with detailed analytics."
+      }
+    }
+  },
   "Profile": {
     "title": "Profile",
     "description": "Manage your personal information and subscriptions",
