@@ -25,6 +25,9 @@
     "loading": "جار التحميل...",
     "error": "حدث خطأ",
     "homework": "الواجبات",
+    "filter":"تصفية",
+    "apply":"تطبيق",
+    "reset":"إعادة تعيين",
     "createdAt":"تاريخ الاضافة",
     "no":"لا",
     "yes":"نعم",
@@ -286,6 +289,7 @@
   },
   "AdminSessions": {
     "title": "الحصص",
+    "all": "الكل",
     "singleSession": "حصة واحدة",
     "bulkSessions": "حصص متعددة",
     "searchPlaceholder": "بحث عن الطالب أو المعلم أو المادة...",
@@ -673,7 +677,9 @@
     "successDelete": "تم حذف العملة بنجاح",
     "errorAdd": "خطأ في إضافة العملة",
     "errorUpdate": "خطأ في تحديث العملة",
-    "errorDelete": "خطأ في حذف العملة"
+    "errorDelete": "خطأ في حذف العملة",
+    "shortSymbol": "الرمز المختصر",
+    "makeDefault": "جعل هذه العملة الافتراضية"
   },
   "AdminSubjects": {
     "title": "إدارة المواد الدراسية",
@@ -986,5 +992,24 @@
     "used": "المستخدم",
     "active": "نشط",
     "inactive": "غير نشط"
+  },
+  "SessionsCalendar": {
+    "title": "تقويم الحصص",
+    "description": "إدارة وتتبع جميع الحصص الدراسية",
+    "totalSessions": "إجمالي الحصص",
+    "upcoming": "قادمة",
+    "completed": "مكتملة",
+    "cancelled": "ملغية",
+    "today": "اليوم",
+    "noSessionsDay": "لا توجد حصص في هذا اليوم",
+    "meetingLink": "رابط الاجتماع",
+    "duration": "المدة: {minutes} دقيقة",
+    "sessionsCount": "{count} حصة",
+    "moreSessions": "و {count} حصص أخرى",
+    "status": {
+      "completed": "مكتملة",
+      "scheduled": "مجدولة",
+      "cancelled": "ملغية"
+    }
   }
 }

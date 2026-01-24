@@ -36,6 +36,8 @@ interface ExamData {
   description: string;
   subject_name: string;
   teacher_name: string;
+  subject: Subject;
+  teacher: Teacher;
   exam_date: string;
   start_time: string;
   duration_minutes: number;
@@ -367,10 +369,10 @@ export default function ExamsPage() {
                               <td className="px-6 py-4 text-sm font-medium text-gray-900">{exam.title}</td>
                               <td className="px-6 py-4 text-sm">
                                 <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                                  {exam.subject_name || t('notSpecified')}
+                                  {exam.subject?.name || t('notSpecified')}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 text-sm text-gray-700">{exam.teacher_name || t('notSpecified')}</td>
+                              <td className="px-6 py-4 text-sm text-gray-700">{exam.teacher?.name || t('notSpecified')}</td>
                               <td className="px-6 py-4 text-sm text-gray-700">{exam.exam_date}</td>
                               <td className="px-6 py-4 text-sm text-gray-700">{t('minutes', { count: exam.duration_minutes || 60 })}</td>
                               <td className="px-6 py-4 text-sm font-bold text-gray-900">{exam.total_marks || 100}</td>

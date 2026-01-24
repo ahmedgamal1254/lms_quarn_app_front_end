@@ -26,6 +26,9 @@
     "createdAt":"Created At",
     "no": "No",
     "yes": "Yes",
+    "filters": "Filters",
+    "apply": "Apply",
+    "reset": "Reset",
     "error": "An error occurred",
     "price": "Price",
     "errorLoadingData": "Error loading data",
@@ -286,6 +289,7 @@
   },
   "AdminSessions": {
     "title": "Sessions",
+    "all":"All",
     "singleSession": "Single Session",
     "bulkSessions": "Multiple Sessions",
     "searchPlaceholder": "Search student, teacher or subject...",
@@ -673,7 +677,9 @@
     "successDelete": "Currency deleted successfully",
     "errorAdd": "Error adding currency",
     "errorUpdate": "Error updating currency",
-    "errorDelete": "Error deleting currency"
+    "errorDelete": "Error deleting currency",
+    "shortSymbol": "Short Symbol",
+    "makeDefault": "Make this currency default"
   },
   "AdminSubjects": {
     "title": "Subjects Management",
@@ -986,5 +992,24 @@
     "used": "Used",
     "active": "Active",
     "inactive": "Inactive"
+  },
+  "SessionsCalendar": {
+    "title": "Sessions Calendar",
+    "description": "Manage and track all study sessions",
+    "totalSessions": "Total Sessions",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "today": "Today",
+    "noSessionsDay": "No sessions on this day",
+    "meetingLink": "Meeting Link",
+    "duration": "Duration: {minutes} minutes",
+    "sessionsCount": "{count} sessions",
+    "moreSessions": "and {count} more sessions",
+    "status": {
+      "completed": "Completed",
+      "scheduled": "Scheduled",
+      "cancelled": "Cancelled"
+    }
   }
 }

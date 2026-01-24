@@ -22,7 +22,9 @@ export function utcToLocalDateTime(
 
 export function utcToLocalDate(
   utcString: string,
-  locale = "ar-EG"
+  locale = typeof window !== "undefined"
+    ? navigator.language
+    : "en-US"
 ) {
   return new Date(utcString).toLocaleDateString(locale, {
     year: "numeric",
@@ -33,7 +35,9 @@ export function utcToLocalDate(
 
 export function utcToLocalTime(
   utcString: string,
-  locale = "ar-EG"
+  locale = typeof window !== "undefined"
+    ? navigator.language
+    : "en-US"
 ) {
   return new Date(utcString).toLocaleTimeString(locale, {
     hour: "2-digit",

@@ -246,11 +246,11 @@ export default function UsersPage() {
                     <table className="w-full text-sm">
                         <thead>
                             <tr className={`border-b border-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
-                                <th className="text-right py-3 px-4 font-semibold text-gray-700">{tCommon('name')}</th>
-                                <th className="text-right py-3 px-4 font-semibold text-gray-700">{tCommon('email')}</th>
-                                <th className="text-right py-3 px-4 font-semibold text-gray-700">{tCommon('phone')}</th>
-                                <th className="text-right py-3 px-4 font-semibold text-gray-700">{tUsers('role')}</th>
-                                <th className="text-right py-3 px-4 font-semibold text-gray-700">{tCommon('status')}</th>
+                                <th className="py-3 px-4 font-semibold text-gray-700">{tCommon('name')}</th>
+                                <th className="py-3 px-4 font-semibold text-gray-700">{tCommon('email')}</th>
+                                <th className="py-3 px-4 font-semibold text-gray-700">{tCommon('phone')}</th>
+                                <th className="py-3 px-4 font-semibold text-gray-700">{tUsers('role')}</th>
+                                <th className="py-3 px-4 font-semibold text-gray-700">{tCommon('status')}</th>
                                 <th className="text-center py-3 px-4 font-semibold text-gray-700">{tCommon('actions')}</th>
                             </tr>
                         </thead>

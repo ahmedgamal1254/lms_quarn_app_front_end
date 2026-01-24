@@ -33,7 +33,8 @@ export default function CurrenciesPage() {
     const tCommon = useTranslations('Common');
     const queryClient = useQueryClient();
     const routeParams = useParams();
-    const isRTL = routeParams.locale === 'ar';
+    const locale = routeParams.locale as string;
+    const isRTL = locale === 'ar';
     const [searchQuery, setSearchQuery] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
@@ -283,21 +284,20 @@ export default function CurrenciesPage() {
                         {/* Table View */}
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
+                                <table className="w-full text-sm text-start">
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-50">
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">الرمز</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">الاسم</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">الرمز المختصر</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">سعر الصرف</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">افتراضية</th>
-                                            <th className="px-6 py-3 text-right font-semibold text-gray-900">التاريخ</th>
-                                            <th className="px-6 py-3 text-center font-semibold text-gray-900">الإجراءات</th>
+                                        <tr className="border-b border-gray-200 bg-gray-50 text-start">
+                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('code')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900">{tCommon('name')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('shortSymbol')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('exchangeRate')}</th>
+                                            <th className="px-6 py-3 font-semibold text-gray-900">{t('default')}</th>
+                                            <th className="px-6 py-3 text-center font-semibold text-gray-900">{tCommon('actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredCurrencies.map((currency) => (
-                                            <tr key={currency.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <tr key={currency.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors text-center">
                                                 <td className="px-6 py-3 font-bold text-gray-900">{currency.code}</td>
                                                 <td className="px-6 py-3 text-gray-900">{currency.name}</td>
                                                 <td className="px-6 py-3 text-2xl font-semibold text-gray-900">{currency.symbol}</td>
@@ -308,34 +308,31 @@ export default function CurrenciesPage() {
                                                             ? 'bg-blue-100 text-blue-700'
                                                             : 'bg-gray-100 text-gray-700'
                                                     }`}>
-                                                        {currency.is_default ? 'نعم' : 'لا'}
+                                                        {currency.is_default ? tCommon('yes') : tCommon('no')}
                                                     </span>
-                                                </td>
-                                                <td className="px-6 py-3 text-gray-600 text-xs">
-                                                    {currency.created_at && new Date(currency.created_at).toLocaleDateString('ar-EG')}
                                                 </td>
                                                 <td className="px-6 py-3">
                                                     <div className="flex justify-center gap-2">
                                                         <button
                                                             onClick={() => openModal('edit', currency)}
                                                             className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
-                                                            title="تعديل"
+                                                            title={tCommon('edit')}
                                                         >
                                                             <Edit2 size={16} className="text-blue-600" />
                                                         </button>
                                                         <button
                                                             onClick={() => {
                                                                 if (currency.is_default) {
-                                                                    toast.error('لا يمكن حذف العملة الافتراضية');
+                                                                    toast.error(t('errorDelete'));
                                                                     return;
                                                                 }
-                                                                if (confirm(`هل أنت متأكد من حذف ${currency.name}؟`)) {
+                                                                if (confirm(tCommon('confirmDelete').replace('{name}', currency.name))) {
                                                                     deleteMutation.mutate(currency.id);
                                                                 }
                                                             }}
                                                             disabled={deleteMutation.isPending || currency.is_default}
                                                             className="p-2 hover:bg-red-100 rounded-lg transition-colors disabled:opacity-50"
-                                                            title="حذف"
+                                                            title={tCommon('delete')}
                                                         >
                                                             <Trash2 size={16} className="text-red-600" />
                                                         </button>
@@ -358,7 +355,7 @@ export default function CurrenciesPage() {
                         {/* Modal Header */}
                         <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-blue-50">
                             <h2 className="text-xl font-bold text-gray-900">
-                                {modalMode === 'create' ? 'إضافة عملة جديدة' : 'تعديل العملة'}
+                                {modalMode === 'create' ? t('addCurrency') : t('editCurrency')}
                             </h2>
                             <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
                                 <X size={24} />
@@ -368,19 +365,19 @@ export default function CurrenciesPage() {
                         {/* Modal Content */}
                         <div className="p-6 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">رمز العملة (Code) *</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('currencyCode')} ({t('code')}) *</label>
                                 <input
                                     type="text"
                                     value={formData.code}
                                     onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="USD, SAR, EGP"
+                                    placeholder={isRTL ? "USD, SAR, EGP" : "USD, SAR, EGP"}
                                     maxLength={3}
                                 />
                             </div>
 
                             <TranslatableInput
-                                label="اسم العملة"
+                                label={t('currencyName')}
                                 value={formData.name}
                                 onChange={(val) => setFormData({ ...formData, name: val })}
                                 placeholder={{ ar: 'الدولار الأمريكي', en: 'US Dollar' }}
@@ -388,19 +385,19 @@ export default function CurrenciesPage() {
                             />
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">الرمز المختصر *</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('shortSymbol')} *</label>
                                 <input
                                     type="text"
                                     value={formData.symbol}
                                     onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="$ أو ر.س"
+                                    placeholder={isRTL ? "$ أو ر.س" : "$ or SAR"}
                                     maxLength={5}
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">سعر الصرف *</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('exchangeRate')} *</label>
                                 <input
                                     type="number"
                                     step="0.01"
@@ -412,8 +409,7 @@ export default function CurrenciesPage() {
                             </div>
 
                              {/* Removed Status Field as it wasn't in original proper implementation or not critical for now, keeping simple */}
-                             
-                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                                 <input
                                     type="checkbox"
                                     id="is_default"
@@ -422,7 +418,7 @@ export default function CurrenciesPage() {
                                     className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                 />
                                 <label htmlFor="is_default" className="text-sm font-medium text-gray-700 cursor-pointer">
-                                    جعل هذه العملة الافتراضية
+                                    {t('makeDefault')}
                                 </label>
                             </div>
                         </div>
@@ -433,7 +429,7 @@ export default function CurrenciesPage() {
                                 onClick={closeModal}
                                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                             >
-                                إلغاء
+                                {tCommon('cancel')}
                             </button>
                             <button
                                 onClick={handleSave}
@@ -441,7 +437,7 @@ export default function CurrenciesPage() {
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors font-medium flex items-center gap-2"
                             >
                                 {saveMutation.isPending && <Loader size={16} className="animate-spin" />}
-                                {modalMode === 'create' ? 'إضافة' : 'حفظ'}
+                                {modalMode === 'create' ? tCommon('add') : tCommon('save')}
                             </button>
                         </div>
                     </div>

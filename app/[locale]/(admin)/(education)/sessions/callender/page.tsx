@@ -5,9 +5,9 @@ import axiosInstance from '@/lib/axios';
 import { Calendar, Clock, User, BookOpen, Menu, ChevronLeft, ChevronRight, MapPin, AlertCircle } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ar';
+import 'dayjs/locale/en';
 import { useParams } from 'next/navigation';
-
-dayjs.locale('ar');
+import { useTranslations } from 'next-intl';
 
 interface SessionData {
   id: number;
@@ -36,18 +36,14 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const getStatusText = (status: string) => {
-  const statusMap: { [key: string]: string } = {
-    completed: 'مكتملة',
-    scheduled: 'مجدولة',
-    cancelled: 'ملغية'
-  };
-  return statusMap[status] || status;
-};
-
 export default function CalendarPage() {
+  const t = useTranslations('SessionsCalendar');
   const routeParams = useParams();
-  const isRTL = routeParams.locale === 'ar';
+  const locale = routeParams.locale as string;
+  const isRTL = locale === 'ar';
+  
+  // Set dayjs locale
+  dayjs.locale(locale);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [currentMonth, setCurrentMonth] = useState(dayjs());
@@ -94,13 +90,12 @@ export default function CalendarPage() {
   const upcomingSessions = sessions.filter((s: SessionData) => s.status === 'scheduled').length;
   const cancelledSessions = sessions.filter((s: SessionData) => s.status === 'cancelled').length;
 
-  const arabicMonthNames = [
-    'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
-  ];
-
-  const arabicDayNames = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'];
-  const fullArabicDayNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  // Generate weekday names based on current locale
+  // Start mainly from Sunday as logic implies, but dayjs handles it
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    weekDays.push(dayjs().day(i).format('ddd'));
+  }
 
   // Simple calendar grid
   const monthStart = currentMonth.startOf('month');
@@ -126,9 +121,9 @@ export default function CalendarPage() {
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
           <div className="px-4 md:px-6 py-4 flex items-center justify-between">
 
-            <div className="flex-1 text-center md:text-right">
-              <h1 className="text-2xl md:text-2xl font-bold text-gray-900">تقويم الحصص</h1>
-              <p className="text-sm text-gray-500 mt-1">إدارة وتتبع جميع الحصص الدراسية</p>
+            <div className={`flex-1 text-center ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
+              <h1 className="text-2xl md:text-2xl font-bold text-gray-900">{t('title')}</h1>
+              <p className="text-sm text-gray-500 mt-1">{t('description')}</p>
             </div>
             <div className="hidden md:flex items-center space-x-4"></div>
           </div>
@@ -142,7 +137,7 @@ export default function CalendarPage() {
                 <div className="inline-block animate-spin">
                   <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full"></div>
                 </div>
-                <p className="mt-4 text-gray-600">جاري التحميل...</p>
+                <p className="mt-4 text-gray-600">{t('loading') ?? 'Loading...'}</p>
               </div>
             ) : (
               <>
@@ -152,7 +147,7 @@ export default function CalendarPage() {
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">إجمالي الحصص</p>
+                        <p className="text-gray-500 text-sm font-medium">{t('totalSessions')}</p>
                         <p className="text-2xl font-bold text-gray-900 mt-1">{totalSessions}</p>
                       </div>
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -164,7 +159,7 @@ export default function CalendarPage() {
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">قادمة</p>
+                        <p className="text-gray-500 text-sm font-medium">{t('upcoming')}</p>
                         <p className="text-2xl font-bold text-blue-600 mt-1">{upcomingSessions}</p>
                       </div>
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -176,7 +171,7 @@ export default function CalendarPage() {
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">مكتملة</p>
+                        <p className="text-gray-500 text-sm font-medium">{t('completed')}</p>
                         <p className="text-2xl font-bold text-emerald-600 mt-1">{completedSessions}</p>
                       </div>
                       <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
@@ -188,7 +183,7 @@ export default function CalendarPage() {
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-500 text-sm font-medium">ملغية</p>
+                        <p className="text-gray-500 text-sm font-medium">{t('cancelled')}</p>
                         <p className="text-2xl font-bold text-red-600 mt-1">{cancelledSessions}</p>
                       </div>
                       <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
@@ -213,7 +208,7 @@ export default function CalendarPage() {
                             <ChevronLeft size={24} />
                           </button>
                           <h2 className="text-xl md:text-2xl font-bold text-white">
-                            {arabicMonthNames[currentMonth.month()]} {currentMonth.year()}
+                            {currentMonth.format('MMMM YYYY')}
                           </h2>
                           <button
                             onClick={() => setCurrentMonth(currentMonth.add(1, 'month'))}
@@ -225,7 +220,7 @@ export default function CalendarPage() {
 
                         {/* Day Names */}
                         <div className="grid grid-cols-7 gap-1 text-center">
-                          {arabicDayNames.map((day, idx) => (
+                          {weekDays.map((day, idx) => (
                             <div key={day} className="text-xs md:text-sm font-semibold text-white/80 py-1 md:py-2">
                               {day}
                             </div>
@@ -291,7 +286,7 @@ export default function CalendarPage() {
                       </div>
 
                       <div className="px-4 md:px-6 py-4">
-                        <p className="text-sm text-gray-600 font-medium mb-4">{sessionsForSelectedDate.length} حصة</p>
+                        <p className="text-sm text-gray-600 font-medium mb-4">{t('sessionsCount', {count: sessionsForSelectedDate.length})}</p>
                         <div className="max-h-72 md:max-h-96 overflow-y-auto space-y-3">
                           {sessionsForSelectedDate.length > 0 ? (
                             sessionsForSelectedDate.map((session) => {
@@ -302,8 +297,8 @@ export default function CalendarPage() {
                                     <h4 className={`font-bold text-xs md:text-sm leading-tight flex-1 ${statusStyle.text}`}>
                                       {session.title}
                                     </h4>
-                                    <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap ml-2 ${statusStyle.light} ${statusStyle.text}`}>
-                                      {getStatusText(session.status)}
+                                    <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap ${isRTL ? 'mr-auto ml-0' : 'ml-auto mr-0'} ${statusStyle.light} ${statusStyle.text}`}>
+                                      {t(`status.${session.status}`)}
                                     </span>
                                   </div>
 
@@ -333,14 +328,14 @@ export default function CalendarPage() {
                                           rel="noopener noreferrer"
                                           className="underline hover:no-underline truncate text-[10px] md:text-xs"
                                         >
-                                          رابط الاجتماع
+                                          {t('meetingLink')}
                                         </a>
                                       </div>
                                     )}
                                   </div>
 
                                   <div className={`text-[10px] md:text-xs mt-2 pt-2 border-t border-current opacity-60 ${statusStyle.text}`}>
-                                    المدة: {session.duration_minutes} دقيقة
+                                    {t('duration', {minutes: session.duration_minutes})}
                                   </div>
                                 </div>
                               );
@@ -348,7 +343,7 @@ export default function CalendarPage() {
                           ) : (
                             <div className="text-center py-8 text-gray-400">
                               <Calendar size={32} className="mx-auto mb-3 opacity-30" />
-                              <p className="text-sm md:text-base">لا توجد حصص في هذا اليوم</p>
+                              <p className="text-sm md:text-base">{t('noSessionsDay')}</p>
                             </div>
                           )}
                         </div>
@@ -359,7 +354,7 @@ export default function CalendarPage() {
                     {todaySessions.length > 0 && !selectedDate.isSame(dayjs(), 'day') && (
                       <div className="bg-white rounded-xl border border-amber-200 bg-amber-50 shadow-sm overflow-hidden">
                         <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-4 md:px-6 py-2 md:py-4">
-                          <h3 className="text-sm md:text-base font-bold text-white">اليوم</h3>
+                          <h3 className="text-sm md:text-base font-bold text-white">{t('today')}</h3>
                           <p className="text-amber-100 text-xs md:text-sm mt-1">{dayjs().format('DD MMMM YYYY')}</p>
                         </div>
 
@@ -372,7 +367,7 @@ export default function CalendarPage() {
                           ))}
                           {todaySessions.length > 3 && (
                             <p className="text-xs md:text-sm text-amber-700 text-center pt-2">
-                              و {todaySessions.length - 3} حصص أخرى
+                              {t('moreSessions', {count: todaySessions.length - 3})}
                             </p>
                           )}
                         </div>
