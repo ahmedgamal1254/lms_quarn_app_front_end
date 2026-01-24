@@ -92,6 +92,7 @@ export default function ChatPage() {
   const tChat = useTranslations('Chat');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -364,13 +365,13 @@ export default function ChatPage() {
             <>
               {/* Chat Header */}
               <div className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between sticky top-0 z-10">
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setSelectedConversation(null)}
                       className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-gray-100"
                     >
-                      <ArrowRight className="w-6 h-6" />
+                      <ArrowRight className={`w-6 h-6 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                     </button>
                     
                     {/* Avatar */}
@@ -398,17 +399,7 @@ export default function ChatPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <Phone className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <Video className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
-                  </div>
+                  
                 </div>
               </div>
 
@@ -477,7 +468,7 @@ export default function ChatPage() {
                              {/* Message Bubble */}
                             <div
                               className={`max-w-[75%] rounded-2xl overflow-hidden ${
-                                isOwn ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-slate-700 shadow-sm'
+                                isOwn ? 'bg-indigo-600' : 'bg-white dark:bg-slate-700 shadow-sm'
                               }`}
                             >
                               <div className="p-1">
@@ -518,7 +509,7 @@ export default function ChatPage() {
                               </div>
                               <span
                                 className={`text-[10px] px-3 pb-1 block ${
-                                  isOwn ? 'text-indigo-100' : 'text-gray-400'
+                                  isOwn ? 'text-gray-300' : 'text-gray-400'
                                 } ${isOwn ? (locale === 'ar' ? 'text-left' : 'text-right') : (locale === 'ar' ? 'text-right' : 'text-left')}`}
                               >
                                 {formatTime(message.created_at)}
@@ -535,7 +526,7 @@ export default function ChatPage() {
 
                {/* Message Input */}
               <div className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-end gap-2">
+                <div className="flex items-center gap-2">
                   <FileUploadButton 
                     onUpload={handleSendFiles}
                     disabled={sendMessageMutation.isPending}

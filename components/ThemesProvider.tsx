@@ -38,7 +38,7 @@ const AntdConfig = ({ children }: { children: React.ReactNode }) => {
 
 export default function ThemesProvider({ children }: { children: React.ReactNode }) {
   return (
-    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+    <NextThemesProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <AntdConfig>{children}</AntdConfig>
     </NextThemesProvider>
   );

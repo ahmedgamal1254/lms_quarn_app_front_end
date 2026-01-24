@@ -381,7 +381,7 @@ export default function ChatPage() {
             <>
               {/* Chat Header */}
               <div className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between sticky top-0 z-10">
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setSelectedConversation(null)}
@@ -415,17 +415,7 @@ export default function ChatPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors">
-                      <Phone className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors">
-                      <Video className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
-                  </div>
+                  
                 </div>
               </div>
 
@@ -494,7 +484,7 @@ export default function ChatPage() {
                              {/* Message Bubble */}
                             <div
                               className={`max-w-[75%] rounded-2xl overflow-hidden ${
-                                isOwn ? 'text-white' : 'bg-white shadow-sm'
+                                isOwn ? 'dark:text-white' : 'bg-white shadow-sm'
                               }`}
                             >
                               <div className="p-1">
@@ -535,7 +525,7 @@ export default function ChatPage() {
                               </div>
                               <span
                                 className={`text-[10px] px-3 pb-1 block ${
-                                  isOwn ? 'text-indigo-100' : 'text-gray-400'
+                                  isOwn ? 'text-gray-400' : 'text-gray-400'
                                 } ${isOwn ? (dir === 'rtl' ? 'text-left' : 'text-right') : (dir === 'rtl' ? 'text-right' : 'text-left')}`}
                               >
                                 {formatTime(message.created_at)}
@@ -552,7 +542,7 @@ export default function ChatPage() {
 
                {/* Message Input */}
               <div className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-end gap-2">
+                <div className="flex items-center gap-2">
                   <FileUploadButton 
                     onUpload={handleSendFiles}
                     disabled={sendMessageMutation.isPending}
@@ -584,7 +574,7 @@ export default function ChatPage() {
                       type="button"
                       onClick={() => handleSendMessage()}
                       disabled={!messageText.trim() || sendMessageMutation.isPending}
-                      className="p-3 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200 dark:shadow-none"
+                      className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200 dark:shadow-none"
                     >
                       {sendMessageMutation.isPending ? (
                         <Loader2 className="w-6 h-6 animate-spin" />

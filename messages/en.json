@@ -586,6 +586,9 @@
   },
   "Chat": {
     "messages": "Messages",
+    "voiceMessage": "Voice Message",
+    "fileMessage": "File Message",
+    "mediaMessage": "Media Message",
     "searchPlaceholder": "Search conversations...",
     "noConversations": "No conversations",
     "startConversation": "Start a new conversation",

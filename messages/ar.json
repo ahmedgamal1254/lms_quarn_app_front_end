@@ -589,6 +589,9 @@
   },
   "Chat": {
     "messages": "الرسائل",
+    "voiceMessage":"رسالة صوتية",
+    "fileMessage":"رسالة ملف",
+    "mediaMessage":"رسالة وسائط",
     "searchPlaceholder": "بحث في المحادثات...",
     "noConversations": "لا توجد محادثات",
     "startConversation": "ابدأ محادثة جديدة",

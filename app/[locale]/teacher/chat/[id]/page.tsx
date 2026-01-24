@@ -247,11 +247,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Phone />
-          <Video />
-          <MoreVertical />
-        </div>
+
       </div>
 
       {/* ===== MESSAGES ===== */}
@@ -337,7 +333,7 @@ export default function ChatPage() {
                         )}
                       </div>
 
-                      <div className={`text-[10px] px-3 pb-1 ${isOwn ? 'text-indigo-100' : 'text-gray-400'} text-left`}>
+                      <div className={`text-[10px] px-3 pb-1 ${isOwn ? 'text-gray-300' : 'text-gray-400'} text-left`}>
                         {formatTime(msg.created_at)}
                       </div>
                     </div>
@@ -357,7 +353,7 @@ export default function ChatPage() {
            {/* The FileUploadButton handles its own preview, but we need to place it correctly */}
         </div>
         
-        <div className="flex items-end gap-2">
+        <div className="flex items-center gap-2">
           {/* Attachment Button */}
           <div className="flex items-center">
             <FileUploadButton 

@@ -246,11 +246,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Phone />
-          <Video />
-          <MoreVertical />
-        </div>
+
       </div>
 
       {/* ===== MESSAGES ===== */}
@@ -295,7 +291,7 @@ export default function ChatPage() {
                   >
                     <div
                       className={`max-w-[75%] rounded-2xl overflow-hidden ${
-                        isOwn ? 'bg-indigo-600 text-white' : 'bg-white shadow'
+                        isOwn ? 'bg-indigo-600' : 'bg-white shadow'
                       }`}
                     >
                       {/* Message Content */}
@@ -336,7 +332,7 @@ export default function ChatPage() {
                         )}
                       </div>
 
-                      <div className={`text-[10px] px-3 pb-1 ${isOwn ? 'text-indigo-100' : 'text-gray-400'} text-left`}>
+                      <div className={`text-[10px] px-3 pb-1 ${isOwn ? 'text-gray-300' : 'text-gray-400'} text-left`}>
                         {formatTime(msg.created_at)}
                       </div>
                     </div>
@@ -351,7 +347,7 @@ export default function ChatPage() {
 
       {/* ===== INPUT ===== */}
       <div className="bg-white dark:bg-slate-800 border-t p-4 flex flex-col gap-2">
-        <div className="flex items-end gap-2">
+        <div className="flex items-center gap-2">
           {/* Attachment Button */}
           <div className="flex items-center">
             <FileUploadButton 
