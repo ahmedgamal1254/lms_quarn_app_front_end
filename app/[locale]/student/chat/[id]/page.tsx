@@ -20,6 +20,11 @@ import { AxiosError } from 'axios';
 import { getUser } from '@/lib/auth';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import VoiceRecorder from '@/components/Chat/VoiceRecorder';
+import FileUploadButton from '@/components/Chat/FileUploadButton';
+import VoiceMessageBubble from '@/components/Chat/VoiceMessageBubble';
+import MediaMessageBubble from '@/components/Chat/MediaMessageBubble';
+import FileMessageBubble from '@/components/Chat/FileMessageBubble';
 
 /* ================= TYPES ================= */
 
@@ -39,6 +44,11 @@ interface Message {
   is_read: boolean;
   created_at: string;
   sender: UserType;
+  attachment_path?: string;
+  attachment_type?: 'voice' | 'image' | 'video' | 'document';
+  attachment_size?: number;
+  duration?: number;
+  original_filename?: string;
 }
 
 interface MessagesResponse {
@@ -64,14 +74,12 @@ const fetchMessages = async (
   return res.data.data;
 };
 
-const sendMessage = async (data: {
-  conversation_id: number;
-  message: string;
-}) => {
-  const res = await axiosInstance.post(
-    `/messages/send`,
-    data
-  );
+const sendMessage = async (data: FormData) => {
+  const res = await axiosInstance.post(`/messages/send`, data, {
+    headers: {
+      'Content-Type': null,
+    } as any,
+  });
   return res.data.data;
 };
 
@@ -134,10 +142,32 @@ export default function ChatPage() {
   const handleSendMessage = () => {
     if (!messageText.trim()) return;
 
-    sendMessageMutation.mutate({
-      conversation_id: conversationId,
-      message: messageText.trim(),
-    });
+    const formData = new FormData();
+    formData.append('conversation_id', conversationId.toString());
+    formData.append('message', messageText.trim());
+
+    sendMessageMutation.mutate(formData);
+  };
+
+  const handleSendVoice = async (audioBlob: Blob, duration: number) => {
+    const formData = new FormData();
+    formData.append('conversation_id', conversationId.toString());
+    formData.append('message', '');
+    formData.append('audio', audioBlob, 'voice-message.webm');
+    formData.append('duration', duration.toString());
+    
+    await sendMessageMutation.mutateAsync(formData);
+  };
+
+  const handleSendFiles = async (files: File[]) => {
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('conversation_id', conversationId.toString());
+      formData.append('message', '');
+      formData.append('file', file);
+      
+      await sendMessageMutation.mutateAsync(formData);
+    }
   };
 
   /* ========== SCROLL ========== */
@@ -264,14 +294,49 @@ export default function ChatPage() {
                     }`}
                   >
                     <div
-                      className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm ${
-                        isOwn
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-white shadow'
+                      className={`max-w-[75%] rounded-2xl overflow-hidden ${
+                        isOwn ? 'bg-indigo-600 text-white' : 'bg-white shadow'
                       }`}
                     >
-                      {msg.message}
-                      <div className="text-[10px] mt-1 text-gray-400">
+                      {/* Message Content */}
+                      <div className="p-1">
+                        {msg.attachment_type === 'voice' && msg.attachment_path && (
+                          <VoiceMessageBubble
+                            audioUrl={msg.attachment_path}
+                            duration={msg.duration || 0}
+                            isSent={isOwn}
+                            fileName={msg.original_filename}
+                          />
+                        )}
+
+                        {(msg.attachment_type === 'image' || msg.attachment_type === 'video') && msg.attachment_path && (
+                          <MediaMessageBubble
+                            mediaUrl={msg.attachment_path}
+                            mediaType={msg.attachment_type}
+                            isSent={isOwn}
+                            fileName={msg.original_filename}
+                            caption={msg.message}
+                          />
+                        )}
+
+                        {msg.attachment_type === 'document' && msg.attachment_path && (
+                          <FileMessageBubble
+                            fileUrl={msg.attachment_path}
+                            fileName={msg.original_filename || 'file'}
+                            fileSize={msg.attachment_size || 0}
+                            isSent={isOwn}
+                            fileType={msg.attachment_path.split('.').pop()}
+                          />
+                        )}
+
+                        {(!msg.attachment_type || msg.attachment_type === null) && msg.message && (
+                          <div className="px-3 py-2 text-sm">
+                            {msg.message}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={`text-[10px] px-3 pb-1 ${isOwn ? 'text-indigo-100' : 'text-gray-400'} text-left`}>
                         {formatTime(msg.created_at)}
                       </div>
                     </div>
@@ -285,32 +350,57 @@ export default function ChatPage() {
       </div>
 
       {/* ===== INPUT ===== */}
-      <div className="bg-white dark:bg-slate-800 border-t p-4 flex gap-2">
-        <Paperclip className='hidden sm:block' />
-        <ImagePlus className='hidden sm:block' />
-        <textarea
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSendMessage();
-            }
-          }}
-          className="flex-1 border rounded-lg p-2 resize-none"
-          placeholder="اكتب رسالتك..."
-        />
-        <button
-          onClick={handleSendMessage}
-          disabled={sendMessageMutation.isPending}
-          className="bg-indigo-600 text-white px-4 rounded-lg"
-        >
-          {sendMessageMutation.isPending ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <Send />
-          )}
-        </button>
+      <div className="bg-white dark:bg-slate-800 border-t p-4 flex flex-col gap-2">
+        <div className="flex items-end gap-2">
+          {/* Attachment Button */}
+          <div className="flex items-center">
+            <FileUploadButton 
+              onUpload={handleSendFiles}
+              disabled={sendMessageMutation.isPending}
+            />
+          </div>
+
+          {/* Message Input / Voice Recorder */}
+          <div className="flex-1">
+            <div className="relative">
+              <textarea
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                className="w-full border dark:border-gray-600 rounded-xl p-3 pr-12 resize-none bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[44px] max-h-32"
+                placeholder="اكتب رسالتك..."
+                rows={1}
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons: Voice or Send */}
+          <div className="flex items-center gap-2">
+            {!messageText.trim() ? (
+              <VoiceRecorder 
+                onSend={handleSendVoice}
+                disabled={sendMessageMutation.isPending}
+              />
+            ) : (
+              <button
+                onClick={handleSendMessage}
+                disabled={sendMessageMutation.isPending || !messageText.trim()}
+                className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-lg shadow-indigo-200 dark:shadow-none"
+              >
+                {sendMessageMutation.isPending ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  <Send className="w-6 h-6" />
+                )}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

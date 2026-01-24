@@ -21,6 +21,11 @@ import { AxiosError } from 'axios';
 import { getUser } from '@/lib/auth';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import VoiceRecorder from '@/components/Chat/VoiceRecorder';
+import FileUploadButton from '@/components/Chat/FileUploadButton';
+import VoiceMessageBubble from '@/components/Chat/VoiceMessageBubble';
+import MediaMessageBubble from '@/components/Chat/MediaMessageBubble';
+import FileMessageBubble from '@/components/Chat/FileMessageBubble';
 
 // Types
 interface User {
@@ -40,6 +45,11 @@ interface Message {
   created_at: string;
   updated_at: string;
   sender: User;
+  attachment_path?: string;
+  attachment_type?: 'voice' | 'image' | 'video' | 'document';
+  attachment_size?: number;
+  duration?: number;
+  original_filename?: string;
 }
 
 interface Conversation {
@@ -67,10 +77,12 @@ const fetchMessages = async (conversationId: number, page: number) => {
 };
 
 // Send message
-const sendMessage = async (data: { conversation_id: number; message: string }) => {
-  const response = await axiosInstance.post(
-    `/messages/send?conversation_id=${data.conversation_id}&message=${encodeURIComponent(data.message)}`
-  );
+const sendMessage = async (data: FormData) => {
+  const response = await axiosInstance.post(`/messages/send`, data, {
+    headers: {
+      'Content-Type': null,
+    } as any,
+  });
   return response.data.data;
 };
 
@@ -166,10 +178,37 @@ export default function ChatPage() {
     if (e) e.preventDefault();
     if (!messageText.trim() || !selectedConversation) return;
 
-    sendMessageMutation.mutate({
-      conversation_id: selectedConversation.id,
-      message: messageText.trim(),
-    });
+    const formData = new FormData();
+    formData.append('conversation_id', selectedConversation.id.toString());
+    formData.append('message', messageText.trim());
+
+    sendMessageMutation.mutate(formData);
+  };
+
+  console.log(messageText)
+
+
+  const handleSendVoice = async (audioBlob: Blob, duration: number) => {
+    if (!selectedConversation) return;
+    const formData = new FormData();
+    formData.append('conversation_id', selectedConversation.id.toString());
+    formData.append('message', messageText.trim());
+    formData.append('audio', audioBlob, 'voice-message.webm');
+    formData.append('duration', duration.toString());
+    
+    await sendMessageMutation.mutateAsync(formData);
+  };
+
+  const handleSendFiles = async (files: File[]) => {
+    if (!selectedConversation) return;
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('conversation_id', selectedConversation.id.toString());
+      formData.append('message', messageText.trim());
+      formData.append('file', file);
+      
+      await sendMessageMutation.mutateAsync(formData);
+    }
   };
 
   // Format time
@@ -251,7 +290,19 @@ export default function ChatPage() {
                 </div>
                 {conversation.last_message && (
                   <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                    {conversation.last_message.message}
+                    {conversation.last_message.attachment_type === 'voice' && (
+                      <span className="flex items-center gap-1"><span className="text-red-500">🎤</span> {t('voiceMessage')}</span>
+                    )}
+                    {conversation.last_message.attachment_type === 'image' && (
+                      <span className="flex items-center gap-1"><span className="text-blue-500">🖼️</span> {t('image')}</span>
+                    )}
+                    {conversation.last_message.attachment_type === 'video' && (
+                      <span className="flex items-center gap-1"><span className="text-purple-500">🎥</span> {t('video')}</span>
+                    )}
+                    {conversation.last_message.attachment_type === 'document' && (
+                      <span className="flex items-center gap-1"><span className="text-green-500">📄</span> {t('file')}</span>
+                    )}
+                    {(!conversation.last_message.attachment_type) && conversation.last_message.message}
                     {conversation.unread_messages_count && conversation.unread_messages_count > 0 && (
                       <span className="mx-2 inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                         {conversation.unread_messages_count}
@@ -440,25 +491,52 @@ export default function ChatPage() {
                               </div>
                             )}
 
-                            {/* Message Bubble */}
+                             {/* Message Bubble */}
                             <div
-                              className={`max-w-[70%] ${
-                                isOwn ? 'items-end' : 'items-start'
+                              className={`max-w-[75%] rounded-2xl overflow-hidden ${
+                                isOwn ? 'text-white' : 'bg-white shadow-sm'
                               }`}
                             >
-                              <div
-                                className={`px-4 py-2 rounded-2xl ${
-                                  isOwn
-                                    ? 'bg-indigo-600 text-white rounded-br-none'
-                                    : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
-                                }`}
-                              >
-                                <p className="text-sm break-words">{message.message}</p>
+                              <div className="p-1">
+                                {message.attachment_type === 'voice' && message.attachment_path && (
+                                  <VoiceMessageBubble
+                                    audioUrl={message.attachment_path}
+                                    duration={message.duration || 0}
+                                    isSent={isOwn}
+                                    fileName={message.original_filename}
+                                  />
+                                )}
+
+                                {(message.attachment_type === 'image' || message.attachment_type === 'video') && message.attachment_path && (
+                                  <MediaMessageBubble
+                                    mediaUrl={message.attachment_path}
+                                    mediaType={message.attachment_type}
+                                    isSent={isOwn}
+                                    fileName={message.original_filename}
+                                    caption={message.message}
+                                  />
+                                )}
+
+                                {message.attachment_type === 'document' && message.attachment_path && (
+                                  <FileMessageBubble
+                                    fileUrl={message.attachment_path}
+                                    fileName={message.original_filename || 'file'}
+                                    fileSize={message.attachment_size || 0}
+                                    isSent={isOwn}
+                                    fileType={message.attachment_path.split('.').pop()}
+                                  />
+                                )}
+
+                                {(!message.attachment_type) && message.message && (
+                                  <div className="px-4 py-2 text-sm break-words">
+                                    {message.message}
+                                  </div>
+                                )}
                               </div>
                               <span
-                                className={`text-xs text-gray-500 mt-1 block ${
-                                  isOwn ? (dir === 'rtl' ? 'text-left' : 'text-right') : (dir === 'rtl' ? 'text-right' : 'text-left')
-                                }`}
+                                className={`text-[10px] px-3 pb-1 block ${
+                                  isOwn ? 'text-indigo-100' : 'text-gray-400'
+                                } ${isOwn ? (dir === 'rtl' ? 'text-left' : 'text-right') : (dir === 'rtl' ? 'text-right' : 'text-left')}`}
                               >
                                 {formatTime(message.created_at)}
                               </span>
@@ -472,21 +550,13 @@ export default function ChatPage() {
                 )}
               </div>
 
-              {/* Message Input */}
+               {/* Message Input */}
               <div className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-end gap-2">
-                  <button
-                    type="button"
-                    className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors"
-                  >
-                    <Paperclip className="w-5 h-5" />
-                  </button>
-                  <button
-                    type="button"
-                    className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-800 rounded-lg transition-colors"
-                  >
-                    <ImagePlus className="w-5 h-5" />
-                  </button>
+                  <FileUploadButton 
+                    onUpload={handleSendFiles}
+                    disabled={sendMessageMutation.isPending}
+                  />
                   
                   <div className="flex-1">
                     <textarea
@@ -500,22 +570,29 @@ export default function ChatPage() {
                       }}
                       placeholder={t('typeMessage')}
                       rows={1}
-                      className={`w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-50 resize-none ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${dir === 'rtl' ? 'text-right' : 'text-left'} dark:text-gray-100`}
                     />
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleSendMessage()}
-                    disabled={!messageText.trim() || sendMessageMutation.isPending}
-                    className="p-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {sendMessageMutation.isPending ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Send className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} /> // Optional rotate for Send icon if needed
-                    )}
-                  </button>
+                  {!messageText.trim() ? (
+                    <VoiceRecorder 
+                      onSend={handleSendVoice}
+                      disabled={sendMessageMutation.isPending}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleSendMessage()}
+                      disabled={!messageText.trim() || sendMessageMutation.isPending}
+                      className="p-3 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200 dark:shadow-none"
+                    >
+                      {sendMessageMutation.isPending ? (
+                        <Loader2 className="w-6 h-6 animate-spin" />
+                      ) : (
+                        <Send className="w-6 h-6" />
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             </>
