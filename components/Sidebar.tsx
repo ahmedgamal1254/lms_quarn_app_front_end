@@ -75,7 +75,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   const roleUrls: Record<UserRole, string> = {
     student: '/student/profile',
     teacher: '/teacher/profile',
-    admin: '/admin/profile',
+    admin: '/admin/dashboard',
     parent: '/parent-dashboard'
   };
 
@@ -210,7 +210,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-screen
+          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-[calc(100vh-56px)]
           z-50
           w-64 sm:w-72
           bg-white dark:bg-slate-900 ${isRTL ? 'border-l' : 'border-r'} dark:border-slate-800
