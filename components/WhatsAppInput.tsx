@@ -3,6 +3,7 @@
 import React from 'react';
 import { Input } from 'antd';
 import { WhatsAppOutlined } from '@ant-design/icons';
+import { useTranslations } from 'next-intl';
 
 interface WhatsAppInputProps {
   value?: string;
@@ -20,17 +21,18 @@ interface WhatsAppInputProps {
 export const WhatsAppInput: React.FC<WhatsAppInputProps> = ({
   value,
   onChange,
-  placeholder = 'رقم الواتساب',
+  placeholder,
   required = false,
   disabled = false,
   className = '',
 }) => {
+  const t = useTranslations('WhatsAppInput');
   return (
     <Input
       prefix={<WhatsAppOutlined style={{ color: '#25D366' }} />}
       value={value}
       onChange={(e) => onChange?.(e.target.value)}
-      placeholder={placeholder}
+      placeholder={placeholder || t('placeholder')}
       required={required}
       disabled={disabled}
       className={className}

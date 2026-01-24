@@ -7,7 +7,7 @@ import { useAppSettingsStore  } from '@/store/appSetting';
 import toast from 'react-hot-toast';
 import Notifications from './Notifications';
 import LanguageSwitcher from './LanguageSwitcher';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
@@ -20,6 +20,9 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   const settings = useAppSettingsStore((state) => state.app_settings);
 
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
+
   const url = user?.role === "student" 
     ? "/student/profile" 
     : user?.role === "teacher"
@@ -29,7 +32,9 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     : "/admin/profile";
 
   return (
-    <header className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
+    <header 
+    dir={isRTL ? "rtl" : "ltr"}
+    className="h-16 bg-white border-b flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-50">
   {/* Left */}
   <Link href={url}>
   <div className="flex items-center gap-3">
@@ -63,7 +68,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     {/* Mobile Menu */}
     <button
       onClick={onMenuClick}
-      className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
+      className="p-2 rounded-lg hover:bg-gray-100"
     >
       <Menu size={20} />
     </button>

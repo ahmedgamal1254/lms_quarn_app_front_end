@@ -6,6 +6,7 @@ import { HistoryOutlined } from '@ant-design/icons';
 import { getTeacherResetHistory } from '@/services/api/teacher-finance.service';
 import { TeacherFinancialReset } from '@/services/api/materials.types';
 import type { ColumnsType } from 'antd/es/table';
+import { useTranslations } from 'next-intl';
 
 interface ResetHistoryTableProps {
   teacherId: number;
@@ -20,6 +21,8 @@ export const ResetHistoryTable: React.FC<ResetHistoryTableProps> = ({
   teacherId,
   refresh = 0,
 }) => {
+  const t = useTranslations('ResetHistoryTable');
+  const tCommon = useTranslations('Common');
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<TeacherFinancialReset[]>([]);
 
@@ -41,37 +44,37 @@ export const ResetHistoryTable: React.FC<ResetHistoryTableProps> = ({
 
   const columns: ColumnsType<TeacherFinancialReset> = [
     {
-      title: 'التاريخ',
+      title: t('date'),
       dataIndex: 'reset_date',
       key: 'reset_date',
       render: (date: string) => new Date(date).toLocaleDateString('ar-EG'),
     },
     {
-      title: 'الرصيد السابق',
+      title: t('prev_balance'),
       dataIndex: 'previous_balance',
       key: 'previous_balance',
       render: (balance: number) => (
-        <span className="font-semibold">{balance.toFixed(2)} ريال</span>
+        <span className="font-semibold">{balance.toFixed(2)} {tCommon('currency_sar')}</span>
       ),
     },
     {
-      title: 'المبلغ المعاد تعيينه',
+      title: t('reset_amount'),
       dataIndex: 'reset_amount',
       key: 'reset_amount',
       render: (amount: number) => (
         <span className="text-red-600 font-semibold">
-          {amount.toFixed(2)} ريال
+          {amount.toFixed(2)} {tCommon('currency_sar')}
         </span>
       ),
     },
     {
-      title: 'المسؤول',
+      title: t('admin'),
       dataIndex: 'admin_name',
       key: 'admin_name',
-      render: (name: string) => name || 'غير معروف',
+      render: (name: string) => name || t('unknown'),
     },
     {
-      title: 'الملاحظات',
+      title: t('notes'),
       dataIndex: 'notes',
       key: 'notes',
       render: (notes: string) => notes || '-',
@@ -90,7 +93,7 @@ export const ResetHistoryTable: React.FC<ResetHistoryTableProps> = ({
     return (
       <div className="text-center py-8 text-gray-500">
         <HistoryOutlined style={{ fontSize: '48px', marginBottom: '16px' }} />
-        <p>لا يوجد سجل لإعادة تعيين الرصيد</p>
+        <p>{t('no_history')}</p>
       </div>
     );
   }

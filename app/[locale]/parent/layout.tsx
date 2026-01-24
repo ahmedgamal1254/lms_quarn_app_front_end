@@ -1,7 +1,7 @@
 'use client';
 
 import { Layout, Grid } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
 import AppHeader from '@/components/Header';
 import { useParams } from 'next/navigation';
@@ -23,6 +23,21 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
 
   const siderWidth = 280;
 
+  useEffect(() => {
+    const handleResize = () => {
+        // if (window.innerWidth < 992) {
+            setCollapsed(true);
+        // }
+    };
+
+    // Initial check on mount
+    handleResize();
+
+    // Optional: Listen for resize events
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+}, []);
+
   return (
     <Layout
       style={{
@@ -37,6 +52,7 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
           onClick={() => setCollapsed(true)}
           style={{
             position: 'fixed',
+            display: collapsed ? 'none' : 'block',
             inset: 0,
             zIndex: 99,
           }}

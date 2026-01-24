@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import React, { useState } from 'react';
 import { Modal, Form, Input, Select, DatePicker, Button, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
@@ -22,6 +24,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
   onSuccess,
   plans = [],
 }) => {
+  const t = useTranslations('AddStudentModal');
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { errors, setFieldErrors, clearErrors, getError, hasError } = useFormErrors();
@@ -43,19 +46,19 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
         // Handle validation errors
         if (data.errors) {
           setFieldErrors(data.errors);
-          message.error(data.message || 'يرجى تصحيح الأخطاء في النموذج');
+          message.error(data.message || t('fix_errors'));
           return;
         }
-        throw new Error(data.message || 'حدث خطأ');
+        throw new Error(data.message || t('error_add'));
       }
 
-      message.success('تم إضافة الطالب بنجاح');
+      message.success(t('success_add'));
       form.resetFields();
       clearErrors();
       onSuccess();
       onClose();
     } catch (error: any) {
-      message.error(error.message || 'حدث خطأ أثناء إضافة الطالب');
+      message.error(error.message || t('error_add'));
     } finally {
       setLoading(false);
     }
@@ -72,7 +75,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <UserAddOutlined />
-          <span>إضافة طالب جديد</span>
+          <span>{t('title')}</span>
         </div>
       }
       open={visible}
@@ -90,43 +93,43 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           {/* Name */}
           <Form.Item
             name="name"
-            label="الاسم"
-            rules={[{ required: true, message: 'الاسم مطلوب' }]}
+            label={t('name')}
+            rules={[{ required: true, message: t('name_required') }]}
             validateStatus={hasError('name') ? 'error' : ''}
           >
-            <Input placeholder="أدخل الاسم" />
+            <Input placeholder={t('enter_name')} />
             <FieldError error={getError('name')} />
           </Form.Item>
 
           {/* Email */}
           <Form.Item
             name="email"
-            label="البريد الإلكتروني"
+            label={t('email')}
             rules={[
-              { required: true, message: 'البريد الإلكتروني مطلوب' },
-              { type: 'email', message: 'البريد الإلكتروني غير صالح' },
+              { required: true, message: t('email_required') },
+              { type: 'email', message: t('email_invalid') },
             ]}
             validateStatus={hasError('email') ? 'error' : ''}
           >
-            <Input placeholder="example@email.com" />
+            <Input placeholder={t('enter_email')} />
             <FieldError error={getError('email')} />
           </Form.Item>
 
           {/* Phone */}
           <Form.Item
             name="phone"
-            label="رقم الهاتف"
-            rules={[{ required: true, message: 'رقم الهاتف مطلوب' }]}
+            label={t('phone')}
+            rules={[{ required: true, message: t('phone_required') }]}
             validateStatus={hasError('phone') ? 'error' : ''}
           >
-            <Input placeholder="01234567890" />
+            <Input placeholder={t('enter_phone')} />
             <FieldError error={getError('phone')} />
           </Form.Item>
 
           {/* WhatsApp Number */}
           <Form.Item
             name="whatsapp_number"
-            label="رقم الواتساب (اختياري)"
+            label={t('whatsapp_optional')}
             validateStatus={hasError('whatsapp_number') ? 'error' : ''}
           >
             <WhatsAppInput placeholder="+201234567890" />
@@ -136,13 +139,13 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           {/* Gender */}
           <Form.Item
             name="gender"
-            label="الجنس"
-            rules={[{ required: true, message: 'الجنس مطلوب' }]}
+            label={t('gender')}
+            rules={[{ required: true, message: t('gender_required') }]}
             validateStatus={hasError('gender') ? 'error' : ''}
           >
-            <Select placeholder="اختر الجنس">
-              <Select.Option value="male">ذكر</Select.Option>
-              <Select.Option value="female">أنثى</Select.Option>
+            <Select placeholder={t('select_gender')}>
+              <Select.Option value="male">{t('male')}</Select.Option>
+              <Select.Option value="female">{t('female')}</Select.Option>
             </Select>
             <FieldError error={getError('gender')} />
           </Form.Item>
@@ -150,20 +153,20 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           {/* Birth Date */}
           <Form.Item
             name="birth_date"
-            label="تاريخ الميلاد"
+            label={t('birth_date')}
             validateStatus={hasError('birth_date') ? 'error' : ''}
           >
-            <DatePicker className="w-full" placeholder="اختر التاريخ" />
+            <DatePicker className="w-full" placeholder={t('select_date')} />
             <FieldError error={getError('birth_date')} />
           </Form.Item>
 
           {/* Plan */}
           <Form.Item
             name="plan_id"
-            label="الباقة"
+            label={t('plan')}
             validateStatus={hasError('plan_id') ? 'error' : ''}
           >
-            <Select placeholder="اختر الباقة" allowClear>
+            <Select placeholder={t('select_plan')} allowClear>
               {plans.map((plan) => (
                 <Select.Option key={plan.id} value={plan.id}>
                   {plan.name} - {plan.price} {plan.currency}
@@ -176,10 +179,10 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           {/* Password */}
           <Form.Item
             name="password"
-            label="كلمة المرور"
+            label={t('password')}
             rules={[
-              { required: true, message: 'كلمة المرور مطلوبة' },
-              { min: 6, message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' },
+              { required: true, message: t('password_required') },
+              { min: 6, message: t('password_min') },
             ]}
             validateStatus={hasError('password') ? 'error' : ''}
           >
@@ -190,9 +193,9 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
 
         {/* Form Actions */}
         <div className="flex justify-end gap-2 mt-6">
-          <Button onClick={handleCancel}>إلغاء</Button>
+          <Button onClick={handleCancel}>{t('cancel')}</Button>
           <Button type="primary" htmlType="submit" loading={loading}>
-            حفظ
+            {t('save')}
           </Button>
         </div>
       </Form>

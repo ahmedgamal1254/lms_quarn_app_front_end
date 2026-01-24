@@ -1,7 +1,7 @@
 'use client';
 
 import { Layout } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import { useParams } from 'next/navigation';
@@ -13,8 +13,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const [collapsed, setCollapsed] = useState(false);
     const params = useParams();
     const isRTL = params.locale === 'ar';
+
     const tAuth = useTranslations('Auth');
     const tCommon = useTranslations('Common');
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 992) {
+                setCollapsed(true);
+            }
+        };
+
+        // Initial check on mount
+        handleResize();
+
+        // Optional: Listen for resize events
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <Layout style={{ minHeight: '100vh', direction: isRTL ? 'rtl' : 'ltr' }}>
@@ -27,6 +43,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 breakpoint="lg"
                 collapsedWidth={0}
                 trigger={null}
+                style={{
+                    display: collapsed ? 'none' : 'block',
+                }}
                 className="responsive-sider"
             >
                 

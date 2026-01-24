@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Country {
     code: string;
@@ -42,6 +43,7 @@ interface CountrySelectorProps {
 }
 
 export default function CountrySelector({ value, onChange }: CountrySelectorProps) {
+    const t = useTranslations('CountrySelector');
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export default function CountrySelector({ value, onChange }: CountrySelectorProp
                     <div className="country-search">
                         <input
                             type="text"
-                            placeholder="بحث..."
+                            placeholder={t('search')}
                             value={search}
                             onClick={(e) => e.stopPropagation()}
                             onChange={(e) => setSearch(e.target.value)}

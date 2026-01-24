@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Modal, Form, Input, Upload, Button, Select, message } from 'antd';
+import { useTranslations } from 'next-intl';
 import { UploadOutlined, FileTextOutlined } from '@ant-design/icons';
 import { uploadMaterial } from '@/services/api/materials.service';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -23,13 +24,14 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
   onSuccess,
   subjects = [],
 }) => {
+  const t = useTranslations('UploadMaterialModal');
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const handleSubmit = async (values: any) => {
     if (fileList.length === 0) {
-      message.error('الرجاء اختيار ملف PDF');
+      message.error(t('file_required'));
       return;
     }
 
@@ -44,13 +46,15 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
         file,
       });
 
-      message.success('تم رفع المادة بنجاح وهي في انتظار الموافقة');
+
+
+      message.success(t('success_upload'));
       form.resetFields();
       setFileList([]);
       onSuccess();
       onClose();
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'حدث خطأ أثناء رفع الملف');
+      message.error(error.response?.data?.message || t('error_upload'));
     } finally {
       setLoading(false);
     }
@@ -67,7 +71,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <FileTextOutlined />
-          <span>رفع مادة تعليمية</span>
+          <span>{t('title')}</span>
         </div>
       }
       open={visible}
@@ -83,21 +87,21 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
       >
         <Form.Item
           name="title"
-          label="عنوان المادة"
-          rules={[{ required: true, message: 'الرجاء إدخال عنوان المادة' }]}
+          label={t('material_title')}
+          rules={[{ required: true, message: t('title_required') }]}
         >
-          <Input placeholder="مثال: كتاب القرآن الكريم - الجزء الأول" />
+          <Input placeholder={t('title_placeholder')} />
         </Form.Item>
 
-        <Form.Item name="description" label="الوصف (اختياري)">
+        <Form.Item name="description" label={t('description')}>
           <Input.TextArea
             rows={3}
-            placeholder="وصف مختصر عن المادة التعليمية..."
+            placeholder={t('desc_placeholder')}
           />
         </Form.Item>
 
-        <Form.Item name="subject_id" label="المادة (اختياري)">
-          <Select placeholder="اختر المادة" allowClear>
+        <Form.Item name="subject_id" label={t('subject')}>
+          <Select placeholder={t('select_subject')} allowClear>
             {subjects.map((subject) => (
               <Select.Option key={subject.id} value={subject.id}>
                 {subject.name}
@@ -107,9 +111,9 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          label="ملف PDF"
+          label={t('pdf_file')}
           required
-          help="الحد الأقصى لحجم الملف: 10 ميجابايت"
+          help={t('max_size')}
         >
           <Upload
             accept=".pdf"
@@ -118,13 +122,13 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
             beforeUpload={(file) => {
               const isPDF = file.type === 'application/pdf';
               if (!isPDF) {
-                message.error('يجب أن يكون الملف بصيغة PDF فقط!');
+                message.error(t('file_type_error'));
                 return false;
               }
 
               const isLt10M = file.size / 1024 / 1024 < 10;
               if (!isLt10M) {
-                message.error('يجب أن يكون حجم الملف أقل من 10 ميجابايت!');
+                message.error(t('file_size_error'));
                 return false;
               }
 
@@ -135,14 +139,14 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
               setFileList([]);
             }}
           >
-            <Button icon={<UploadOutlined />}>اختر ملف PDF</Button>
+            <Button icon={<UploadOutlined />}>{t('choose_file')}</Button>
           </Upload>
         </Form.Item>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button onClick={handleCancel}>إلغاء</Button>
+          <Button onClick={handleCancel}>{t('cancel')}</Button>
           <Button type="primary" htmlType="submit" loading={loading}>
-            رفع المادة
+            {t('upload')}
           </Button>
         </div>
       </Form>

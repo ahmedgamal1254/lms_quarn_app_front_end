@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { X, Lock, Eye, EyeOff, ImageIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import CountrySelector from './CountrySelector';
 import MultiSelect from './MultiSelect';
 
@@ -15,6 +16,8 @@ const subjectsList = ["قرآن كريم", "تجويد", "لغة عربية", "�
 const currencies = ["ر.س", "ج.م", "د.إ", "$"];
 
 export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditTeacherModalProps) {
+    const t = useTranslations('EditTeacherModal');
+    const tAdd = useTranslations('AddStudentModal'); // For reused fields like Name, Email, Phone, Gender
     const [showPassword, setShowPassword] = useState(false);
     const [subjects, setSubjects] = useState<string[]>(teacherData?.subjects || []);
     const [currency, setCurrency] = useState(teacherData?.currency || currencies[0]);
@@ -49,7 +52,7 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
 
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>تعديل بيانات المعلم</h2>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{t('title')}</h2>
                     <button onClick={onClose} style={{ color: 'var(--text-secondary)', cursor: 'pointer', background: 'none', border: 'none' }}>
                         <X size={24} />
                     </button>
@@ -60,18 +63,18 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
 
                     {/* Name */}
                     <div className="form-group">
-                        <label className="form-label">الاسم <span className="required-star">*</span></label>
+                        <label className="form-label">{tAdd('name')} <span className="required-star">*</span></label>
                         <input type="text" className="form-input" defaultValue={teacherData?.name} />
                     </div>
 
                     {/* Email */}
                     <div className="form-group">
-                        <label className="form-label">البريد الإلكتروني <span className="required-star">*</span></label>
+                        <label className="form-label">{tAdd('email')} <span className="required-star">*</span></label>
                         <input type="email" className="form-input" defaultValue="teacher@example.com" />
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">رقم الهاتف <span className="required-star">*</span></label>
+                        <label className="form-label">{tAdd('phone')} <span className="required-star">*</span></label>
                         <div className="phone-input-container">
                             <CountrySelector />
                             <input type="text" className="form-input" defaultValue={teacherData?.phone} style={{ direction: 'rtl', textAlign: 'right' }} />
@@ -79,7 +82,7 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">كلمة المرور</label>
+                        <label className="form-label">{tAdd('password')}</label>
                         <div className="password-input-wrapper">
                             <Lock size={16} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                             <input
@@ -95,21 +98,21 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">الجنس <span className="required-star">*</span></label>
+                        <label className="form-label">{tAdd('gender')} <span className="required-star">*</span></label>
                         <div className="radio-group" style={{ height: '44px' }}>
                             <label className="radio-label">
                                 <input type="radio" name="edit-gender" className="radio-input" defaultChecked={teacherData?.gender === 'ذكر'} />
-                                <span className="radio-text">ذكر</span>
+                                <span className="radio-text">{tAdd('male')}</span>
                             </label>
                             <label className="radio-label">
                                 <input type="radio" name="edit-gender" className="radio-input" defaultChecked={teacherData?.gender === 'أنثى'} />
-                                <span className="radio-text">أنثى</span>
+                                <span className="radio-text">{tAdd('female')}</span>
                             </label>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">سعر الساعة / العملة <span className="required-star">*</span></label>
+                        <label className="form-label">{t('hourly_rate')} <span className="required-star">*</span></label>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                             <input type="number" className="form-input" defaultValue={teacherData?.hourlyRate} style={{ flex: 2 }} />
                             <select
@@ -125,12 +128,12 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
 
                     {/* Subjects (Multi-Select) */}
                     <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                        <label className="form-label">المواد <span className="required-star">*</span></label>
+                        <label className="form-label">{t('subjects')} <span className="required-star">*</span></label>
                         <MultiSelect
                             options={subjectsList}
                             selected={subjects}
                             onChange={setSubjects}
-                            placeholder="اختر المواد..."
+                            placeholder={t('select_subjects')}
                         />
                     </div>
 
@@ -138,16 +141,16 @@ export default function EditTeacherModal({ isOpen, onClose, teacherData }: EditT
 
                 {/* Image Upload */}
                 <div className="form-group" style={{ marginTop: '1rem', borderTop: '1px dashed var(--border-color)', paddingTop: '1rem' }}>
-                    <label className="form-label">الصورة الشخصية</label>
+                    <label className="form-label">{t('profile_image')}</label>
                     <div className="upload-area" style={{ padding: '1.5rem' }}>
-                        <span style={{ color: 'var(--text-secondary)' }}>Click to upload new image...</span>
+                        <span style={{ color: 'var(--text-secondary)' }}>{t('upload_text')}</span>
                     </div>
                 </div>
 
                 {/* Footer Actions */}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '2rem' }}>
-                    <button className="btn btn-secondary" onClick={onClose} style={{ width: '100px', justifyContent: 'center' }}>إلغاء</button>
-                    <button className="btn btn-primary" style={{ backgroundColor: '#10b981', width: '100px', justifyContent: 'center' }}>حفظ</button>
+                    <button className="btn btn-secondary" onClick={onClose} style={{ width: '100px', justifyContent: 'center' }}>{t('cancel')}</button>
+                    <button className="btn btn-primary" style={{ backgroundColor: '#10b981', width: '100px', justifyContent: 'center' }}>{t('save')}</button>
                 </div>
 
             </div>

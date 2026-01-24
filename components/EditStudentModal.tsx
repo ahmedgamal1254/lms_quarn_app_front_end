@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useTranslations } from 'next-intl';
 
 interface Country {
     code: string;
@@ -34,7 +35,10 @@ interface EditStudentModalProps {
     onSave?: () => void;
 }
 
+
 export default function EditStudentModal({ isOpen, onClose, studentData, onSave }: EditStudentModalProps) {
+    const t = useTranslations('EditStudentModal');
+    const tAdd = useTranslations('AddStudentModal');
     const [plans, setPlans] = useState<Plan[]>([]);
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -151,15 +155,15 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
             const data = await response.json();
             if (data.success) {
-                toast.success('تم تحديث بيانات الطالب بنجاح');
+                toast.success(t('success_update'));
                 onSave?.();
                 onClose();
             } else {
-                toast.error('حدث خطأ: ' + (data.error || 'فشل التحديث'));
+                toast.error(t('error_update') + ': ' + (data.error || t('error_update')));
             }
         } catch (error) {
             console.error('Error updating student:', error);
-            toast.error('حدث خطأ في الاتصال بالخادم');
+            toast.error(t('error_update'));
         } finally {
             setSubmitting(false);
         }
@@ -183,7 +187,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>تعديل بيانات الطالب</h2>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{t('title')}</h2>
                     <button onClick={onClose} style={{ color: 'var(--text-secondary)', cursor: 'pointer', background: 'none', border: 'none' }}>
                         <X size={24} />
                     </button>
@@ -200,7 +204,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                             {/* Name */}
                             <div className="form-group">
-                                <label className="form-label">الاسم <span className="required-star">*</span></label>
+                                <label className="form-label">{tAdd('name')} <span className="required-star">*</span></label>
                                 <input
                                     type="text"
                                     className="form-input"
@@ -212,7 +216,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                             {/* Email */}
                             <div className="form-group">
-                                <label className="form-label">البريد الإلكتروني <span className="required-star">*</span></label>
+                                <label className="form-label">{tAdd('email')} <span className="required-star">*</span></label>
                                 <input
                                     type="email"
                                     className="form-input"
@@ -224,7 +228,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                             {/* Phone */}
                             <div className="form-group">
-                                <label className="form-label">رقم الهاتف <span className="required-star">*</span></label>
+                                <label className="form-label">{tAdd('phone')} <span className="required-star">*</span></label>
                                 <div className="phone-input-container">
                                     <div className="country-selector" ref={dropdownRef}>
                                         <div className="country-selected" onClick={() => setCountryOpen(!countryOpen)}>
@@ -278,7 +282,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                             {/* Gender */}
                             <div className="form-group">
-                                <label className="form-label">الجنس <span className="required-star">*</span></label>
+                                <label className="form-label">{tAdd('gender')} <span className="required-star">*</span></label>
                                 <div className="radio-group" style={{ justifyContent: 'flex-end' }}>
                                     <label className="radio-label">
                                         <input
@@ -288,7 +292,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
                                             checked={formData.gender === 'male'}
                                             onChange={() => setFormData({ ...formData, gender: 'male' })}
                                         />
-                                        <span className="radio-text">ذكر</span>
+                                        <span className="radio-text">{tAdd('male')}</span>
                                     </label>
                                     <label className="radio-label">
                                         <input
@@ -298,21 +302,21 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
                                             checked={formData.gender === 'female'}
                                             onChange={() => setFormData({ ...formData, gender: 'female' })}
                                         />
-                                        <span className="radio-text">أنثى</span>
+                                        <span className="radio-text">{tAdd('female')}</span>
                                     </label>
                                 </div>
                             </div>
 
                             {/* Plan Select */}
                             <div className="form-group">
-                                <label className="form-label">الباقة</label>
+                                <label className="form-label">{tAdd('plan')}</label>
                                 <select
                                     className="form-input"
                                     value={formData.plan_id}
                                     onChange={(e) => setFormData({ ...formData, plan_id: parseInt(e.target.value) })}
                                     style={{ appearance: 'auto' }}
                                 >
-                                    <option value={0}>بدون باقة</option>
+                                    <option value={0}>{t('no_plan')}</option>
                                     {plans.map(plan => (
                                         <option key={plan.id} value={plan.id}>
                                             {plan.name} - {plan.price} {plan.currency}
@@ -323,7 +327,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                             {/* Stats Display */}
                             <div className="form-group">
-                                <label className="form-label">إحصائيات الحصص</label>
+                                <label className="form-label">{t('session_stats')}</label>
                                 <div style={{
                                     display: 'grid',
                                     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -333,15 +337,15 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
                                     borderRadius: '0.5rem'
                                 }}>
                                     <div style={{ textAlign: 'center' }}>
-                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>إجمالي</div>
+                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t('stats_total')}</div>
                                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{formData.total_sessions}</div>
                                     </div>
                                     <div style={{ textAlign: 'center' }}>
-                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>محضورة</div>
+                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t('stats_attended')}</div>
                                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#10b981' }}>{formData.attended_sessions}</div>
                                     </div>
                                     <div style={{ textAlign: 'center' }}>
-                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>متبقية</div>
+                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t('stats_remaining')}</div>
                                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#f59e0b' }}>{formData.remaining_sessions}</div>
                                     </div>
                                 </div>
@@ -361,17 +365,17 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
                                 marginBottom: '1.5rem',
                                 color: 'var(--text-primary)'
                             }}>
-                                معلومات ولي الأمر (اختياري)
+                                {t('guardian_info')}
                             </h3>
 
                             <div className="form-grid">
                                 {/* Guardian Name */}
                                 <div className="form-group">
-                                    <label className="form-label">اسم ولي الأمر</label>
+                                    <label className="form-label">{t('guardian_name')}</label>
                                     <input
                                         type="text"
                                         className="form-input"
-                                        placeholder="أدخل اسم ولي الأمر"
+                                        placeholder={t('guardian_name')}
                                         value={formData.guardian_name}
                                         onChange={(e) => setFormData({ ...formData, guardian_name: e.target.value })}
                                     />
@@ -379,7 +383,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                                 {/* Guardian Phone */}
                                 <div className="form-group">
-                                    <label className="form-label">رقم هاتف ولي الأمر</label>
+                                    <label className="form-label">{t('guardian_phone')}</label>
                                     <div className="phone-input-container">
                                         <div className="country-selector" ref={guardianDropdownRef}>
                                             <div className="country-selected" onClick={() => setGuardianCountryOpen(!guardianCountryOpen)}>
@@ -423,7 +427,7 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
                                         <input
                                             type="text"
                                             className="form-input"
-                                            placeholder="رقم الهاتف"
+                                            placeholder={t('guardian_phone')}
                                             value={formData.guardian_phone}
                                             onChange={(e) => setFormData({ ...formData, guardian_phone: e.target.value })}
                                             style={{ direction: 'rtl', textAlign: 'right' }}
@@ -435,14 +439,14 @@ export default function EditStudentModal({ isOpen, onClose, studentData, onSave 
 
                         {/* Footer Actions */}
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '2rem' }}>
-                            <button type="button" className="btn btn-secondary" onClick={onClose} style={{ width: '100px', justifyContent: 'center' }}>إلغاء</button>
+                            <button type="button" className="btn btn-secondary" onClick={onClose} style={{ width: '100px', justifyContent: 'center' }}>{t('cancel')}</button>
                             <button
                                 type="submit"
                                 className="btn btn-primary"
                                 style={{ backgroundColor: '#10b981', width: '100px', justifyContent: 'center' }}
                                 disabled={submitting}
                             >
-                                {submitting ? 'جاري...' : 'حفظ'}
+                                {submitting ? t('saving') : t('save')}
                             </button>
                         </div>
                     </form>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Modal, Button, Input, message } from 'antd';
+import { useTranslations } from 'next-intl';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { resetTeacherBalance } from '@/services/api/teacher-finance.service';
 
@@ -26,6 +27,7 @@ export const ResetBalanceModal: React.FC<ResetBalanceModalProps> = ({
   onClose,
   onSuccess,
 }) => {
+  const t = useTranslations('ResetBalanceModal');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -33,12 +35,12 @@ export const ResetBalanceModal: React.FC<ResetBalanceModalProps> = ({
     try {
       setLoading(true);
       await resetTeacherBalance(teacherId, { notes });
-      message.success('تم إعادة تعيين رصيد المعلم بنجاح');
+      message.success(t('success_reset'));
       onSuccess();
       onClose();
       setNotes('');
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'حدث خطأ أثناء إعادة تعيين الرصيد');
+      message.error(error.response?.data?.message || t('error_reset'));
     } finally {
       setLoading(false);
     }
@@ -49,14 +51,14 @@ export const ResetBalanceModal: React.FC<ResetBalanceModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <ExclamationCircleOutlined className="text-yellow-500" />
-          <span>تأكيد إعادة تعيين الرصيد</span>
+          <span>{t('title')}</span>
         </div>
       }
       open={visible}
       onCancel={onClose}
       footer={[
         <Button key="cancel" onClick={onClose}>
-          إلغاء
+          {t('cancel')}
         </Button>,
         <Button
           key="submit"
@@ -65,7 +67,7 @@ export const ResetBalanceModal: React.FC<ResetBalanceModalProps> = ({
           loading={loading}
           onClick={handleReset}
         >
-          تأكيد إعادة التعيين
+          {t('confirm')}
         </Button>,
       ]}
       width={500}
@@ -73,33 +75,33 @@ export const ResetBalanceModal: React.FC<ResetBalanceModalProps> = ({
       <div className="space-y-4">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">
-            <strong>تحذير:</strong> هذا الإجراء لا يمكن التراجع عنه!
+            <strong>{t('warning')}</strong>
           </p>
         </div>
 
         <div className="space-y-2">
           <p>
-            <strong>المعلم:</strong> {teacherName}
+            <strong>{t('teacher')}:</strong> {teacherName}
           </p>
           <p>
-            <strong>الرصيد الحالي:</strong>{' '}
+            <strong>{t('current_balance')}:</strong>{' '}
             <span className="text-lg font-bold text-red-600">
-              {currentBalance.toFixed(2)} ريال
+              {currentBalance.toFixed(2)} {t('currency')}
             </span>
           </p>
           <p className="text-sm text-gray-600">
-            سيتم إعادة تعيين الرصيد إلى <strong>0.00 ريال</strong>
+            {t('reset_message')} <strong>0.00 {t('currency')}</strong>
           </p>
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-2">
-            ملاحظات (اختياري)
+            {t('notes')}
           </label>
           <Input.TextArea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="أضف ملاحظات حول سبب إعادة التعيين..."
+            placeholder={t('notes_placeholder')}
             rows={3}
           />
         </div>

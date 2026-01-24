@@ -2,6 +2,7 @@
 
 import { X, Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface FilterOptions {
     phone: string;
@@ -20,6 +21,7 @@ export default function SessionsFilterModal({
     onClose,
     onApplyFilter
 }: SessionsFilterModalProps) {
+    const t = useTranslations('SessionsFilterModal');
     const [filters, setFilters] = useState<FilterOptions>({
         phone: '',
         teacher: '',
@@ -47,7 +49,7 @@ export default function SessionsFilterModal({
                 {/* Header */}
                 <div className="modal-header">
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
-                        فلترة الحصص
+                        {t('title')}
                     </h2>
                     <button onClick={onClose} className="modal-close">
                         <X size={24} />
@@ -60,12 +62,12 @@ export default function SessionsFilterModal({
                         {/* Phone Filter */}
                         <div className="form-group">
                             <label className="form-label">
-                                رقم الهاتف
+                                {t('phone')}
                             </label>
                             <input
                                 type="text"
                                 className="form-input"
-                                placeholder="ابحث برقم الهاتف..."
+                                placeholder={t('search_phone')}
                                 value={filters.phone}
                                 onChange={(e) => setFilters({ ...filters, phone: e.target.value })}
                             />
@@ -74,12 +76,12 @@ export default function SessionsFilterModal({
                         {/* Teacher Filter */}
                         <div className="form-group">
                             <label className="form-label">
-                                المعلم
+                                {t('teacher')}
                             </label>
                             <input
                                 type="text"
                                 className="form-input"
-                                placeholder="ابحث باسم المعلم..."
+                                placeholder={t('search_teacher')}
                                 value={filters.teacher}
                                 onChange={(e) => setFilters({ ...filters, teacher: e.target.value })}
                             />
@@ -88,12 +90,12 @@ export default function SessionsFilterModal({
                         {/* Student Filter */}
                         <div className="form-group">
                             <label className="form-label">
-                                الطالب
+                                {t('student')}
                             </label>
                             <input
                                 type="text"
                                 className="form-input"
-                                placeholder="ابحث باسم الطالب..."
+                                placeholder={t('search_student')}
                                 value={filters.student}
                                 onChange={(e) => setFilters({ ...filters, student: e.target.value })}
                             />
@@ -104,11 +106,11 @@ export default function SessionsFilterModal({
                 {/* Footer */}
                 <div className="modal-footer">
                     <button onClick={handleReset} className="btn btn-secondary">
-                        إعادة تعيين
+                        {t('reset')}
                     </button>
                     <button onClick={handleApply} className="btn btn-primary">
                         <Search size={18} />
-                        <span>تطبيق الفلتر</span>
+                        <span>{t('apply')}</span>
                     </button>
                 </div>
             </div>

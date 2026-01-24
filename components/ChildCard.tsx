@@ -8,7 +8,8 @@ import {
   FileDoneOutlined,
   CalendarOutlined,
 } from '@ant-design/icons';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 interface ChildCardProps {
   child: {
@@ -28,6 +29,7 @@ interface ChildCardProps {
  * Displays individual child's progress and statistics
  */
 export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
+  const t = useTranslations('ChildCard');
   const totalSessions = 20; // This should come from plan data
   const completedSessions = totalSessions - child.sessions_remaining;
   const progressPercent = (completedSessions / totalSessions) * 100;
@@ -38,12 +40,12 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
       title={
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold">{child.name}</span>
-          <Tag color="blue">{child.plan || 'لا توجد باقة'}</Tag>
+          <Tag color="blue">{child.plan || t('no_plan')}</Tag>
         </div>
       }
       extra={
         <Link href={`/parent/children/${child.id}`} className="text-blue-600 hover:text-blue-700">
-          التفاصيل
+          {t('details')}
         </Link>
       }
     >
@@ -51,7 +53,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
         {/* Progress */}
         <div>
           <div className="flex justify-between text-sm mb-2">
-            <span>تقدم الحصص</span>
+            <span>{t('sessions_progress')}</span>
             <span className="font-semibold">
               {completedSessions} / {totalSessions}
             </span>
@@ -71,7 +73,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
           <div className="bg-blue-50 p-3 rounded-lg">
             <div className="flex items-center gap-2 text-blue-600 mb-1">
               <BookOutlined />
-              <span className="text-xs">الحصص المتبقية</span>
+              <span className="text-xs">{t('remaining_sessions')}</span>
             </div>
             <div className="text-2xl font-bold text-blue-700">
               {child.sessions_remaining}
@@ -81,7 +83,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
           <div className="bg-green-50 p-3 rounded-lg">
             <div className="flex items-center gap-2 text-green-600 mb-1">
               <CalendarOutlined />
-              <span className="text-xs">حصص قادمة</span>
+              <span className="text-xs">{t('upcoming_sessions')}</span>
             </div>
             <div className="text-2xl font-bold text-green-700">
               {child.upcoming_sessions}
@@ -91,7 +93,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
           <div className="bg-orange-50 p-3 rounded-lg">
             <div className="flex items-center gap-2 text-orange-600 mb-1">
               <FileTextOutlined />
-              <span className="text-xs">واجبات معلقة</span>
+              <span className="text-xs">{t('pending_homework')}</span>
             </div>
             <div className="text-2xl font-bold text-orange-700">
               {child.pending_homework}
@@ -101,7 +103,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ child }) => {
           <div className="bg-purple-50 p-3 rounded-lg">
             <div className="flex items-center gap-2 text-purple-600 mb-1">
               <FileDoneOutlined />
-              <span className="text-xs">امتحانات قادمة</span>
+              <span className="text-xs">{t('upcoming_exams')}</span>
             </div>
             <div className="text-2xl font-bold text-purple-700">
               {child.upcoming_exams}

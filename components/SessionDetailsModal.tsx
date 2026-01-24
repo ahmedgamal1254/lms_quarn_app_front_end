@@ -1,6 +1,9 @@
 'use client';
 
+'use client';
+
 import { X, ExternalLink, CheckCircle, XCircle, Clock, MinusCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface SessionDetail {
     id: number;
@@ -44,32 +47,32 @@ const generateSessionDetails = (totalSessions: number): SessionDetail[] => {
     });
 };
 
-const getStatusInfo = (status: SessionDetail['status']) => {
+const getStatusInfo = (status: SessionDetail['status'], t: any) => {
     switch (status) {
         case 'attended':
             return {
-                label: 'حضور',
+                label: t('attended'),
                 color: '#10b981',
                 bgColor: 'rgba(16, 185, 129, 0.1)',
                 icon: CheckCircle
             };
         case 'absent':
             return {
-                label: 'غياب',
+                label: t('absent'),
                 color: '#ef4444',
                 bgColor: 'rgba(239, 68, 68, 0.1)',
                 icon: XCircle
             };
         case 'late':
             return {
-                label: 'حضور متأخر',
+                label: t('late'),
                 color: '#f59e0b',
                 bgColor: 'rgba(245, 158, 11, 0.1)',
                 icon: Clock
             };
         case 'pending':
             return {
-                label: 'لم يتم',
+                label: t('pending'),
                 color: '#6b7280',
                 bgColor: 'rgba(107, 114, 128, 0.1)',
                 icon: MinusCircle
@@ -85,6 +88,8 @@ export default function SessionDetailsModal({
     studentName,
     totalSessions
 }: SessionDetailsModalProps) {
+    const t = useTranslations('SessionDetailsModal');
+
     if (!isOpen) return null;
 
     const sessionDetails = generateSessionDetails(totalSessions);
@@ -95,7 +100,7 @@ export default function SessionDetailsModal({
                 {/* Header */}
                 <div className="modal-header">
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
-                        تفاصيل الحصص - {sessionName}
+                        {t('title')} - {sessionName}
                     </h2>
                     <button onClick={onClose} className="modal-close">
                         <X size={24} />
@@ -113,15 +118,15 @@ export default function SessionDetailsModal({
                     flexWrap: 'wrap'
                 }}>
                     <div>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>المعلم: </span>
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{t('teacher')}: </span>
                         <span style={{ color: 'var(--text-primary)', fontWeight: '600' }}>{teacherName}</span>
                     </div>
                     <div>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>الطالب: </span>
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{t('student')}: </span>
                         <span style={{ color: 'var(--text-primary)', fontWeight: '600' }}>{studentName}</span>
                     </div>
                     <div>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>إجمالي الحصص: </span>
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{t('total_sessions')}: </span>
                         <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{totalSessions}</span>
                     </div>
                 </div>
@@ -132,16 +137,16 @@ export default function SessionDetailsModal({
                         <thead style={{ position: 'sticky', top: 0, backgroundColor: 'var(--card-bg)', zIndex: 1 }}>
                             <tr>
                                 <th>#</th>
-                                <th>اليوم</th>
-                                <th>التاريخ</th>
-                                <th>الوقت</th>
-                                <th>رابط الدخول</th>
-                                <th>الحالة</th>
+                                <th>{t('day')}</th>
+                                <th>{t('date')}</th>
+                                <th>{t('time')}</th>
+                                <th>{t('link')}</th>
+                                <th>{t('status')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {sessionDetails.map((session) => {
-                                const statusInfo = getStatusInfo(session.status);
+                                const statusInfo = getStatusInfo(session.status, t);
                                 const StatusIcon = statusInfo.icon;
 
                                 return (
@@ -178,7 +183,7 @@ export default function SessionDetailsModal({
                                                 }}
                                             >
                                                 <ExternalLink size={14} />
-                                                <span>دخول الحصة</span>
+                                                <span>{t('join')}</span>
                                             </a>
                                         </td>
                                         <td>
@@ -207,7 +212,7 @@ export default function SessionDetailsModal({
                 {/* Footer */}
                 <div className="modal-footer">
                     <button onClick={onClose} className="btn btn-secondary">
-                        إغلاق
+                        {t('close')}
                     </button>
                 </div>
             </div>

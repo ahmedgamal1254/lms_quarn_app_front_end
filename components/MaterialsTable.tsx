@@ -17,6 +17,7 @@ import {
 } from '@/services/api/materials.service';
 import { EducationalMaterial } from '@/services/api/materials.types';
 import type { ColumnsType } from 'antd/es/table';
+import { useTranslations } from 'next-intl';
 
 interface MaterialsTableProps {
   role: 'admin' | 'teacher' | 'student';
@@ -31,6 +32,7 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
   role,
   refresh = 0,
 }) => {
+  const t = useTranslations('MaterialsTable');
   const [loading, setLoading] = useState(false);
   const [materials, setMaterials] = useState<EducationalMaterial[]>([]);
   const [pagination, setPagination] = useState({
@@ -57,7 +59,7 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
         total: response.data?.total || 0,
       }));
     } catch (error) {
-      message.error('حدث خطأ أثناء تحميل المواد');
+      message.error(t('error_load'));
     } finally {
       setLoading(false);
     }
@@ -66,30 +68,30 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
   const handleApprove = async (id: number) => {
     try {
       await approveMaterial(id);
-      message.success('تم الموافقة على المادة بنجاح');
+      message.success(t('success_approve'));
       fetchMaterials();
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'حدث خطأ');
+      message.error(error.response?.data?.message || t('error_action'));
     }
   };
 
   const handleReject = async (id: number) => {
     try {
-      await rejectMaterial(id, 'تم رفض المادة من قبل الإدارة');
-      message.success('تم رفض المادة');
+      await rejectMaterial(id, t('reject_reason'));
+      message.success(t('success_reject'));
       fetchMaterials();
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'حدث خطأ');
+      message.error(error.response?.data?.message || t('error_action'));
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
       await deleteMaterial(id);
-      message.success('تم حذف المادة بنجاح');
+      message.success(t('success_delete'));
       fetchMaterials();
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'حدث خطأ');
+      message.error(error.response?.data?.message || t('error_action'));
     }
   };
 
@@ -105,58 +107,58 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      message.error('حدث خطأ أثناء تحميل الملف');
+      message.error(t('error_download'));
     }
   };
 
   const columns: ColumnsType<EducationalMaterial> = [
     {
-      title: 'العنوان',
+      title: t('title'),
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'المعلم',
+      title: t('teacher'),
       dataIndex: ['teacher', 'name'],
       key: 'teacher',
       hidden: role === 'teacher',
     },
     {
-      title: 'المادة',
+      title: t('subject'),
       dataIndex: ['subject', 'name'],
       key: 'subject',
-      render: (name) => name || '-',
+      render: (name: string) => name || '-',
     },
     {
-      title: 'حجم الملف',
+      title: t('file_size'),
       dataIndex: 'formatted_file_size',
       key: 'file_size',
     },
     {
-      title: 'الحالة',
+      title: t('status'),
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => {
         const statusConfig = {
-          pending: { color: 'orange', text: 'قيد المراجعة' },
-          approved: { color: 'green', text: 'موافق عليه' },
-          rejected: { color: 'red', text: 'مرفوض' },
+          pending: { color: 'orange', text: t('pending') },
+          approved: { color: 'green', text: t('approved') },
+          rejected: { color: 'red', text: t('rejected') },
         };
         const config = statusConfig[status as keyof typeof statusConfig];
         return <Tag color={config.color}>{config.text}</Tag>;
       },
     },
     {
-      title: 'الإجراءات',
+      title: t('actions'),
       key: 'actions',
-      render: (_, record) => (
+      render: (_: any, record: EducationalMaterial) => (
         <Space>
           <Button
             type="link"
             icon={<DownloadOutlined />}
             onClick={() => handleDownload(record.id, record.file_name)}
           >
-            تحميل
+            {t('download')}
           </Button>
 
           {role === 'admin' && record.status === 'pending' && (
@@ -167,7 +169,7 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
                 onClick={() => handleApprove(record.id)}
                 style={{ color: 'green' }}
               >
-                موافقة
+                {t('approve')}
               </Button>
               <Button
                 type="link"
@@ -175,20 +177,20 @@ export const MaterialsTable: React.FC<MaterialsTableProps> = ({
                 icon={<CloseOutlined />}
                 onClick={() => handleReject(record.id)}
               >
-                رفض
+                {t('reject')}
               </Button>
             </>
           )}
 
           {(role === 'admin' || role === 'teacher') && (
             <Popconfirm
-              title="هل أنت متأكد من حذف هذه المادة؟"
+              title={t('confirm_delete')}
               onConfirm={() => handleDelete(record.id)}
-              okText="نعم"
-              cancelText="لا"
+              okText={t('yes')}
+              cancelText={t('no')}
             >
               <Button type="link" danger icon={<DeleteOutlined />}>
-                حذف
+                {t('delete')}
               </Button>
             </Popconfirm>
           )}

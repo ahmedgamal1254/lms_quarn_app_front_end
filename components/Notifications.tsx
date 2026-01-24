@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { Bell, CheckCheck } from "lucide-react";
@@ -26,6 +28,7 @@ const markAllAsRead = async () => {
 
 // ================= COMPONENT =================
 export default function Notifications() {
+    const t = useTranslations("Notifications");
     const [menuNotifications, setMenuNotifications] = useState(false);
 
   const queryClient = useQueryClient();
@@ -44,7 +47,7 @@ export default function Notifications() {
     mutationFn: markAsRead,
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["notifications"] })
-        toast.success("تم قراءة الاشعار بنجاح");
+        toast.success(t("successRead"));
         setMenuNotifications(false);
     },
   });
@@ -53,7 +56,7 @@ export default function Notifications() {
     mutationFn: markAllAsRead,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
-      toast.success("تم قراءة جميع الاشعارات بنجاح");
+      toast.success(t("successReadAll"));
       setMenuNotifications(false);
     },
   });
@@ -61,24 +64,26 @@ export default function Notifications() {
   if (isLoading) return <Badge count={0}><Bell size={18} /></Badge>;
 
   const notifications = data?.data?.notifications || [];
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
 
   return (
     <>
-    <Badge size="default" count={data?.data?.unread_count}>
-        <button className="p-2 rounded-lg hover:bg-gray-100" onClick={() => getAllFunction()}>
+    <button className="p-2 rounded-lg hover:bg-gray-100" dir={isRTL ? "rtl" : "ltr"} onClick={() => getAllFunction()}>
+        <Badge size="small" count={data?.data?.unread_count}>
             <Bell size={18} />
-        </button>
-    </Badge>
+        </Badge>
+    </button>
     {/* notifications menu  */}
     {
         menuNotifications && (
-        <div className="absolute top-16 left-4 w-96 bg-white rounded-lg shadow-lg p-4">
+        <div className="absolute top-16 left-4 w-96 bg-white rounded-lg shadow-lg p-4" dir={isRTL ? "rtl" : "ltr"}>
             <div className="w-full max-w-md rounded-2xl bg-white shadow-md">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b px-4 py-3">
                     <div className="flex items-center gap-2">
                     <Bell className="h-5 w-5 text-purple-600" />
-                    <h3 className="text-lg font-semibold">الاشعارات</h3>
+                    <h3 className="text-lg font-semibold">{t("title")}</h3>
                     </div>
 
                     <button
@@ -86,14 +91,14 @@ export default function Notifications() {
                     className="flex items-center gap-1 text-sm text-purple-600 hover:underline"
                     >
                     <CheckCheck className="h-4 w-4" />
-                    <span>اقراء الكل</span>
+                    <span>{t("markAllRead")}</span>
                     </button>
                 </div>
 
                 {/* List */}
                 <div className="max-h-[400px] divide-y overflow-y-auto">
                     {notifications.length === 0 && (
-                    <p className="p-4 text-center text-sm text-gray-500">لا يوجد اشعارات</p>
+                    <p className="p-4 text-center text-sm text-gray-500">{t("noNotifications")}</p>
                     )}
 
                     {notifications.map((n: any) => (

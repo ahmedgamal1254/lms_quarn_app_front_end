@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 
 export default function SessionAttendance({ sessionData }: any) {
+  const t = useTranslations("SessionAttendance");
   const checkins = sessionData.checkins || [];
 
   return (
@@ -14,19 +16,19 @@ export default function SessionAttendance({ sessionData }: any) {
 
         <div className="mt-2 grid grid-cols-2 gap-4 text-sm text-gray-700">
           <div>
-            <span className="font-medium">المدرس:</span>{" "}
+            <span className="font-medium">{t('teacher')}:</span>{" "}
             {sessionData.teacher_name}
           </div>
           <div>
-            <span className="font-medium">الطالب:</span>{" "}
+            <span className="font-medium">{t('student')}:</span>{" "}
             {sessionData.student_name}
           </div>
           <div>
-            <span className="font-medium">المادة:</span>{" "}
+            <span className="font-medium">{t('subject')}:</span>{" "}
             {sessionData.subject_name}
           </div>
           <div>
-            <span className="font-medium">موعد الحصة:</span>{" "}
+            <span className="font-medium">{t('session_date')}:</span>{" "}
             {sessionData.session_date}
           </div>
         </div>
@@ -38,16 +40,16 @@ export default function SessionAttendance({ sessionData }: any) {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                الاسم
+                {t('name')}
               </th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                النوع
+                {t('type')}
               </th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                وقت الدخول
+                {t('check_in_time')}
               </th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                الحالة
+                {t('status')}
               </th>
             </tr>
           </thead>
@@ -69,7 +71,7 @@ export default function SessionAttendance({ sessionData }: any) {
                             : "bg-green-100 text-green-700"
                         }`}
                     >
-                      {checkin.role === "teacher" ? "مدرس" : "طالب"}
+                      {checkin.role === "teacher" ? t('role_teacher') : t('role_student')}
                     </span>
                   </td>
 
@@ -81,7 +83,7 @@ export default function SessionAttendance({ sessionData }: any) {
 
                   <td className="px-4 py-3">
                     <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
-                      حضر
+                      {t('attended')}
                     </span>
                   </td>
                 </tr>
@@ -89,10 +91,10 @@ export default function SessionAttendance({ sessionData }: any) {
             ) : (
               <tr>
                 <td
-                  colSpan="4"
+                  colSpan={4}
                   className="px-4 py-6 text-center text-sm text-gray-500"
                 >
-                  لا يوجد حضور مسجل
+                  {t('no_attendance')}
                 </td>
               </tr>
             )}

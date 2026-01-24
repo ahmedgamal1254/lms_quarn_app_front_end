@@ -29,6 +29,7 @@ import {
 import axiosInstance from '@/lib/axios';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface Subject {
   id: number;
@@ -98,6 +99,9 @@ export default function TeacherProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const queryClient = useQueryClient();
+  const t = useTranslations('TeacherProfile');
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
 
   // Fetch profile data
   const { data: profileData, isLoading, error } = useQuery<Teacher>({
@@ -113,7 +117,7 @@ export default function TeacherProfile() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
-          <p className="text-gray-600">جاري تحميل البيانات...</p>
+          <p className="text-gray-600">{t('loading')}</p>
         </div>
       </div>
     );
@@ -125,7 +129,7 @@ export default function TeacherProfile() {
         <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <p className="text-red-600 font-semibold">
-            {axios.isAxiosError(error) ? error.response?.data?.message || 'حدث خطأ في تحميل البيانات' : 'حدث خطأ في تحميل البيانات'}
+            {axios.isAxiosError(error) ? error.response?.data?.message || t('errorLoading') : t('errorLoading')}
           </p>
         </div>
       </div>
@@ -135,20 +139,20 @@ export default function TeacherProfile() {
   const teacher = profileData;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 py-8 px-4">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">الملف الشخصي</h1>
-          <p className="text-gray-600 mt-2">إدارة معلوماتك الشخصية ومحفظتك المالية</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-2">{t('description')}</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <StatCard icon={Users} label="إجمالي الطلاب" value={teacher?.total_students || 0} color="bg-blue-50 text-blue-600" />
-          <StatCard icon={BookOpen} label="إجمالي الحصص" value={teacher?.total_sessions || 0} color="bg-green-50 text-green-600" />
-          <StatCard icon={Clock} label="إجمالي الساعات" value={teacher?.total_hours || 0} color="bg-orange-50 text-orange-600" />
-          <StatCard icon={Award} label="التقييم" value={`${teacher?.rating || 0} ⭐`} color="bg-yellow-50 text-yellow-600" />
+          <StatCard icon={Users} label={t('totalStudents')} value={teacher?.total_students || 0} color="bg-blue-50 text-blue-600" />
+          <StatCard icon={BookOpen} label={t('totalSessions')} value={teacher?.total_sessions || 0} color="bg-green-50 text-green-600" />
+          <StatCard icon={Clock} label={t('totalHours')} value={teacher?.total_hours || 0} color="bg-orange-50 text-orange-600" />
+          <StatCard icon={Award} label={t('rating')} value={`${teacher?.rating || 0} ⭐`} color="bg-yellow-50 text-yellow-600" />
         </div>
 
         {/* Tabs */}
@@ -157,19 +161,19 @@ export default function TeacherProfile() {
             active={activeTab === 'profile'}
             onClick={() => setActiveTab('profile')}
             icon={User}
-            label="البيانات الشخصية"
+            label={t('profile')}
           />
           <TabButton
             active={activeTab === 'wallet'}
             onClick={() => setActiveTab('wallet')}
             icon={Wallet}
-            label="المحفظة المالية"
+            label={t('wallet')}
           />
           <TabButton
             active={activeTab === 'transactions'}
             onClick={() => setActiveTab('transactions')}
             icon={DollarSign}
-            label="المعاملات المالية"
+            label={t('transactions')}
           />
         </div>
 
@@ -183,15 +187,17 @@ export default function TeacherProfile() {
             setImagePreview={setImagePreview}
             setShowPasswordModal={setShowPasswordModal}
             queryClient={queryClient}
+            t={t}
+            isRTL={isRTL}
           />
         )}
 
         {activeTab === 'wallet' && (
-          <WalletTab wallet={teacher?.wallet!} currency={teacher?.currency!} />
+          <WalletTab wallet={teacher?.wallet!} currency={teacher?.currency!} t={t} />
         )}
 
         {activeTab === 'transactions' && (
-          <TransactionsTab transactions={teacher?.wallet?.transactions || []} currency={teacher?.currency!} />
+          <TransactionsTab transactions={teacher?.wallet?.transactions || []} currency={teacher?.currency!} t={t} />
         )}
       </div>
 
@@ -200,6 +206,7 @@ export default function TeacherProfile() {
         <PasswordModal
           onClose={() => setShowPasswordModal(false)}
           queryClient={queryClient}
+          t={t}
         />
       )}
     </div>
@@ -207,7 +214,7 @@ export default function TeacherProfile() {
 }
 
 // Profile Tab Component
-function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePreview, setShowPasswordModal, queryClient }: any) {
+function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePreview, setShowPasswordModal, queryClient, t, isRTL }: any) {
   const [formData, setFormData] = useState({
     name: teacher?.name || '',
     country_code: teacher?.country_code || '+20',
@@ -225,10 +232,10 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teacher-profile'] });
       setEditMode(false);
-      toast.success('تم تحديث البيانات بنجاح');
+      toast.success(t('successUpdate'));
     },
     onError: (error: any) => {
-      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || 'حدث خطأ أثناء التحديث' : 'حدث خطأ أثناء التحديث');
+      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || t('errorUpdate') : t('errorUpdate'));
     }
   });
 
@@ -242,10 +249,10 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teacher-profile'] });
       setImagePreview(null);
-      toast.success('تم تحديث الصورة بنجاح');
+      toast.success(t('successImage'));
     },
     onError: (error: any) => {
-      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || 'حدث خطأ أثناء تحديث الصورة' : 'حدث خطأ أثناء تحديث الصورة');
+      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || t('errorImage') : t('errorImage'));
     }
   });
 
@@ -274,14 +281,14 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
       <div className="lg:col-span-2">
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 mb-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">المعلومات الأساسية</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('basicInfo')}</h2>
             {!editMode ? (
               <button
                 onClick={() => setEditMode(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
               >
                 <Edit2 className="w-4 h-4" />
-                تعديل
+                {t('edit')}
               </button>
             ) : (
               <div className="flex gap-2">
@@ -295,14 +302,14 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
                   ) : (
                     <Save className="w-4 h-4" />
                   )}
-                  حفظ
+                  {t('save')}
                 </button>
                 <button
                   onClick={() => setEditMode(false)}
                   className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
                 >
                   <X className="w-4 h-4" />
-                  إلغاء
+                  {t('cancel')}
                 </button>
               </div>
             )}
@@ -316,7 +323,7 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
                 alt={teacher?.name}
                 className="w-32 h-32 rounded-full object-cover border-4 border-purple-100"
               />
-              <label className="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full cursor-pointer hover:bg-purple-700 transition">
+              <label className={`absolute bottom-0 ${isRTL ? 'right-0' : 'right-0'} bg-purple-600 text-white p-2 rounded-full cursor-pointer hover:bg-purple-700 transition`}>
                 <Camera className="w-5 h-5" />
                 <input
                   type="file"
@@ -337,53 +344,60 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
           <div className="grid md:grid-cols-2 gap-4">
             <FormField
               icon={User}
-              label="الاسم"
+              label={t('name')}
               value={formData.name}
               onChange={(e:any) => setFormData({ ...formData, name: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
             <FormField
               icon={Mail}
-              label="البريد الإلكتروني"
+              label={t('email')}
               value={teacher?.email}
               disabled={true}
+              isRTL={isRTL}
             />
             <FormField
               icon={Globe}
-              label="رمز الدولة"
+              label={t('countryCode')}
               value={formData.country_code}
               onChange={(e:any) => setFormData({ ...formData, country_code: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
             <FormField
               icon={Phone}
-              label="رقم الهاتف"
+              label={t('phone')}
               value={formData.phone}
               onChange={(e:any) => setFormData({ ...formData, phone: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
             
             <FormField
               icon={DollarSign}
-              label={`السعر بالساعة (${teacher?.currency})`}
+              label={`${t('hourlyRate')} (${teacher?.currency})`}
               type="number"
               value={formData.hourly_rate}
               onChange={(e:any) => setFormData({ ...formData, hourly_rate: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
             <FormField
               icon={LinkIcon}
-              label="نوع رابط الجلسة"
+              label={t('sessionLinkType')}
               value={formData.session_link_type}
               onChange={(e:any) => setFormData({ ...formData, session_link_type: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
             <FormField
               icon={LinkIcon}
-              label="رابط الجلسة"
+              label={t('sessionLink')}
               value={formData.session_link}
               onChange={(e:any) => setFormData({ ...formData, session_link: e.target.value })}
               disabled={!editMode}
+              isRTL={isRTL}
             />
           </div>
         </div>
@@ -391,8 +405,8 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
         {/* Action Card */}
         <ActionCard
           icon={Lock}
-          title="تغيير كلمة المرور"
-          description="قم بتحديث كلمة المرور الخاصة بك"
+          title={t('changePassword')}
+          description={t('changePasswordDesc')}
           onClick={() => setShowPasswordModal(true)}
           color="bg-orange-50 text-orange-600"
         />
@@ -402,7 +416,7 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
       <div className="space-y-6">
         {/* Subjects Card */}
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">المواد الدراسية</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">{t('subjects')}</h3>
           <div className="space-y-2">
             {teacher?.subjects?.map((subject: Subject) => (
               <div key={subject.id} className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
@@ -417,20 +431,20 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
 
         {/* Status Card */}
         <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
-          <h3 className="text-xl font-bold mb-4">حالة الحساب</h3>
+          <h3 className="text-xl font-bold mb-4">{t('accountStatus')}</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span>الحالة</span>
+              <span>{t('status')}</span>
               <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm font-semibold">
-                {teacher?.status === 'active' ? 'نشط' : 'غير نشط'}
+                {teacher?.status === 'active' ? t('active') : t('inactive')}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span>الجنس</span>
-              <span>{teacher?.gender === 'male' ? 'ذكر' : 'أنثى'}</span>
+              <span>{t('gender')}</span>
+              <span>{teacher?.gender === 'male' ? t('male') : t('female')}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>إجمالي الدقائق</span>
+              <span>{t('totalMinutes')}</span>
               <span className="font-bold">{teacher?.total_minutes}</span>
             </div>
           </div>
@@ -441,27 +455,27 @@ function ProfileTab({ teacher, editMode, setEditMode, imagePreview, setImagePrev
 }
 
 // Wallet Tab Component
-function WalletTab({ wallet, currency }: { wallet: Wallet; currency: string }) {
+function WalletTab({ wallet, currency, t }: { wallet: Wallet; currency: string; t: any }) {
   return (
     <div className="grid md:grid-cols-2 gap-6">
       {/* Balance Card */}
       <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl shadow-lg p-8 text-white">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold">الرصيد المتاح</h3>
+          <h3 className="text-2xl font-bold">{t('availableBalance')}</h3>
           <Wallet className="w-10 h-10" />
         </div>
         <div className="text-5xl font-bold mb-2">{wallet?.balance} {currency}</div>
-        <p className="text-green-100">متاح للسحب الآن</p>
+        <p className="text-green-100">{t('availableToWithdraw')}</p>
       </div>
 
       {/* Pending Withdraw */}
       <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl shadow-lg p-8 text-white">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold">طلبات السحب المعلقة</h3>
+          <h3 className="text-2xl font-bold">{t('pendingWithdraw')}</h3>
           <Clock className="w-10 h-10" />
         </div>
         <div className="text-5xl font-bold mb-2">{wallet?.pendingWithdraw} {currency}</div>
-        <p className="text-orange-100">قيد المراجعة</p>
+        <p className="text-orange-100">{t('underReview')}</p>
       </div>
 
       {/* Total Earnings */}
@@ -471,7 +485,7 @@ function WalletTab({ wallet, currency }: { wallet: Wallet; currency: string }) {
             <TrendingUp className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h4 className="text-sm text-gray-600">إجمالي الأرباح</h4>
+            <h4 className="text-sm text-gray-600">{t('totalEarnings')}</h4>
             <p className="text-2xl font-bold text-gray-900">{wallet?.totalEarnings} {currency}</p>
           </div>
         </div>
@@ -484,7 +498,7 @@ function WalletTab({ wallet, currency }: { wallet: Wallet; currency: string }) {
             <CheckCircle className="w-6 h-6 text-green-600" />
           </div>
           <div>
-            <h4 className="text-sm text-gray-600">المبالغ المدفوعة</h4>
+            <h4 className="text-sm text-gray-600">{t('paidAmount')}</h4>
             <p className="text-2xl font-bold text-gray-900">{wallet?.paidAmount} {currency}</p>
           </div>
         </div>
@@ -497,7 +511,7 @@ function WalletTab({ wallet, currency }: { wallet: Wallet; currency: string }) {
             <Clock className="w-6 h-6 text-yellow-600" />
           </div>
           <div>
-            <h4 className="text-sm text-gray-600">المبالغ المعلقة</h4>
+            <h4 className="text-sm text-gray-600">{t('pendingAmount')}</h4>
             <p className="text-2xl font-bold text-gray-900">{wallet?.pendingAmount} {currency}</p>
           </div>
         </div>
@@ -507,7 +521,7 @@ function WalletTab({ wallet, currency }: { wallet: Wallet; currency: string }) {
 }
 
 // Transactions Tab Component
-function TransactionsTab({ transactions, currency }: { transactions: Transaction[]; currency: string }) {
+function TransactionsTab({ transactions, currency, t }: { transactions: Transaction[]; currency: string; t: any }) {
   const sortedTransactions = [...transactions].sort((a, b) => 
     new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   );
@@ -515,19 +529,19 @@ function TransactionsTab({ transactions, currency }: { transactions: Transaction
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
       <div className="p-6 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900">سجل المعاملات المالية</h2>
-        <p className="text-sm text-gray-600 mt-1">جميع معاملاتك المالية مرتبة من الأحدث للأقدم</p>
+        <h2 className="text-xl font-bold text-gray-900">{t('transactionsHistory')}</h2>
+        <p className="text-sm text-gray-600 mt-1">{t('transactionsDesc')}</p>
       </div>
       
       <div className="divide-y divide-gray-100">
         {sortedTransactions.length > 0 ? (
           sortedTransactions.map((transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} currency={currency} />
+            <TransactionItem key={transaction.id} transaction={transaction} currency={currency} t={t} />
           ))
         ) : (
           <div className="p-12 text-center">
             <DollarSign className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">لا توجد معاملات مالية</p>
+            <p className="text-gray-500">{t('noTransactions')}</p>
           </div>
         )}
       </div>
@@ -536,7 +550,7 @@ function TransactionsTab({ transactions, currency }: { transactions: Transaction
 }
 
 // Transaction Item Component
-function TransactionItem({ transaction, currency }: { transaction: Transaction; currency: string }) {
+function TransactionItem({ transaction, currency, t }: { transaction: Transaction; currency: string; t: any }) {
   const isCredit = transaction.type === 'credit';
   const statusColors = {
     completed: 'bg-green-100 text-green-800',
@@ -544,10 +558,10 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
     failed: 'bg-red-100 text-red-800'
   };
   
-  const statusLabels = {
-    completed: 'مكتمل',
-    pending: 'معلق',
-    failed: 'فشل'
+  const statusLabels: any = {
+    completed: t('completed'),
+    pending: t('pending'),
+    failed: t('failed')
   };
 
   return (
@@ -567,7 +581,7 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <h4 className="font-bold text-gray-900">
-                {isCredit ? 'إضافة رصيد' : 'سحب رصيد'}
+                {isCredit ? t('addCredit') : t('withdrawCredit')}
               </h4>
               <span className={`text-xs px-2 py-1 rounded-full font-semibold ${statusColors[transaction.status]}`}>
                 {statusLabels[transaction.status]}
@@ -582,7 +596,7 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
               <div className="flex items-start gap-2 p-3 bg-red-50 rounded-lg mb-2">
                 <XCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-xs font-semibold text-red-800">سبب الرفض:</p>
+                  <p className="text-xs font-semibold text-red-800">{t('rejectReason')}</p>
                   <p className="text-sm text-red-700">{transaction.reject_reason}</p>
                 </div>
               </div>
@@ -592,7 +606,7 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
               <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg mb-2">
                 <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-xs font-semibold text-green-800">ملاحظة الموافقة:</p>
+                  <p className="text-xs font-semibold text-green-800">{t('approveNote')}</p>
                   <p className="text-sm text-green-700">{transaction.approve_reason}</p>
                 </div>
               </div>
@@ -601,7 +615,7 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
             <div className="flex flex-wrap gap-4 text-xs text-gray-500 mt-2">
               <span className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
-                {new Date(transaction.created_at).toLocaleDateString('ar-EG', {
+                {new Date(transaction.created_at).toLocaleDateString(t('countryCode') === '+20' ? 'ar-EG' : 'en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -609,7 +623,7 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="w-3 h-3" />
-                {new Date(transaction.created_at).toLocaleTimeString('ar-EG', {
+                {new Date(transaction.created_at).toLocaleTimeString(t('countryCode') === '+20' ? 'ar-EG' : 'en-US', {
                   hour: '2-digit',
                   minute: '2-digit'
                 })}
@@ -617,9 +631,9 @@ function TransactionItem({ transaction, currency }: { transaction: Transaction; 
             </div>
             
             <div className="mt-2 text-xs text-gray-500">
-              <span>الرصيد قبل: {transaction.balance_before} {currency}</span>
+              <span>{t('balanceBefore')} {transaction.balance_before} {currency}</span>
               <span className="mx-2">←</span>
-              <span>الرصيد بعد: {transaction.balance_after} {currency}</span>
+              <span>{t('balanceAfter')} {transaction.balance_after} {currency}</span>
             </div>
           </div>
         </div>
@@ -664,29 +678,29 @@ function TabButton({ active, onClick, icon: Icon, label }: any) {
   );
 }
 
-function FormField({ icon: Icon, label, type = 'text', value, onChange, disabled }: any) {
+function FormField({ icon: Icon, label, type = 'text', value, onChange, disabled, isRTL }: any) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
       <div className="relative">
-        <Icon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <Icon className={`absolute ${isRTL ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400`} />
         <input
           type={type}
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600"
+          className={`w-full ${isRTL ? 'pl-10 pr-4' : 'pr-10 pl-4'} py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-600`}
         />
       </div>
     </div>
   );
 }
 
-function ActionCard({ icon: Icon, title, description, onClick, color }: any) {
+function ActionCard({ icon: Icon, title, description, onClick, color, isRTL }: any) {
   return (
     <button
       onClick={onClick}
-      className="w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-right border border-gray-100 group"
+      className={`w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-start border border-gray-100 group`}
     >
       <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
         <Icon className="w-6 h-6" />
@@ -698,7 +712,7 @@ function ActionCard({ icon: Icon, title, description, onClick, color }: any) {
 }
 
 // Password Modal Component
-function PasswordModal({ onClose, queryClient }: any) {
+function PasswordModal({ onClose, queryClient, t }: any) {
   const [formData, setFormData] = useState({
     current_password: '',
     password: '',
@@ -711,18 +725,18 @@ function PasswordModal({ onClose, queryClient }: any) {
       return res.data;
     },
     onSuccess: () => {
-      toast.success('تم تغيير كلمة المرور بنجاح');
+      toast.success(t('successPassword'));
       onClose();
     },
     onError: (error: any) => {
-      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || 'حدث خطأ أثناء تغيير كلمة المرور' : 'حدث خطأ أثناء تغيير كلمة المرور');
+      toast.error(axios.isAxiosError(error) ? error.response?.data?.message || t('errorPassword') : t('errorPassword'));
     }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.password_confirmation) {
-      toast.error('كلمة المرور غير متطابقة');
+      toast.error(t('passwordMismatch'));
       return;
     }
     updatePasswordMutation.mutate(formData);
@@ -732,7 +746,7 @@ function PasswordModal({ onClose, queryClient }: any) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">تغيير كلمة المرور</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t('changePassword')}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <X className="w-6 h-6" />
           </button>
@@ -740,7 +754,7 @@ function PasswordModal({ onClose, queryClient }: any) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور الحالية</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('currentPassword')}</label>
             <input
               type="password"
               value={formData.current_password}
@@ -751,7 +765,7 @@ function PasswordModal({ onClose, queryClient }: any) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور الجديدة</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('newPassword')}</label>
             <input
               type="password"
               value={formData.password}
@@ -762,7 +776,7 @@ function PasswordModal({ onClose, queryClient }: any) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">تأكيد كلمة المرور</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('confirmPassword')}</label>
             <input
               type="password"
               value={formData.password_confirmation}
@@ -781,10 +795,10 @@ function PasswordModal({ onClose, queryClient }: any) {
               {updatePasswordMutation.isPending ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  جاري الحفظ...
+                  {t('saving')}
                 </>
               ) : (
-                'حفظ'
+                t('save')
               )}
             </button>
             <button
@@ -792,7 +806,7 @@ function PasswordModal({ onClose, queryClient }: any) {
               onClick={onClose}
               className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition"
             >
-              إلغاء
+              {t('cancel')}
             </button>
           </div>
         </form>
