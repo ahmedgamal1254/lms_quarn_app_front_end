@@ -97,6 +97,7 @@ export default function ChatPage() {
   const [messageText, setMessageText] = useState('');
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   /* ========== FETCH MESSAGES ========== */
 
@@ -355,44 +356,58 @@ export default function ChatPage() {
         
         <div className="flex items-center gap-2">
           {/* Attachment Button */}
-          <div className="flex items-center">
-            <FileUploadButton 
-              onUpload={handleSendFiles}
-              disabled={sendMessageMutation.isPending}
-            />
-          </div>
-
-          {/* Message Input / Voice Recorder */}
-          <div className="flex-1">
-            <div className="relative">
-              <textarea
-                value={messageText}
-                onChange={(e) => setMessageText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage();
-                  }
-                }}
-                className="w-full border dark:border-gray-600 rounded-xl p-3 pr-12 resize-none bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[44px] max-h-32"
-                placeholder="اكتب رسالتك..."
-                rows={1}
+          {!isRecording && (
+            <div className="flex items-center">
+              <FileUploadButton 
+                onUpload={handleSendFiles}
+                disabled={sendMessageMutation.isPending}
               />
             </div>
+          )}
+
+          {/* Message Input / Voice Recorder */}
+          <div className={isRecording ? "flex-1" : "flex-1 min-w-0"}>
+            {!isRecording && (
+              <div className="relative">
+                <textarea
+                  value={messageText}
+                  onChange={(e) => setMessageText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  className="w-full border dark:border-gray-600 rounded-xl p-3 resize-none bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[44px] max-h-32"
+                  placeholder="اكتب رسالتك..."
+                  rows={1}
+                />
+              </div>
+            )}
+            {isRecording && !messageText.trim() && (
+                <VoiceRecorder 
+                onSend={handleSendVoice}
+                disabled={sendMessageMutation.isPending}
+                onRecordingStateChange={setIsRecording}
+              />
+            )}
           </div>
 
           {/* Action Buttons: Voice or Send */}
           <div className="flex items-center gap-2">
-            {!messageText.trim() ? (
+            {!isRecording && !messageText.trim() && (
               <VoiceRecorder 
                 onSend={handleSendVoice}
                 disabled={sendMessageMutation.isPending}
+                onRecordingStateChange={setIsRecording}
               />
-            ) : (
+            )}
+            
+            {messageText.trim() && (
               <button
                 onClick={handleSendMessage}
                 disabled={sendMessageMutation.isPending || !messageText.trim()}
-                className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-lg shadow-indigo-200 dark:shadow-none"
+                className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-lg shadow-indigo-200 dark:shadow-none flex-shrink-0"
               >
                 {sendMessageMutation.isPending ? (
                   <Loader2 className="w-6 h-6 animate-spin" />

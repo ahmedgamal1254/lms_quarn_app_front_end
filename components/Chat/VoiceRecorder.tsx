@@ -7,9 +7,10 @@ import toast from 'react-hot-toast';
 interface VoiceRecorderProps {
   onSend: (audioBlob: Blob, duration: number) => Promise<void>;
   disabled?: boolean;
+  onRecordingStateChange?: (isRecording: boolean) => void;
 }
 
-export default function VoiceRecorder({ onSend, disabled }: VoiceRecorderProps) {
+export default function VoiceRecorder({ onSend, disabled, onRecordingStateChange }: VoiceRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -46,6 +47,7 @@ export default function VoiceRecorder({ onSend, disabled }: VoiceRecorderProps) 
 
       mediaRecorder.start();
       setIsRecording(true);
+      onRecordingStateChange?.(true);
       startTimeRef.current = Date.now();
       
       timerRef.current = setInterval(() => {
@@ -72,6 +74,7 @@ export default function VoiceRecorder({ onSend, disabled }: VoiceRecorderProps) 
   const cancelRecording = () => {
     stopRecording();
     setIsRecording(false);
+    onRecordingStateChange?.(false);
     setDuration(0);
     audioChunksRef.current = [];
   };
@@ -91,6 +94,7 @@ export default function VoiceRecorder({ onSend, disabled }: VoiceRecorderProps) 
     try {
       await onSend(audioBlob, recordedDuration);
       setIsRecording(false);
+      onRecordingStateChange?.(false);
       setDuration(0);
       audioChunksRef.current = [];
     } catch (error) {

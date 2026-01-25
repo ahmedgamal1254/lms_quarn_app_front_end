@@ -587,6 +587,7 @@
   "Chat": {
     "messages": "Messages",
     "voiceMessage": "Voice Message",
+    "image": "Image",
     "fileMessage": "File Message",
     "mediaMessage": "Media Message",
     "searchPlaceholder": "Search conversations...",

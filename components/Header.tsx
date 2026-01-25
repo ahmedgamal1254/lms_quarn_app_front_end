@@ -33,7 +33,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     ? "/teacher/profile"
     : user?.role === "parent"
     ? "/parent-dashboard"
-    : "/admin/profile";
+    : "/dashboard";
 
   return (
     <header 

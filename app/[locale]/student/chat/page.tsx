@@ -103,6 +103,7 @@ export default function ChatPage() {
   const [conversationPage, setConversationPage] = useState(1);
   const [messagePage, setMessagePage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   const user=getUser();
 
@@ -527,46 +528,53 @@ export default function ChatPage() {
                {/* Message Input */}
               <div className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-center gap-2">
-                  <FileUploadButton 
-                    onUpload={handleSendFiles}
-                    disabled={sendMessageMutation.isPending}
-                  />
-                  
-                  <div className="flex-1">
-                    <textarea
-                      value={messageText}
-                      onChange={(e) => setMessageText(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSendMessage(e);
-                        }
-                      }}
-                      placeholder={tChat('typeMessage')}
-                      rows={1}
-                      className={`w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${locale === 'ar' ? 'text-right' : 'text-left'} dark:text-gray-100`}
-                    />
-                  </div>
-
-                  {!messageText.trim() ? (
-                    <VoiceRecorder 
-                      onSend={handleSendVoice}
+                  {!isRecording && (
+                    <FileUploadButton 
+                      onUpload={handleSendFiles}
                       disabled={sendMessageMutation.isPending}
                     />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => handleSendMessage()}
-                      disabled={!messageText.trim() || sendMessageMutation.isPending}
-                      className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200 dark:shadow-none"
-                    >
-                      {sendMessageMutation.isPending ? (
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                      ) : (
-                        <Send className="w-6 h-6" />
-                      )}
-                    </button>
                   )}
+                  
+                  {!isRecording && (
+                    <div className="flex-1">
+                      <textarea
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSendMessage(e);
+                          }
+                        }}
+                        placeholder={tChat('typeMessage')}
+                        rows={1}
+                        className={`w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${locale === 'ar' ? 'text-right' : 'text-left'} dark:text-gray-100`}
+                      />
+                    </div>
+                  )}
+
+                  <div className={isRecording ? "flex-1" : ""}>
+                    {!messageText.trim() ? (
+                      <VoiceRecorder 
+                        onSend={handleSendVoice}
+                        disabled={sendMessageMutation.isPending}
+                        onRecordingStateChange={setIsRecording}
+                      />
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleSendMessage()}
+                        disabled={!messageText.trim() || sendMessageMutation.isPending}
+                        className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-200 dark:shadow-none"
+                      >
+                        {sendMessageMutation.isPending ? (
+                          <Loader2 className="w-6 h-6 animate-spin" />
+                        ) : (
+                          <Send className="w-6 h-6" />
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </>

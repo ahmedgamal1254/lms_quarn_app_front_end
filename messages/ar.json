@@ -590,6 +590,7 @@
   "Chat": {
     "messages": "الرسائل",
     "voiceMessage":"رسالة صوتية",
+    "image":"الصورة",
     "fileMessage":"رسالة ملف",
     "mediaMessage":"رسالة وسائط",
     "searchPlaceholder": "بحث في المحادثات...",
