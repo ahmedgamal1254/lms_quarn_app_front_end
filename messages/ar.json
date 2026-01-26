@@ -42,6 +42,8 @@
     "controlPanel": "لوحة التحكم",
     "save": "حفظ",
     "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "back": "رجوع",
     "edit": "تعديل",
     "delete": "حذف",
     "add": "إضافة",
@@ -646,7 +648,14 @@
     "from": "من",
     "to": "إلى",
     "joinSession": "دخول الحصة",
-    "sessionEnded": "منتهية"
+    "joinSession": "دخول الحصة",
+    "sessionEnded": "منتهية",
+    "cancelSession": "إلغاء الحصة",
+    "cancelConfirmation": "هل أنت متأكد من رغبتك في إلغاء هذه الحصة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "reasonPlaceholder": "الرجاء ذكر سبب الإلغاء...",
+    "cancellationRequested": "تم تقديم طلب الإلغاء بنجاح",
+    "errorCancelling": "حدث خطأ أثناء تقديم طلب الإلغاء",
+    "cancellation_too_late": "يجب تقديم طلب الإلغاء قبل 24 ساعة على الأقل من الموعد."
   },
   "TeacherProfile": {
     "title": "الملف الشخصي",

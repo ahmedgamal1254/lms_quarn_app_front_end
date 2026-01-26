@@ -55,6 +55,7 @@ interface Session{
   status: string | null;
   subject: { name: string } | null;
   teacher: { name: string; email?: string; phone?: string } | null;
+  cancellation_request?: { status: string; reason: string } | null;
 };
 
 export default function StudentSessionsPage() {
@@ -64,8 +65,27 @@ export default function StudentSessionsPage() {
   const params = useParams();
   const isRTL = params.locale === 'ar';
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [cancelReason, setCancelReason] = useState('');
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const [search, setSearch] = useState('');
+  // ... existing code ...
+
+  const handleCancelSession = async () => {
+      if (!selectedSession) return;
+      try {
+          await axiosInstance.post(`/sessions/${selectedSession.id}/cancel`, {
+              reason: cancelReason
+          });
+          toast.success(t('cancellationRequested'));
+          setShowCancelModal(false);
+          setCancelReason('');
+          setSelectedSession(null); 
+          // invalidate queries to refresh list
+      } catch (error: any) {
+          toast.error(error?.response?.data?.message || t('errorCancelling'));
+      }
+  };
   const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -502,8 +522,48 @@ export default function StudentSessionsPage() {
               >
                 {tCommon('close')}
               </button>
+              
+              {selectedSession.status === 'scheduled' && !selectedSession.cancellation_request && (
+                  <button
+                    onClick={() => setShowCancelModal(true)}
+                    className="flex-1 px-4 py-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-semibold"
+                  >
+                    {t('cancelSession')}
+                  </button>
+              )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Cancel Confirmation Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[60]" dir={isRTL ? 'rtl' : 'ltr'}>
+             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-md">
+                 <h3 className="text-xl font-bold mb-4">{t('cancelSession')}</h3>
+                 <p className="text-gray-600 mb-4">{t('cancelConfirmation')}</p>
+                 <textarea
+                    className="w-full p-3 border rounded-lg mb-4 dark:bg-slate-700 dark:border-gray-600"
+                    placeholder={t('reasonPlaceholder')}
+                    value={cancelReason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                 />
+                 <div className="flex gap-3">
+                     <button 
+                        onClick={() => setShowCancelModal(false)}
+                        className="flex-1 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800"
+                     >
+                         {tCommon('back')}
+                     </button>
+                     <button 
+                        onClick={handleCancelSession}
+                        disabled={!cancelReason}
+                        className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
+                     >
+                         {tCommon('confirm')}
+                     </button>
+                 </div>
+             </div>
         </div>
       )}
     </div>

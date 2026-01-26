@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   LayoutDashboard,
@@ -23,16 +23,16 @@ import {
   WalletMinimalIcon,
   WalletCardsIcon,
   Settings2Icon,
-  MessageCircle
-} from 'lucide-react';
+  MessageCircle,
+} from "lucide-react";
 
-import { useEffect, useState } from 'react';
-import { Link, usePathname, useRouter } from '@/i18n/routing';
-import { useParams } from 'next/navigation';
-import { getUser, logout } from '@/lib/auth';
-import { useAppSettingsStore } from '@/store/appSetting';
-import { SettingFilled } from '@ant-design/icons';
-import { useTranslations } from 'next-intl';
+import { useEffect, useState } from "react";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { useParams } from "next/navigation";
+import { getUser, logout } from "@/lib/auth";
+import { useAppSettingsStore } from "@/store/appSetting";
+import { SettingFilled } from "@ant-design/icons";
+import { useTranslations } from "next-intl";
 
 interface MenuItem {
   title: string;
@@ -42,7 +42,7 @@ interface MenuItem {
   permission?: string;
 }
 
-type UserRole = 'student' | 'teacher' | 'admin' | 'parent';
+type UserRole = "student" | "teacher" | "admin" | "parent";
 
 interface MenuSidebar {
   title: string;
@@ -53,17 +53,23 @@ interface MenuSidebar {
 
 /* ---------------- MENUS ---------------- */
 
-export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const t = useTranslations('Sidebar');
+export default function Sidebar({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const t = useTranslations("Sidebar");
   const pathname = usePathname();
   const router = useRouter();
   const [permissions, setPermissions] = useState<string[]>([]);
   const [expanded, setExpanded] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
   const settings = useAppSettingsStore((state) => state.app_settings);
-  const tCommon = useTranslations('Common');
+  const tCommon = useTranslations("Common");
   const params = useParams();
-  const isRTL = params.locale === 'ar';
+  const isRTL = params.locale === "ar";
 
   useEffect(() => {
     const u = getUser();
@@ -73,129 +79,233 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
   }, []);
 
   const roleUrls: Record<UserRole, string> = {
-    student: '/student/profile',
-    teacher: '/teacher/profile',
-    admin: '/admin/dashboard',
-    parent: '/parent-dashboard'
+    student: "/student/profile",
+    teacher: "/teacher/profile",
+    admin: "/admin/dashboard",
+    parent: "/parent-dashboard",
   };
 
   const role = user?.role as UserRole | undefined;
-  const url = role ? roleUrls[role] : '';
+  const url = role ? roleUrls[role] : "";
 
   // Define menus inside component to access translations
   const adminMenuGroups = [
-    { title: t('home'), icon: LayoutDashboard, href: '/dashboard', permission: 'view-dashboard' },
     {
-      title: t('userManagement'),
+      title: t("home"),
+      icon: LayoutDashboard,
+      href: "/dashboard",
+      permission: "view-dashboard",
+    },
+    {
+      title: t("userManagement"),
       icon: Users,
       items: [
-        { title: t('users'), href: '/users', icon: Users, permission: 'manage-users' },
-        { title: t('students'), href: '/students', icon: GraduationCap, permission: 'manage-students' },
-        { title: t('teachers'), href: '/teachers', icon: UserCog, permission: 'manage-teachers' },
-        { title: t('parents'), href: '/parent', icon: Users, permission: 'manage-users' }
-      ]
+        {
+          title: t("users"),
+          href: "/users",
+          icon: Users,
+          permission: "manage-users",
+        },
+        {
+          title: t("students"),
+          href: "/students",
+          icon: GraduationCap,
+          permission: "manage-students",
+        },
+        {
+          title: t("teachers"),
+          href: "/teachers",
+          icon: UserCog,
+          permission: "manage-teachers",
+        },
+        {
+          title: t("parents"),
+          href: "/parent",
+          icon: Users,
+          permission: "manage-users",
+        },
+      ],
     },
     {
-      title: t('academicContent'),
+      title: t("academicContent"),
       icon: BookOpen,
       items: [
-        { title: t('sessions'), href: '/sessions', icon: Video, permission: 'manage-sessions' },
-        { title: t('calendar'), href: "/sessions/callender", icon:File, permission: 'manage-sessions' },
-        { title: t('exams'), href: '/exams', icon: FileQuestion, permission: 'manage-exams' },
-        { title: t('homework'), href: '/homework', icon: ClipboardList, permission: 'manage-homework' }
-      ]
+        {
+          title: t("sessions"),
+          href: "/sessions",
+          icon: Video,
+          permission: "manage-sessions",
+        },
+        {
+          title: t("calendar"),
+          href: "/sessions/callender",
+          icon: File,
+          permission: "manage-sessions",
+        },
+        {
+          title: t("exams"),
+          href: "/exams",
+          icon: FileQuestion,
+          permission: "manage-exams",
+        },
+        {
+          title: t("homework"),
+          href: "/homework",
+          icon: ClipboardList,
+          permission: "manage-homework",
+        },
+      ],
     },
     {
-      title: t('finances'),
+      title: t("finances"),
       icon: Banknote,
       items: [
-        { title: t('currencies'), href: '/finances/currencies', icon: Coins, permission: 'manage-finance' },
-        { title: t('transactions'), href: '/finances/transactions', icon: ArrowRightLeft, permission: 'manage-finance' },
-        { title: t('expenses'), href: '/finances/expenses', icon: Wallet, permission: 'manage-finance' }
-      ]
+        {
+          title: t("currencies"),
+          href: "/finances/currencies",
+          icon: Coins,
+          permission: "manage-finance",
+        },
+        {
+          title: t("transactions"),
+          href: "/finances/transactions",
+          icon: ArrowRightLeft,
+          permission: "manage-finance",
+        },
+        {
+          title: t("expenses"),
+          href: "/finances/expenses",
+          icon: Wallet,
+          permission: "manage-finance",
+        },
+      ],
     },
     {
-      title: t('subscriptions'),
-      icon:CreditCard,
-      items:[
-        { title: t('subscriptions'), href: '/subscriptions', icon: CreditCard, permission: 'manage-subscriptions' },
-        { title: t('plans'), href:"/plans", icon:CreditCard, permission: 'manage-plans' },
-        { title: t('subscriptionRequests'), href:"/subscription-requests", icon:CreditCard, permission: 'manage-subscriptions' }
-      ]
+      title: t("subscriptions"),
+      icon: CreditCard,
+      items: [
+        {
+          title: t("subscriptions"),
+          href: "/subscriptions",
+          icon: CreditCard,
+          permission: "manage-subscriptions",
+        },
+        {
+          title: t("plans"),
+          href: "/plans",
+          icon: CreditCard,
+          permission: "manage-plans",
+        },
+        {
+          title: t("subscriptionRequests"),
+          href: "/subscription-requests",
+          icon: CreditCard,
+          permission: "manage-subscriptions",
+        },
+      ],
     },
     {
-      title: t('orders'),
+      title: t("orders"),
       icon: WalletIcon,
       items: [
-        { title: t('withdrawRequests'), href: '/orders/withdraw', icon: CreditCard, permission: 'manage-withdraw-requests' },
-        { title: t('depositRequests'), href: '/orders/deposit', icon: WalletCardsIcon, permission: 'manage-deposit-requests' },
-      ]
+        {
+          title: t("withdrawRequests"),
+          href: "/orders/withdraw",
+          icon: CreditCard,
+          permission: "manage-withdraw-requests",
+        },
+        {
+          title: t("depositRequests"),
+          href: "/orders/deposit",
+          icon: WalletCardsIcon,
+          permission: "manage-deposit-requests",
+        },
+      ],
     },
     {
-      title: t('settings'),
+      title: t("chat"),
+      icon: MessageCircle,
+      href: "/admin/chat",
+      permission: "manage-chats",
+    },
+    {
+      title: t("settings"),
       icon: Settings,
       items: [
-        { title: t('generalSettings'), href: '/settings', icon: Settings2Icon, permission: 'manage-subjects' },
-        { title: t('subjects'), href: '/subjects', icon: BookOpen, permission: 'manage-subjects' }
-      ]
-    }
+        {
+          title: t("generalSettings"),
+          href: "/settings",
+          icon: Settings2Icon,
+          permission: "manage-subjects",
+        },
+        {
+          title: t("subjects"),
+          href: "/subjects",
+          icon: BookOpen,
+          permission: "manage-subjects",
+        },
+      ],
+    },
   ];
 
   const studentMenuGroups = [
-    { title: t('home'), icon: LayoutDashboard, href: '/student/dashboard' },
-    { title: t('sessions'), icon: Video, href: '/student/sessions' },
-    { title: t('homework'), icon: ClipboardList, href: '/student/homework' },
-    { title: t('exams'), icon: FileQuestion, href: '/student/exams' },
-    { title: t('chat'), icon: MessageCircle, href: '/student/chat' },
+    { title: t("home"), icon: LayoutDashboard, href: "/student/dashboard" },
+    { title: t("sessions"), icon: Video, href: "/student/sessions" },
+    { title: t("homework"), icon: ClipboardList, href: "/student/homework" },
+    { title: t("exams"), icon: FileQuestion, href: "/student/exams" },
+    { title: t("chat"), icon: MessageCircle, href: "/student/chat" },
   ];
 
   const teacherMenuGroups = [
-    { title: t('home'), icon: LayoutDashboard, href: '/teacher/dashboard' },
-    { title: t('sessions'), icon: Video, href: '/teacher/sessions' },
-    { title: t('homework'), icon: ClipboardList, href: '/teacher/homework' },
-    { title: t('exams'), icon: FileQuestion, href: '/teacher/exams' },
-    { title: t('students'), icon: Users, href: '/teacher/students' },
-    { title: t('chat'), icon: MessageCircle, href: '/teacher/chat' },
+    { title: t("home"), icon: LayoutDashboard, href: "/teacher/dashboard" },
+    { title: t("sessions"), icon: Video, href: "/teacher/sessions" },
+    { title: t("homework"), icon: ClipboardList, href: "/teacher/homework" },
+    { title: t("exams"), icon: FileQuestion, href: "/teacher/exams" },
+    { title: t("students"), icon: Users, href: "/teacher/students" },
+    { title: t("chat"), icon: MessageCircle, href: "/teacher/chat" },
   ];
 
   const parentMenuGroups = [
-    { title: t('home'), icon: LayoutDashboard, href: '/parent-dashboard' },
+    { title: t("home"), icon: LayoutDashboard, href: "/parent-dashboard" },
   ];
 
   const filteredMenu = (menu: MenuSidebar[]) => {
     return menu
-      .map(group => {
+      .map((group) => {
         if (group.items) {
-          const filteredItems = group.items.filter(item => !item.permission || permissions.includes(item.permission));
+          const filteredItems = group.items.filter(
+            (item) => !item.permission || permissions.includes(item.permission),
+          );
           if (filteredItems.length === 0) return null;
           return { ...group, items: filteredItems };
         }
-        if (group.permission && !permissions.includes(group.permission)) return null;
+        if (group.permission && !permissions.includes(group.permission))
+          return null;
         return group;
       })
       .filter(Boolean);
   };
 
   const menu =
-  user?.role === 'student'
-    ? studentMenuGroups
-    : user?.role === 'teacher'
-    ? teacherMenuGroups
-    : user?.role === 'parent'
-    ? parentMenuGroups
-    : filteredMenu(adminMenuGroups);
+    user?.role === "student"
+      ? studentMenuGroups
+      : user?.role === "teacher"
+        ? teacherMenuGroups
+        : user?.role === "parent"
+          ? parentMenuGroups
+          : filteredMenu(adminMenuGroups);
 
   const isActive = (href?: string) => href && pathname.startsWith(href);
 
   const toggle = (title: string) => {
-    setExpanded(prev =>
-      prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title]
+    setExpanded((prev) =>
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
 
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -204,20 +314,20 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
       <div
         onClick={onClose}
         className={`fixed inset-0 bg-black/20 z-40 lg:hidden transition
-        ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       />
 
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-[calc(100vh)]
+          fixed top-0 ${isRTL ? "right-0" : "left-0"} h-[calc(100vh)]
           z-50
           w-64 sm:w-72
-          bg-white dark:bg-slate-900 ${isRTL ? 'border-l' : 'border-r'} dark:border-slate-800
+          bg-white dark:bg-slate-900 ${isRTL ? "border-l" : "border-r"} dark:border-slate-800
           transition-transform duration-300 ease-in-out
           flex flex-col
 
-          ${isOpen ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full'}
+          ${isOpen ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full"}
 
           lg:translate-x-0
           lg:sticky
@@ -225,41 +335,39 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
           lg:h-screen
         `}
       >
-
         {/* Logo */}
-<div className="flex items-center gap-4 p-6 border-b dark:border-slate-800">
-  <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
-    {settings?.logo ? (
-      <img
-        src={settings.logo}
-        alt={settings?.app_name || 'App Logo'}
-        className="w-full h-full object-contain"
-      />
-    ) : (
-      <span className="text-sm text-gray-400 font-semibold">
-        LOGO
-      </span>
-    )}
-  </div>
+        <div className="flex items-center gap-4 p-6 border-b dark:border-slate-800">
+          <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+            {settings?.logo ? (
+              <img
+                src={settings.logo}
+                alt={settings?.app_name || "App Logo"}
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <span className="text-sm text-gray-400 font-semibold">LOGO</span>
+            )}
+          </div>
 
-  <div className="flex flex-col">
-    <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
-      {settings?.app_name || tCommon('schoolName')}
-    </span>
-    <span className="text-sm text-gray-500 dark:text-gray-400">
-      {tCommon('controlPanel')}
-    </span>
-  </div>
-</div>
-
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {settings?.app_name || tCommon("schoolName")}
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {tCommon("controlPanel")}
+            </span>
+          </div>
+        </div>
 
         {/* Menu */}
-        <nav className="flex-1 overflow-y-auto p-4 space-y-2 scroll-smooth
+        <nav
+          className="flex-1 overflow-y-auto p-4 space-y-2 scroll-smooth
           [&::-webkit-scrollbar]:w-1.5
           [&::-webkit-scrollbar-track]:bg-transparent
           [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-700
           [&::-webkit-scrollbar-thumb]:rounded-full
-        ">
+        "
+        >
           {menu.map((group: any) => {
             const Icon = group.icon;
 
@@ -279,12 +387,14 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                     </div>
                     <ChevronDown
                       size={16}
-                      className={`transition ${open ? 'rotate-180' : ''}`}
+                      className={`transition ${open ? "rotate-180" : ""}`}
                     />
                   </button>
 
                   {open && (
-                    <div className={`mt-1 ${isRTL ? 'mr-6' : 'ml-6'} space-y-1`}>
+                    <div
+                      className={`mt-1 ${isRTL ? "mr-6" : "ml-6"} space-y-1`}
+                    >
                       {group.items.map((item: any) => {
                         const ItemIcon = item.icon;
                         return (
@@ -296,8 +406,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                               hover:bg-emerald-50 dark:hover:bg-emerald-900/30
                               ${
                                 isActive(item.href)
-                                  ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium'
-                                  : 'text-gray-600 dark:text-gray-400'
+                                  ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium"
+                                  : "text-gray-600 dark:text-gray-400"
                               }
                             `}
                           >
@@ -321,8 +431,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                   hover:bg-emerald-50 dark:hover:bg-emerald-900/30
                   ${
                     isActive(group.href)
-                      ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium'
-                      : 'text-gray-700 dark:text-gray-200'
+                      ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 font-medium"
+                      : "text-gray-700 dark:text-gray-200"
                   }
                 `}
               >
@@ -342,8 +452,12 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                   <User size={18} />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {user.role}
+                  </p>
                 </div>
               </div>
             </Link>
@@ -355,7 +469,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
             bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
           >
             <LogOut size={18} />
-            {t('logout')}
+            {t("logout")}
           </button>
         </div>
       </aside>

@@ -42,6 +42,8 @@
     "controlPanel": "Control Panel",
     "save": "Save",
     "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
     "edit": "Edit",
     "delete": "Delete",
     "add": "Add",
@@ -644,7 +646,14 @@
     "from": "from",
     "to": "to",
     "joinSession": "Join Session",
-    "sessionEnded": "Ended"
+    "joinSession": "Join Session",
+    "sessionEnded": "Ended",
+    "cancelSession": "Cancel Session",
+    "cancelConfirmation": "Are you sure you want to cancel this session? This action cannot be undone.",
+    "reasonPlaceholder": "Please provide a reason for cancellation...",
+    "cancellationRequested": "Cancellation request submitted successfully",
+    "errorCancelling": "Error submitting cancellation request",
+    "cancellation_too_late": "Cancellation requests must be made at least 24 hours in advance."
   },
   "Homework": {
     "title": "My Homework",
